@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InkMaster Studio | Arte na Pele</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <style>
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
         .text-gradient { background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -13,7 +16,12 @@
 <body class="bg-[#0a0a0a] text-white">
     <nav class="flex justify-between items-center p-6 max-w-7xl mx-auto">
         <h1 class="text-2xl font-bold tracking-tighter italic">INK<span class="text-red-600">MASTER</span></h1>
-        <a href="#agendar" class="bg-white text-black px-4 py-2 rounded-full text-sm font-bold hover:bg-red-600 hover:text-white transition">Agendar Agora</a>
+        
+        <div id="g_id_onload"
+             data-client_id="COLE_AQUI_SEU_ID_DO_GOOGLE"
+             data-callback="handleCredentialResponse">
+        </div>
+        <div class="g_id_signin" data-type="standard"></div>
     </nav>
 
     <section class="max-w-7xl mx-auto px-6 py-24 text-center">
@@ -25,18 +33,46 @@
     </section>
 
     <section class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="glass p-8 rounded-3xl">
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="salvarInteresse('Realismo')">
             <h3 class="text-xl font-bold mb-4">Realismo</h3>
             <p class="text-gray-400">Trabalhos detalhados que capturam cada nuance da realidade.</p>
         </div>
-        <div class="glass p-8 rounded-3xl">
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="salvarInteresse('Fine Line')">
             <h3 class="text-xl font-bold mb-4">Fine Line</h3>
             <p class="text-gray-400">Traços finos e delicados para quem busca elegância e precisão.</p>
         </div>
-        <div class="glass p-8 rounded-3xl">
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="salvarInteresse('Coberturas')">
             <h3 class="text-xl font-bold mb-4">Coberturas</h3>
             <p class="text-gray-400">Damos vida nova a tatuagens antigas com técnicas avançadas.</p>
         </div>
     </section>
+
+    <script>
+        // Configurações do Supabase (Pegue na aba API do Supabase)
+        const SB_URL = 'https://umufrakmlasvznxllzsy.supabase.co';
+        const SB_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        // Função para salvar no banco de dados
+        async function salvarInteresse(tipo) {
+            const nome = prompt("Para agendar " + tipo + ", qual seu nome?");
+            const zap = prompt("Qual seu WhatsApp?");
+
+            if (nome && zap) {
+                const { error } = await supabaseClient
+                    .from('agendamentos')
+                    .insert([{ nome: nome, whatsapp: zap, servico: tipo }]);
+
+                if (error) alert("Erro: " + error.message);
+                else alert("Pedido de agendamento enviado! Entraremos em contato.");
+            }
+        }
+
+        // Função do Google Login
+        function handleCredentialResponse(response) {
+            console.log("Usuário logado via Google!");
+            // Aqui você pode salvar o usuário logado no Supabase também
+        }
+    </script>
 </body>
 </html>
