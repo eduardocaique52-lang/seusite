@@ -55,8 +55,8 @@
             <h1 class="text-xl font-bold tracking-tighter italic" aria-label="InkMaster Logo">
                 INK<span class="text-red-600">MASTER</span>
             </h1>
-            <div class="flex items-center gap-4">
-                <button onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3 py-2">Fazer Login</button>
+            <div class="flex items-center gap-4" id="nav-auth-area">
+                <button id="btn-login-nav" onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3 py-2">Fazer Login</button>
                 <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-lg">Agendar</button>
             </div>
         </nav>
@@ -64,7 +64,7 @@
 
     <header class="hero-bg justify-center text-center px-6">
         <div class="max-w-4xl mt-20 animate-slide-up">
-            <h2 class="text-5xl md:text-8xl font-black text-gradient mb-6 leading-tight drop-shadow-2xl">
+            <h2 class="text-5xl md:text-8xl font-black text-gradient mb-6 leading-tight drop-shadow-2xl" id="hero-title">
                 Sua pele,<br>sua história.
             </h2>
             <p class="text-gray-300 max-w-2xl mx-auto mb-10 text-lg md:text-xl drop-shadow-md">
@@ -139,22 +139,63 @@
 
         // Máscara de Telefone
         const mask = IMask(document.getElementById('zap-lead'), { mask: '(00) 00000-0000' });
-
         let servicoSelecionado = "";
+
+        // --- CONTROLE DE SESSÃO (RECONHECIMENTO DE PERFIL) ---
+        
+        async function verificarSessao() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            const btnLogin = document.getElementById('btn-login-nav');
+            const heroTitle = document.getElementById('hero-title');
+
+            if (user) {
+                // Usuário logado: mostra o e-mail (ou nome se for Google) no menu
+                const identificador = user.user_metadata.full_name || user.email.split('@')[0];
+                btnLogin.innerText = `Olá, ${identificador}`;
+                btnLogin.onclick = logout; // Muda a função para deslogar
+                heroTitle.innerHTML = `Olá, ${identificador}.<br>Vamos tatuar?`; // Saudação personalizada
+            } else {
+                // Usuário deslogado: volta ao padrão
+                btnLogin.innerText = "Fazer Login";
+                btnLogin.onclick = abrirLogin;
+                heroTitle.innerHTML = `Sua pele,<br>sua história.`;
+            }
+        }
+
+        async function logout() {
+            if(confirm("Deseja sair da sua conta?")) {
+                await supabaseClient.auth.signOut();
+                window.location.reload();
+            }
+        }
+
+        // Executa ao carregar a página e quando o estado de auth mudar
+        supabaseClient.auth.onAuthStateChange(() => { verificarSessao(); });
+        verificarSessao();
 
         // UI Controls
         function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
         function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
-        function abrirAgendamento(tipo) {
-            servicoSelecionado = tipo;
-            document.getElementById('servico-nome').innerText = tipo;
-            document.getElementById('modal-agendamento').classList.remove('hidden');
+        
+        // --- FUNÇÃO DE AGENDAMENTO COM TRAVA DE LOGIN ---
+        async function abrirAgendamento(tipo) {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+
+            if (!session) {
+                // Bloqueia e pede login
+                alert("Para agendar sua tatuagem, você precisa acessar sua conta primeiro!");
+                abrirLogin();
+            } else {
+                // Libera o modal se estiver logado
+                servicoSelecionado = tipo;
+                document.getElementById('servico-nome').innerText = tipo;
+                document.getElementById('modal-agendamento').classList.remove('hidden');
+            }
         }
         function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
 
         // --- SISTEMA DE AUTENTICAÇÃO ---
 
-        // 1. Login com Google
         async function loginGoogle() {
             const { error } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
@@ -163,36 +204,26 @@
             if (error) alert("Erro Google: " + error.message);
         }
 
-        // 2. Cadastro com E-mail e Senha
         async function criarContaEmail() {
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
             const btn = document.getElementById('btn-criar-email');
-
             if (!email || password.length < 6) return alert("E-mail inválido ou senha muito curta (mín. 6 caracteres).");
-
             btn.innerText = "...";
             const { error } = await supabaseClient.auth.signUp({ email, password });
-
             if (error) alert("Erro: " + error.message);
             else alert("Sucesso! Verifique seu e-mail para confirmar o cadastro.");
             btn.innerText = "Cadastrar";
         }
 
-        // 3. Login com E-mail e Senha
         async function loginEmail() {
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
             const btn = document.getElementById('btn-entrar-email');
-
             btn.innerText = "...";
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
             if (error) alert("Erro: " + error.message);
-            else {
-                alert("Bem-vindo de volta!");
-                fecharLogin();
-            }
+            else { fecharLogin(); }
             btn.innerText = "Entrar";
         }
 
