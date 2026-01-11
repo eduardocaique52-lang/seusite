@@ -1,434 +1,136 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INKMASTER</title>
+    <title>InkMaster Studio | Arte na Pele</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
-        /* ESTILO EXATO DA IMAGEM - Formato de documento/texto */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* Estilos de Vidro e Gradientes de Texto */
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .text-gradient { background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        body {
-            background-color: #0a0a0a;
-            color: #e0e0e0;
-            font-family: 'Courier New', monospace;
-            line-height: 1.6;
-            padding: 40px 20px;
-            max-width: 900px;
-            margin: 0 auto;
-            min-height: 100vh;
+        /* Design da Aba de Login (Estilo Hotmart) */
+        .hotmart-card { background: white; color: #333; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
+        .input-hotmart { border: 1px solid #ddd; border-radius: 8px; padding: 12px; width: 100%; color: #000; }
+        .btn-hotmart { background: #ff4d00; color: white; font-weight: bold; padding: 14px; border-radius: 8px; width: 100%; }
+
+        /* Fundo com Imagem e Gradiente de Sombra Preta Inferior Pesada */
+        .hero-bg {
+            background: linear-gradient(to bottom, 
+                        rgba(10, 10, 10, 0.2) 0%, 
+                        rgba(10, 10, 10, 0.6) 50%, 
+                        rgba(10, 10, 10, 1) 100%), 
+                        url('https://discord.com/channels/536575231968542721/536968373683224576/1459714925256773894');
+            background-size: cover;
+            background-position: center;
+            min-height: 80vh;
         }
-        
-        /* Títulos principais - EXATAMENTE como na imagem */
-        h1 {
-            color: #ffffff;
-            font-size: 3.5rem;
-            font-weight: 900;
-            letter-spacing: -1px;
-            margin-bottom: 10px;
-            border-bottom: 3px solid #ff0066;
-            padding-bottom: 15px;
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-        
-        h2 {
-            color: #ffffff;
-            font-size: 1.8rem;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        
-        h3 {
-            color: #ff0066;
-            font-size: 1.4rem;
-            margin-top: 25px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        /* Texto de marcação - estilo de documento */
-        p {
-            margin-bottom: 15px;
-            color: #cccccc;
-        }
-        
-        /* Blocos de texto como na imagem */
-        .text-block {
-            background-color: #111111;
-            border-left: 4px solid #333333;
-            padding: 15px 20px;
-            margin: 20px 0;
-        }
-        
-        /* Listas como na imagem - simples, sem marcadores visíveis */
-        ul {
-            list-style-type: none;
-            margin-left: 20px;
-            margin-bottom: 25px;
-        }
-        
-        li {
-            margin-bottom: 15px;
-            position: relative;
-            padding-left: 5px;
-        }
-        
-        li:before {
-            content: "-";
-            position: absolute;
-            left: -15px;
-            color: #ff0066;
-        }
-        
-        /* Linha divisória */
-        hr {
-            border: none;
-            border-top: 2px solid #333333;
-            margin: 40px 0;
-        }
-        
-        /* Seção de agendamento - EXATAMENTE como na imagem */
-        .appointment-section {
-            background-color: #111111;
-            border: 1px solid #333333;
-            padding: 25px;
-            margin-top: 30px;
-            position: relative;
-        }
-        
-        .free-tag {
-            background-color: #00cc88;
-            color: #000000;
-            font-size: 0.8rem;
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 3px;
-            display: inline-block;
-            margin-left: 10px;
-        }
-        
-        /* Campos de formulário - estilo minimalista */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            color: #888888;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-        
-        .form-input {
-            width: 100%;
-            background-color: #0a0a0a;
-            border: 1px solid #333333;
-            color: #ffffff;
-            padding: 12px 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
-        }
-        
-        /* Botão Google - estilo da imagem */
-        .google-btn {
-            background-color: #0a0a0a;
-            border: 1px solid #333333;
-            color: #ffffff;
-            padding: 12px 20px;
-            width: 100%;
-            text-align: left;
-            margin: 15px 0;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            display: flex;
-            align-items: center;
-        }
-        
-        .google-btn:before {
-            content: "■";
-            color: #4285F4;
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-        
-        /* Botão criar conta */
-        .submit-btn {
-            background-color: #222222;
-            border: 1px solid #ff0066;
-            color: #ffffff;
-            padding: 15px;
-            width: 100%;
-            font-weight: bold;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
-            margin-top: 20px;
-        }
-        
-        /* Seção de código */
-        .code-block {
-            background-color: #000000;
-            border: 1px solid #333333;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-            color: #00cc88;
-        }
-        
-        /* Número de telefone grande */
-        .phone-number {
-            font-size: 2.5rem;
-            color: #ff0066;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-align: center;
-            margin: 30px 0;
-        }
-        
-        /* Texto em itálico */
-        .italic {
-            font-style: italic;
-            color: #888888;
-        }
-        
-        /* Responsividade */
-        @media (max-width: 768px) {
-            body {
-                padding: 20px 15px;
-            }
-            
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .phone-number {
-                font-size: 2rem;
-            }
-        }
+        .animate-slide-up { animation: slideUp 0.4s ease-out; }
     </style>
 </head>
-<body>
-    <!-- CABEÇALHO EXATO DA IMAGEM -->
-    <h1>INKMASTER</h1>
-    
-    <p style="font-size: 1.2rem; color: #cccccc; margin-bottom: 5px;">
-        <em>Sua pele, sua história</em>
-    </p>
-    
-    <p style="margin-bottom: 40px; color: #999999;">
-        Esta pêxi, mư derium focuado em lesfigatim co transformos idea arte eterna.
-    </p>
-    
-    <!-- SEÇÃO "QUERO MAIS TATUAGEM" EXATA -->
-    <h2>Quero mais tatuagem</h2>
-    
-    <ul>
-        <li>
-            <h3>Realismo Geral</h3>
-            <div class="text-block">
-                Test ho gray 4000<br>
-                Dust me loone de ceo arenibe tierna ficatiam
+<body class="bg-[#0a0a0a] text-white">
+
+    <div class="hero-bg flex flex-col">
+        <nav class="flex justify-between items-center p-6 max-w-7xl mx-auto w-full">
+            <h1 class="text-2xl font-bold tracking-tighter italic">INK<span class="text-red-600">MASTER</span></h1>
+            <button onclick="abrirLogin()" class="bg-white text-black px-4 py-2 rounded-md text-sm font-bold hover:bg-gray-200 transition">Fazer Login</button>
+        </nav>
+
+        <section class="max-w-7xl mx-auto px-6 py-32 text-center flex-grow flex flex-col justify-center">
+            <h2 class="text-6xl md:text-8xl font-bold text-gradient mb-6 drop-shadow-2xl">Sua pele,<br>sua história.</h2>
+            <p class="text-gray-200 max-w-2xl mx-auto mb-10 text-lg drop-shadow-lg">Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.</p>
+            <div>
+                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 text-white px-10 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all inline-block shadow-2xl">
+                    Quero minha tatuagem
+                </button>
             </div>
-        </li>
-        
-        <li>
-            <h3>Fine Line Fine</h3>
-            <div class="text-block">
-                Test ho gray 4000<br>
-                Dater a usine so brindampoire<br>
-                hover er scale 105 bina limpies
+        </section>
+    </div>
+
+    <section class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Realismo')">
+            <h3 class="text-xl font-bold mb-4">Realismo</h3>
+            <p class="text-gray-400">Trabalhos detalhados que capturam cada nuance da realidade.</p>
+        </div>
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Fine Line')">
+            <h3 class="text-xl font-bold mb-4">Fine Line</h3>
+            <p class="text-gray-400">Traços finos e delicados para quem busca elegância e precisão.</p>
+        </div>
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Coberturas')">
+            <h3 class="text-xl font-bold mb-4">Coberturas</h3>
+            <p class="text-gray-400">Damos vida nova a tatuagens antigas com técnicas avançadas.</p>
+        </div>
+    </section>
+
+    <div id="modal-login" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="hotmart-card w-full max-w-[400px] p-10 animate-slide-up relative text-center">
+            <button onclick="fecharLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            <h3 class="text-2xl font-bold mb-1">Crie sua conta agora.</h3>
+            <p class="text-gray-500 text-sm mb-6 font-medium">É gratuito</p>
+            <button onclick="loginGoogle()" class="flex items-center justify-center gap-3 w-full border border-gray-300 p-3 rounded-lg hover:bg-gray-50 transition mb-6 text-gray-700">
+                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5 h-5">
+                <span class="font-bold text-sm">Entrar com Google</span>
+            </button>
+            <div class="space-y-4">
+                <input type="email" placeholder="Digite seu e-mail" class="input-hotmart text-sm">
+                <input type="password" placeholder="Digite sua senha" class="input-hotmart text-sm">
+                <button class="btn-hotmart">Criar conta</button>
             </div>
-        </li>
-        
-        <li>
-            <h3>Houaco</h3>
-            <div class="text-block">
-                Coticítoo<br>
-                Agenta Pelo<br>
-                Facer Login
+        </div>
+    </div>
+
+    <div id="modal-agendamento" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass w-full max-w-md p-8 rounded-3xl animate-slide-up relative">
+            <button onclick="fecharAgendamento()" class="absolute top-4 right-4 text-gray-500 text-2xl">&times;</button>
+            <h3 class="text-2xl font-bold mb-2 text-white">Agendar <span id="servico-nome" class="text-red-600"></span></h3>
+            <div class="space-y-4 mt-6">
+                <input type="text" id="nome-lead" placeholder="Seu Nome" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-red-600">
+                <input type="text" id="zap-lead" placeholder="Seu WhatsApp" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-red-600">
+                <button onclick="enviarDados()" class="w-full bg-red-600 font-bold py-4 rounded-xl text-white">Confirmar</button>
             </div>
-        </li>
-    </ul>
-    
-    <!-- SEÇÃO DE AGENDAMENTO EXATA DA IMAGEM -->
-    <div class="appointment-section">
-        <h3>Agendar span_ <span class="free-tag">É gratuito</span></h3>
-        
-        <div class="form-group">
-            <div class="form-label">Digite sua nome completo</div>
-            <input type="text" id="user-name" class="form-input" placeholder="">
         </div>
-        
-        <button id="google-login-btn" class="google-btn">
-            Ente con Google
-        </button>
-        
-        <div class="form-group">
-            <div class="form-label">testo</div>
-            <input type="text" id="user-code" class="form-input" placeholder="">
-        </div>
-        
-        <div class="form-group">
-            <div class="form-label">Orloxx serup</div>
-            <div class="code-block">918</div>
-        </div>
-        
-        <button id="create-account-btn" class="submit-btn">
-            Criar conta
-        </button>
-    </div>
-    
-    <hr>
-    
-    <!-- SEÇÃO "FCHA AGENDÆNTO TATUAGEM" EXATA -->
-    <h3>Fcha Agendænto tatuagem</h3>
-    <div class="text-block">
-        Test tho gray 4000<br>
-        Dus senne e cintuse svemide umi anotan catilis.
-    </div>
-    
-    <h3 style="margin-top: 30px;">Cobevire Agendamento</h3>
-    <div class="text-block">
-        Test thoto gray 4200<br>
-        Dele rata saclooma te dude<br>
-        forper ricci are casas.
-    </div>
-    
-    <!-- NÚMERO DE CONTATO -->
-    <div class="phone-number">
-        Orloxx serup: 918
     </div>
 
     <script>
-        // Configuração do Supabase (SEU CÓDIGO ORIGINAL)
+        // SEUS DADOS DO SUPABASE (JÁ FUNCIONAIS)
         const SB_URL = 'https://umufrakmlasvznxllzsy.supabase.co';
         const SB_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
-        
-        // Elementos da página
-        const googleLoginBtn = document.getElementById('google-login-btn');
-        const createAccountBtn = document.getElementById('create-account-btn');
-        const userNameInput = document.getElementById('user-name');
-        const userCodeInput = document.getElementById('user-code');
-        
-        // Login com Google (SEU CÓDIGO ORIGINAL)
+
+        let servicoSelecionado = "";
+        function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
+        function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
+        function abrirAgendamento(tipo) {
+            servicoSelecionado = tipo;
+            document.getElementById('servico-nome').innerText = tipo;
+            document.getElementById('modal-agendamento').classList.remove('hidden');
+        }
+        function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
+
+        // LOGIN GOOGLE INTEGRADO
         async function loginGoogle() {
             const { error } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
-                options: {
-                    redirectTo: window.location.origin
-                }
+                options: { redirectTo: window.location.origin + window.location.pathname }
             });
-            
-            if (error) {
-                alert('Erro ao fazer login: ' + error.message);
-            }
+            if (error) alert(error.message);
         }
-        
-        // Criar conta / Agendar
-        async function createAccount() {
-            const nome = userNameInput.value.trim();
-            const codigo = userCodeInput.value.trim();
-            
-            if (!nome) {
-                alert('Por favor, digite seu nome completo.');
-                userNameInput.focus();
-                return;
-            }
-            
-            // Se tem código, salvar como referência
-            if (codigo) {
-                // Aqui você pode salvar o código de referência se quiser
-                console.log('Código de referência:', codigo);
-            }
-            
-            // Primeiro faz login com Google
-            await loginGoogle();
-            
-            // Após login, o usuário será redirecionado de volta
-            // e podemos salvar os dados no banco de dados
-        }
-        
-        // Ouvintes de evento
-        googleLoginBtn.addEventListener('click', loginGoogle);
-        createAccountBtn.addEventListener('click', createAccount);
-        
-        // Efeito de digitação nos campos
-        userNameInput.addEventListener('focus', function() {
-            this.style.borderColor = '#ff0066';
-            this.style.backgroundColor = '#111111';
-        });
-        
-        userNameInput.addEventListener('blur', function() {
-            this.style.borderColor = '#333333';
-            this.style.backgroundColor = '#0a0a0a';
-        });
-        
-        userCodeInput.addEventListener('focus', function() {
-            this.style.borderColor = '#ff0066';
-            this.style.backgroundColor = '#111111';
-        });
-        
-        userCodeInput.addEventListener('blur', function() {
-            this.style.borderColor = '#333333';
-            this.style.backgroundColor = '#0a0a0a';
-        });
-        
-        // Efeito de digitação automática (opcional)
-        setTimeout(() => {
-            userNameInput.placeholder = "ex: João Silva";
-            userCodeInput.placeholder = "código opcional";
-        }, 1000);
-        
-        // Verificar se já está autenticado ao carregar a página
-        document.addEventListener('DOMContentLoaded', async function() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            
-            if (user) {
-                // Se já estiver logado, preencher o nome automaticamente
-                userNameInput.value = user.user_metadata?.full_name || user.email || '';
-                createAccountBtn.textContent = 'Já logado - Clique para novo agendamento';
-                createAccountBtn.style.backgroundColor = '#00cc88';
-                createAccountBtn.style.color = '#000000';
-            }
-            
-            // Ouvir mudanças de autenticação
-            supabaseClient.auth.onAuthStateChange((event, session) => {
-                if (event === 'SIGNED_IN' && session) {
-                    // Após login, podemos criar o agendamento
-                    createAppointment(session.user);
-                }
-            });
-        });
-        
-        // Criar agendamento após login
-        async function createAppointment(user) {
-            const nome = userNameInput.value.trim() || user.user_metadata?.full_name || user.email;
-            const codigo = userCodeInput.value.trim();
-            
-            // Salvar no banco de dados (SEU CÓDIGO ORIGINAL)
-            const { error } = await supabaseClient.from('agendamentos').insert([{
-                nome: nome,
-                whatsapp: 'A ser informado',
-                servico: 'Consulta Inicial',
-                user_id: user.id,
-                email: user.email,
-                codigo_referencia: codigo || null
-            }]);
-            
-            if (error) {
-                alert('Erro ao criar agendamento: ' + error.message);
-            } else {
-                alert('Agendamento criado com sucesso! Entraremos em contato em breve.');
-                
-                // Limpar formulário
-                userNameInput.value = '';
-                userCodeInput.value = '';
+
+        // ENVIO PARA TABELA AGENDAMENTOS
+        async function enviarDados() {
+            const nome = document.getElementById('nome-lead').value;
+            const zap = document.getElementById('zap-lead').value;
+            if (nome && zap) {
+                const { error } = await supabaseClient.from('agendamentos').insert([{ nome, whatsapp: zap, servico: servicoSelecionado }]);
+                if (error) alert("Erro: " + error.message);
+                else { alert("Agendamento Enviado!"); fecharAgendamento(); }
             }
         }
     </script>
