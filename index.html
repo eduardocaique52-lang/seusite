@@ -3,622 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INKMASTER - Sua pele, sua história</title>
+    <title>INKMASTER</title>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ESTILO EXATO DA IMAGEM - Formato de documento/texto */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
             background-color: #0a0a0a;
-            color: #f0f0f0;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            padding: 30px 0;
-            position: relative;
-        }
-        
-        .logo {
-            font-size: 4.5rem;
-            font-weight: 900;
-            letter-spacing: 3px;
-            color: #fff;
-            text-shadow: 3px 3px 0 #ff0066, 6px 6px 0 #6600ff;
-            margin-bottom: 10px;
-        }
-        
-        .tagline {
-            font-size: 1.4rem;
-            color: #aaa;
-            margin-bottom: 30px;
-            font-style: italic;
-        }
-        
-        .description {
-            font-size: 1.1rem;
-            color: #888;
-            max-width: 800px;
-            margin: 0 auto 40px;
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
             line-height: 1.6;
-            text-align: center;
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            min-height: 100vh;
         }
         
-        .main-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-bottom: 60px;
+        /* Títulos principais - EXATAMENTE como na imagem */
+        h1 {
+            color: #ffffff;
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #ff0066;
+            padding-bottom: 15px;
         }
         
-        .left-section {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .right-section {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .section-title {
+        h2 {
+            color: #ffffff;
             font-size: 1.8rem;
-            color: #fff;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 700;
         }
         
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #ff0066, #6600ff);
-        }
-        
-        .tattoo-types {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        .tattoo-type {
-            background-color: #1a1a1a;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #ff0066;
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .tattoo-type:hover {
-            transform: translateY(-5px);
-        }
-        
-        .type-title {
-            font-size: 1.4rem;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-        
-        .type-subtitle {
-            font-size: 1rem;
+        h3 {
             color: #ff0066;
-            margin-bottom: 12px;
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
             font-weight: 600;
         }
         
-        .type-description {
-            color: #aaa;
-            font-size: 0.95rem;
-            line-height: 1.5;
+        /* Texto de marcação - estilo de documento */
+        p {
+            margin-bottom: 15px;
+            color: #cccccc;
         }
         
-        .login-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
+        /* Blocos de texto como na imagem */
+        .text-block {
+            background-color: #111111;
+            border-left: 4px solid #333333;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+        
+        /* Listas como na imagem - simples, sem marcadores visíveis */
+        ul {
+            list-style-type: none;
+            margin-left: 20px;
             margin-bottom: 25px;
         }
         
-        .login-btn {
-            background-color: #1a1a1a;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            flex: 1;
-            min-width: 200px;
-            font-weight: 600;
-        }
-        
-        .login-btn:hover {
-            background-color: #262626;
-            border-color: #ff0066;
-        }
-        
-        .google-btn {
-            background-color: #1a1a1a;
-            border-color: #333;
-        }
-        
-        .google-icon {
-            color: #4285F4;
-            font-size: 1.2rem;
-        }
-        
-        .signup-section {
-            margin-top: 30px;
-        }
-        
-        .signup-title {
-            font-size: 1.2rem;
-            color: #fff;
+        li {
             margin-bottom: 15px;
+            position: relative;
+            padding-left: 5px;
         }
         
-        .signup-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        li:before {
+            content: "-";
+            position: absolute;
+            left: -15px;
+            color: #ff0066;
         }
         
+        /* Linha divisória */
+        hr {
+            border: none;
+            border-top: 2px solid #333333;
+            margin: 40px 0;
+        }
+        
+        /* Seção de agendamento - EXATAMENTE como na imagem */
+        .appointment-section {
+            background-color: #111111;
+            border: 1px solid #333333;
+            padding: 25px;
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        .free-tag {
+            background-color: #00cc88;
+            color: #000000;
+            font-size: 0.8rem;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        /* Campos de formulário - estilo minimalista */
         .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            margin-bottom: 20px;
         }
         
         .form-label {
-            color: #aaa;
+            display: block;
+            color: #888888;
+            margin-bottom: 8px;
             font-size: 0.9rem;
         }
         
         .form-input {
-            background-color: #1a1a1a;
-            border: 1px solid #333;
-            color: #fff;
+            width: 100%;
+            background-color: #0a0a0a;
+            border: 1px solid #333333;
+            color: #ffffff;
             padding: 12px 15px;
-            border-radius: 6px;
+            font-family: 'Courier New', monospace;
             font-size: 1rem;
         }
         
-        .form-input:focus {
-            outline: none;
-            border-color: #ff0066;
+        /* Botão Google - estilo da imagem */
+        .google-btn {
+            background-color: #0a0a0a;
+            border: 1px solid #333333;
+            color: #ffffff;
+            padding: 12px 20px;
+            width: 100%;
+            text-align: left;
+            margin: 15px 0;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            align-items: center;
         }
         
-        .signup-btn {
-            background: linear-gradient(90deg, #ff0066, #6600ff);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 6px;
+        .google-btn:before {
+            content: "■";
+            color: #4285F4;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        /* Botão criar conta */
+        .submit-btn {
+            background-color: #222222;
+            border: 1px solid #ff0066;
+            color: #ffffff;
+            padding: 15px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
             font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            margin-top: 20px;
         }
         
-        .signup-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 0, 102, 0.3);
-        }
-        
-        .free-tag {
-            display: inline-block;
-            background-color: #00cc88;
-            color: #000;
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 4px;
-            margin-left: 10px;
-        }
-        
-        .appointment-sections {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-        
-        .appointment-card {
-            background-color: #1a1a1a;
-            padding: 25px;
-            border-radius: 8px;
-            border-top: 4px solid #6600ff;
-        }
-        
-        .card-title {
-            font-size: 1.3rem;
-            color: #fff;
-            margin-bottom: 12px;
-        }
-        
-        .card-subtitle {
-            font-size: 1rem;
-            color: #6600ff;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        .card-description {
-            color: #aaa;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-        
-        .contact-info {
-            margin-top: 40px;
-            padding: 25px;
-            background-color: #1a1a1a;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid #333;
-        }
-        
-        .contact-title {
-            font-size: 1.5rem;
-            color: #fff;
-            margin-bottom: 15px;
-        }
-        
-        .contact-number {
-            font-size: 2rem;
-            color: #ff0066;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            color: #666;
-            font-size: 0.9rem;
-            border-top: 1px solid #222;
-            margin-top: 40px;
-        }
-        
-        .tattoo-icon {
-            display: inline-block;
-            margin: 0 5px;
-            color: #ff0066;
-        }
-        
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-        
-        .modal-content {
-            background-color: #1a1a1a;
-            padding: 30px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 500px;
-            border: 1px solid #333;
-            position: relative;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: #aaa;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        
-        .modal-title {
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-            color: #fff;
-        }
-        
-        .modal-subtitle {
-            color: #ff0066;
-            margin-bottom: 25px;
-            font-size: 1rem;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #333;
-        }
-        
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-        
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .user-details h3 {
-            font-size: 1.3rem;
-            margin-bottom: 5px;
-        }
-        
-        .user-details p {
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-        
-        .logout-btn {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .logout-btn:hover {
-            background-color: #ff4444;
-        }
-        
-        .appointment-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .appointment-form h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-        
-        .message {
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin-top: 10px;
-            display: none;
-        }
-        
-        .success-message {
-            background-color: rgba(0, 204, 136, 0.1);
+        /* Seção de código */
+        .code-block {
+            background-color: #000000;
+            border: 1px solid #333333;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
             color: #00cc88;
-            border: 1px solid #00cc88;
         }
         
-        .error-message {
-            background-color: rgba(255, 68, 68, 0.1);
-            color: #ff4444;
-            border: 1px solid #ff4444;
+        /* Número de telefone grande */
+        .phone-number {
+            font-size: 2.5rem;
+            color: #ff0066;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-align: center;
+            margin: 30px 0;
         }
         
-        .info-message {
-            background-color: rgba(68, 136, 255, 0.1);
-            color: #4488ff;
-            border: 1px solid #4488ff;
+        /* Texto em itálico */
+        .italic {
+            font-style: italic;
+            color: #888888;
         }
         
-        @keyframes pulse {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
+        /* Responsividade */
         @media (max-width: 768px) {
-            .logo {
-                font-size: 3.5rem;
+            body {
+                padding: 20px 15px;
             }
             
-            .main-content {
-                flex-direction: column;
+            h1 {
+                font-size: 2.5rem;
             }
             
-            .login-btn {
-                min-width: 100%;
+            .phone-number {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1 class="logo">INKMASTER</h1>
-            <p class="tagline">Sua pele, sua história</p>
-            <p class="description">
-                Esta pêxi, mư derium focuado em lesfigatim co transformos idea arte eterna.
-            </p>
-        </header>
+    <!-- CABEÇALHO EXATO DA IMAGEM -->
+    <h1>INKMASTER</h1>
+    
+    <p style="font-size: 1.2rem; color: #cccccc; margin-bottom: 5px;">
+        <em>Sua pele, sua história</em>
+    </p>
+    
+    <p style="margin-bottom: 40px; color: #999999;">
+        Esta pêxi, mư derium focuado em lesfigatim co transformos idea arte eterna.
+    </p>
+    
+    <!-- SEÇÃO "QUERO MAIS TATUAGEM" EXATA -->
+    <h2>Quero mais tatuagem</h2>
+    
+    <ul>
+        <li>
+            <h3>Realismo Geral</h3>
+            <div class="text-block">
+                Test ho gray 4000<br>
+                Dust me loone de ceo arenibe tierna ficatiam
+            </div>
+        </li>
         
-        <div class="main-content">
-            <div class="left-section">
-                <h2 class="section-title">Quero mais tatuagem</h2>
-                
-                <div class="tattoo-types">
-                    <div class="tattoo-type" onclick="openAppointmentModal('Realismo Geral')">
-                        <h3 class="type-title">Realismo Geral</h3>
-                        <p class="type-subtitle">Test ho gray 4000</p>
-                        <p class="type-description">
-                            Dust me loone de ceo arenibe tierna ficatiam
-                        </p>
-                    </div>
-                    
-                    <div class="tattoo-type" onclick="openAppointmentModal('Fine Line Fine')">
-                        <h3 class="type-title">Fine Line Fine</h3>
-                        <p class="type-subtitle">Test ho gray 4000</p>
-                        <p class="type-description">
-                            Dater a usine so brindampoire<br>
-                            hover er scale 105 bina limpies
-                        </p>
-                    </div>
-                    
-                    <div class="tattoo-type" onclick="openAppointmentModal('Houaco')">
-                        <h3 class="type-title">Houaco</h3>
-                        <p class="type-description">
-                            Coticítoo<br>
-                            Agenta Pelo<br>
-                            Facer Login
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="signup-section">
-                    <h3 class="signup-title">
-                        Agendar <span class="pulse">span_</span>
-                        <span class="free-tag">É gratuito</span>
-                    </h3>
-                    
-                    <div id="login-container">
-                        <div id="not-logged-in">
-                            <div class="form-group">
-                                <label class="form-label">Digite sua nome completo</label>
-                                <input type="text" id="full-name" class="form-input" placeholder="Seu nome completo">
-                            </div>
-                            
-                            <button id="google-login-btn" class="login-btn google-btn">
-                                <i class="fab fa-google google-icon"></i>
-                                <span>Ente con Google</span>
-                            </button>
-                            
-                            <div class="form-group">
-                                <label class="form-label">testo</label>
-                                <input type="text" id="referral-code" class="form-input" placeholder="Texto adicional">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Orloxx serup</label>
-                                <input type="text" class="form-input" value="918" readonly>
-                            </div>
-                            
-                            <button id="create-account-btn" class="signup-btn">
-                                Criar conta <i class="fas fa-arrow-right"></i>
-                            </button>
-                            
-                            <div id="login-message" class="message"></div>
-                        </div>
-                    </div>
-                </div>
+        <li>
+            <h3>Fine Line Fine</h3>
+            <div class="text-block">
+                Test ho gray 4000<br>
+                Dater a usine so brindampoire<br>
+                hover er scale 105 bina limpies
             </div>
-            
-            <div class="right-section">
-                <h2 class="section-title">Fcha Agendænto tatuagem</h2>
-                
-                <div class="appointment-sections">
-                    <div class="appointment-card">
-                        <h3 class="card-title">Fcha Agendænto tatuagem</h3>
-                        <p class="card-subtitle">Test tho gray 4000</p>
-                        <p class="card-description">
-                            Dus senne e cintuse svemide umi anotan catilis.
-                        </p>
-                    </div>
-                    
-                    <div class="appointment-card">
-                        <h3 class="card-title">Cobevire Agendamento</h3>
-                        <p class="card-subtitle">Test thoto gray 4200</p>
-                        <p class="card-description">
-                            Dele rata saclooma te dude<br>
-                            forper ricci are casas.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="contact-info">
-                    <h3 class="contact-title">Precisa de ajuda?</h3>
-                    <p class="contact-number">Orloxx serup: 918</p>
-                </div>
+        </li>
+        
+        <li>
+            <h3>Houaco</h3>
+            <div class="text-block">
+                Coticítoo<br>
+                Agenta Pelo<br>
+                Facer Login
             </div>
+        </li>
+    </ul>
+    
+    <!-- SEÇÃO DE AGENDAMENTO EXATA DA IMAGEM -->
+    <div class="appointment-section">
+        <h3>Agendar span_ <span class="free-tag">É gratuito</span></h3>
+        
+        <div class="form-group">
+            <div class="form-label">Digite sua nome completo</div>
+            <input type="text" id="user-name" class="form-input" placeholder="">
         </div>
         
-        <footer>
-            <p>
-                INKMASTER <i class="fas fa-cross tattoo-icon"></i> 2023 
-                <i class="fas fa-heart tattoo-icon pulse"></i> 
-                Sua pele, sua história <i class="fas fa-ankh tattoo-icon"></i>
-            </p>
-            <p style="margin-top: 10px; font-size: 0.8rem;">
-                Esta pêxi, mư derium focuado em lesfigatim co transformos idea arte eterna.
-            </p>
-        </footer>
-    </div>
-
-    <!-- Modal para usuário logado -->
-    <div id="user-modal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeUserModal()">&times;</button>
-            
-            <div id="user-modal-content">
-                <!-- Conteúdo será preenchido dinamicamente -->
-            </div>
+        <button id="google-login-btn" class="google-btn">
+            Ente con Google
+        </button>
+        
+        <div class="form-group">
+            <div class="form-label">testo</div>
+            <input type="text" id="user-code" class="form-input" placeholder="">
         </div>
-    </div>
-
-    <!-- Modal de agendamento -->
-    <div id="appointment-modal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeAppointmentModal()">&times;</button>
-            
-            <h2 class="modal-title">Agendar Tatuagem</h2>
-            <p class="modal-subtitle" id="modal-service-name"></p>
-            
-            <div id="appointment-form-container">
-                <!-- Formulário de agendamento será preenchido aqui -->
-            </div>
-            
-            <div id="appointment-message" class="message"></div>
+        
+        <div class="form-group">
+            <div class="form-label">Orloxx serup</div>
+            <div class="code-block">918</div>
         </div>
+        
+        <button id="create-account-btn" class="submit-btn">
+            Criar conta
+        </button>
+    </div>
+    
+    <hr>
+    
+    <!-- SEÇÃO "FCHA AGENDÆNTO TATUAGEM" EXATA -->
+    <h3>Fcha Agendænto tatuagem</h3>
+    <div class="text-block">
+        Test tho gray 4000<br>
+        Dus senne e cintuse svemide umi anotan catilis.
+    </div>
+    
+    <h3 style="margin-top: 30px;">Cobevire Agendamento</h3>
+    <div class="text-block">
+        Test thoto gray 4200<br>
+        Dele rata saclooma te dude<br>
+        forper ricci are casas.
+    </div>
+    
+    <!-- NÚMERO DE CONTATO -->
+    <div class="phone-number">
+        Orloxx serup: 918
     </div>
 
     <script>
@@ -627,51 +310,11 @@
         const SB_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
         
-        // Estado da aplicação
-        let currentUser = null;
-        let selectedService = '';
-        
-        // Inicializar verificação de autenticação
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuth();
-            setupEventListeners();
-            setupTypingEffect();
-        });
-        
-        // Verificar se usuário já está autenticado
-        async function checkAuth() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            
-            if (user) {
-                currentUser = user;
-                updateUIForLoggedInUser(user);
-            }
-        }
-        
-        // Configurar ouvintes de evento
-        function setupEventListeners() {
-            // Botão de login com Google
-            document.getElementById('google-login-btn').addEventListener('click', loginGoogle);
-            
-            // Botão de criar conta
-            document.getElementById('create-account-btn').addEventListener('click', async function() {
-                const fullName = document.getElementById('full-name').value;
-                const referralCode = document.getElementById('referral-code').value;
-                
-                if (!fullName.trim()) {
-                    showMessage('Por favor, digite seu nome completo.', 'error');
-                    return;
-                }
-                
-                // Simular criação de conta (no caso real, você teria um backend)
-                showMessage('Criando conta...', 'info');
-                
-                // Redirecionar para login com Google após 1 segundo
-                setTimeout(() => {
-                    loginGoogle();
-                }, 1000);
-            });
-        }
+        // Elementos da página
+        const googleLoginBtn = document.getElementById('google-login-btn');
+        const createAccountBtn = document.getElementById('create-account-btn');
+        const userNameInput = document.getElementById('user-name');
+        const userCodeInput = document.getElementById('user-code');
         
         // Login com Google (SEU CÓDIGO ORIGINAL)
         async function loginGoogle() {
@@ -683,195 +326,111 @@
             });
             
             if (error) {
-                showMessage('Erro ao fazer login: ' + error.message, 'error');
-            } else {
-                showMessage('Redirecionando para Google...', 'info');
+                alert('Erro ao fazer login: ' + error.message);
             }
         }
         
-        // Atualizar UI quando usuário está logado
-        async function updateUIForLoggedInUser(user) {
-            const loginContainer = document.getElementById('login-container');
-            const userName = user.user_metadata?.full_name || user.email || 'Usuário';
-            const userAvatar = user.user_metadata?.avatar_url || 'https://i.pravatar.cc/100';
+        // Criar conta / Agendar
+        async function createAccount() {
+            const nome = userNameInput.value.trim();
+            const codigo = userCodeInput.value.trim();
             
-            loginContainer.innerHTML = `
-                <div class="user-info">
-                    <div class="user-avatar">
-                        <img src="${userAvatar}" alt="${userName}">
-                    </div>
-                    <div class="user-details">
-                        <h3>${userName}</h3>
-                        <p>${user.email}</p>
-                    </div>
-                </div>
-                <button class="logout-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> Sair
-                </button>
-                <div class="appointment-form">
-                    <h3>Agendar Nova Tatuagem</h3>
-                    <div class="tattoo-types" style="margin-top: 15px;">
-                        <div class="tattoo-type" onclick="openAppointmentModal('Realismo Geral')">
-                            <h3 class="type-title">Realismo Geral</h3>
-                            <p class="type-subtitle">Test ho gray 4000</p>
-                        </div>
-                        
-                        <div class="tattoo-type" onclick="openAppointmentModal('Fine Line Fine')">
-                            <h3 class="type-title">Fine Line Fine</h3>
-                            <p class="type-subtitle">Test ho gray 4000</p>
-                        </div>
-                        
-                        <div class="tattoo-type" onclick="openAppointmentModal('Houaco')">
-                            <h3 class="type-title">Houaco</h3>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            showMessage('Login realizado com sucesso!', 'success');
-        }
-        
-        // Logout
-        async function logout() {
-            const { error } = await supabaseClient.auth.signOut();
-            
-            if (error) {
-                showMessage('Erro ao sair: ' + error.message, 'error');
-            } else {
-                currentUser = null;
-                location.reload(); // Recarregar a página para resetar o estado
-            }
-        }
-        
-        // Abrir modal de agendamento
-        function openAppointmentModal(service) {
-            selectedService = service;
-            
-            if (!currentUser) {
-                showMessage('Por favor, faça login para agendar uma tatuagem.', 'error');
+            if (!nome) {
+                alert('Por favor, digite seu nome completo.');
+                userNameInput.focus();
                 return;
             }
             
-            document.getElementById('modal-service-name').textContent = service;
-            
-            document.getElementById('appointment-form-container').innerHTML = `
-                <div class="appointment-form">
-                    <div class="form-group">
-                        <label class="form-label">Seu Nome</label>
-                        <input type="text" id="appointment-name" class="form-input" value="${currentUser.user_metadata?.full_name || ''}" placeholder="Seu nome">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Seu WhatsApp</label>
-                        <input type="text" id="appointment-whatsapp" class="form-input" placeholder="(11) 99999-9999">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Data Preferencial</label>
-                        <input type="date" id="appointment-date" class="form-input">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Observações</label>
-                        <textarea id="appointment-notes" class="form-input" rows="3" placeholder="Alguma observação sobre a tatuagem..."></textarea>
-                    </div>
-                    
-                    <button class="signup-btn" onclick="submitAppointment()">
-                        Confirmar Agendamento <i class="fas fa-calendar-check"></i>
-                    </button>
-                </div>
-            `;
-            
-            document.getElementById('appointment-modal').style.display = 'flex';
-        }
-        
-        // Fechar modal de agendamento
-        function closeAppointmentModal() {
-            document.getElementById('appointment-modal').style.display = 'none';
-            document.getElementById('appointment-message').style.display = 'none';
-        }
-        
-        // Submeter agendamento (SEU CÓDIGO ORIGINAL ADAPTADO)
-        async function submitAppointment() {
-            const nome = document.getElementById('appointment-name').value;
-            const whatsapp = document.getElementById('appointment-whatsapp').value;
-            
-            if (!nome || !whatsapp) {
-                showAppointmentMessage('Por favor, preencha seu nome e WhatsApp.', 'error');
-                return;
+            // Se tem código, salvar como referência
+            if (codigo) {
+                // Aqui você pode salvar o código de referência se quiser
+                console.log('Código de referência:', codigo);
             }
             
-            // Salvar no Supabase (SEU CÓDIGO ORIGINAL)
+            // Primeiro faz login com Google
+            await loginGoogle();
+            
+            // Após login, o usuário será redirecionado de volta
+            // e podemos salvar os dados no banco de dados
+        }
+        
+        // Ouvintes de evento
+        googleLoginBtn.addEventListener('click', loginGoogle);
+        createAccountBtn.addEventListener('click', createAccount);
+        
+        // Efeito de digitação nos campos
+        userNameInput.addEventListener('focus', function() {
+            this.style.borderColor = '#ff0066';
+            this.style.backgroundColor = '#111111';
+        });
+        
+        userNameInput.addEventListener('blur', function() {
+            this.style.borderColor = '#333333';
+            this.style.backgroundColor = '#0a0a0a';
+        });
+        
+        userCodeInput.addEventListener('focus', function() {
+            this.style.borderColor = '#ff0066';
+            this.style.backgroundColor = '#111111';
+        });
+        
+        userCodeInput.addEventListener('blur', function() {
+            this.style.borderColor = '#333333';
+            this.style.backgroundColor = '#0a0a0a';
+        });
+        
+        // Efeito de digitação automática (opcional)
+        setTimeout(() => {
+            userNameInput.placeholder = "ex: João Silva";
+            userCodeInput.placeholder = "código opcional";
+        }, 1000);
+        
+        // Verificar se já está autenticado ao carregar a página
+        document.addEventListener('DOMContentLoaded', async function() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            
+            if (user) {
+                // Se já estiver logado, preencher o nome automaticamente
+                userNameInput.value = user.user_metadata?.full_name || user.email || '';
+                createAccountBtn.textContent = 'Já logado - Clique para novo agendamento';
+                createAccountBtn.style.backgroundColor = '#00cc88';
+                createAccountBtn.style.color = '#000000';
+            }
+            
+            // Ouvir mudanças de autenticação
+            supabaseClient.auth.onAuthStateChange((event, session) => {
+                if (event === 'SIGNED_IN' && session) {
+                    // Após login, podemos criar o agendamento
+                    createAppointment(session.user);
+                }
+            });
+        });
+        
+        // Criar agendamento após login
+        async function createAppointment(user) {
+            const nome = userNameInput.value.trim() || user.user_metadata?.full_name || user.email;
+            const codigo = userCodeInput.value.trim();
+            
+            // Salvar no banco de dados (SEU CÓDIGO ORIGINAL)
             const { error } = await supabaseClient.from('agendamentos').insert([{
                 nome: nome,
-                whatsapp: whatsapp,
-                servico: selectedService,
-                user_id: currentUser.id,
-                email: currentUser.email,
-                data_agendamento: document.getElementById('appointment-date').value || null,
-                observacoes: document.getElementById('appointment-notes').value || ''
+                whatsapp: 'A ser informado',
+                servico: 'Consulta Inicial',
+                user_id: user.id,
+                email: user.email,
+                codigo_referencia: codigo || null
             }]);
             
             if (error) {
-                showAppointmentMessage('Erro ao agendar: ' + error.message, 'error');
+                alert('Erro ao criar agendamento: ' + error.message);
             } else {
-                showAppointmentMessage('Agendamento realizado com sucesso! Entraremos em contato em breve.', 'success');
+                alert('Agendamento criado com sucesso! Entraremos em contato em breve.');
                 
-                // Fechar modal após 2 segundos
-                setTimeout(() => {
-                    closeAppointmentModal();
-                }, 2000);
+                // Limpar formulário
+                userNameInput.value = '';
+                userCodeInput.value = '';
             }
         }
-        
-        // Mostrar mensagens
-        function showMessage(text, type) {
-            const messageDiv = document.getElementById('login-message');
-            messageDiv.textContent = text;
-            messageDiv.className = `message ${type}-message`;
-            messageDiv.style.display = 'block';
-            
-            // Esconder após 5 segundos
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 5000);
-        }
-        
-        function showAppointmentMessage(text, type) {
-            const messageDiv = document.getElementById('appointment-message');
-            messageDiv.textContent = text;
-            messageDiv.className = `message ${type}-message`;
-            messageDiv.style.display = 'block';
-        }
-        
-        // Efeito de digitação no título
-        function setupTypingEffect() {
-            const tagline = document.querySelector('.tagline');
-            const originalText = tagline.textContent;
-            tagline.textContent = '';
-            
-            let i = 0;
-            function typeWriter() {
-                if (i < originalText.length) {
-                    tagline.textContent += originalText.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 50);
-                }
-            }
-            
-            // Iniciar efeito de digitação após um breve delay
-            setTimeout(typeWriter, 500);
-        }
-        
-        // Verificar autenticação ao carregar a página
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_IN' && session) {
-                currentUser = session.user;
-                updateUIForLoggedInUser(session.user);
-            } else if (event === 'SIGNED_OUT') {
-                currentUser = null;
-            }
-        });
     </script>
 </body>
 </html>
