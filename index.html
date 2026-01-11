@@ -83,8 +83,14 @@
                 <span class="font-bold text-gray-700">Entrar com Google</span>
             </button>
             <div class="space-y-4">
-                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900">
-                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900">
+                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900 focus:border-red-600 transition">
+                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900 focus:border-red-600 transition">
+                
+                <div id="erro-senha" class="hidden flex items-center gap-2 bg-red-50 border border-red-200 p-3 rounded-xl animate-slide-up text-left">
+                    <div class="w-5 h-5 bg-red-600 rounded-full flex items-center justify-center text-white text-[10px] font-bold">✕</div>
+                    <p class="text-red-600 text-xs font-medium">E-mail ou senha incorretos</p>
+                </div>
+
                 <div class="flex gap-2">
                     <button id="btn-entrar-email" onclick="loginEmail()" class="w-full bg-gray-800 text-white font-bold py-4 rounded-2xl transition hover:bg-gray-700">Entrar</button>
                     <button id="btn-criar-email" onclick="criarContaEmail()" class="w-full bg-red-600 text-white font-bold py-4 rounded-2xl transition hover:bg-red-700">Cadastrar</button>
@@ -112,7 +118,6 @@
         const mask = IMask(document.getElementById('zap-lead'), { mask: '(00) 00000-0000' });
         let servicoSelecionado = "";
 
-        // --- AUTH SESSION CONTROL ---
         async function verificarSessao() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             const btnLogin = document.getElementById('btn-login-nav');
@@ -165,9 +170,12 @@
             }
         }
 
-        // --- UI CONTROLS ---
-        function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
+        function abrirLogin() { 
+            document.getElementById('modal-login').classList.remove('hidden'); 
+            document.getElementById('erro-senha').classList.add('hidden'); // Limpa erro ao abrir
+        }
         function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
+        
         async function abrirAgendamento(tipo) {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) { abrirLogin(); } 
@@ -179,7 +187,6 @@
         }
         function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
 
-        // --- AUTH LOGIC ---
         async function loginGoogle() { 
             await supabaseClient.auth.signInWithOAuth({ 
                 provider: 'google', 
@@ -191,9 +198,11 @@
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
             const btn = document.getElementById('btn-criar-email');
+            const msgErro = document.getElementById('erro-senha');
 
             if (!email || password.length < 6) return alert("E-mail inválido ou senha muito curta (mín. 6 caracteres).");
 
+            msgErro.classList.add('hidden');
             btn.innerText = "Criando...";
             const { error } = await supabaseClient.auth.signUp({ email, password });
 
@@ -201,7 +210,6 @@
                 alert("Erro: " + error.message);
                 btn.innerText = "Cadastrar";
             } else {
-                // Loga automaticamente após cadastrar
                 const { error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
                 if (!loginError) {
                     fecharLogin();
@@ -214,10 +222,16 @@
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
             const btn = document.getElementById('btn-entrar-email');
+            const msgErro = document.getElementById('erro-senha');
+
+            msgErro.classList.add('hidden'); // Limpa erro anterior
             btn.innerText = "Entrando...";
+            
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            
             if (error) {
-                alert(error.message);
+                // Exibe erro estilizado em vez do alerta padrão
+                msgErro.classList.remove('hidden');
                 btn.innerText = "Entrar";
             } else { 
                 fecharLogin(); 
