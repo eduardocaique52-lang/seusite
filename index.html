@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
-        /* Design Original das Primeiras Imagens */
+        /* Estilos de Vidro e Gradientes de Texto */
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
         .text-gradient { background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
@@ -16,12 +16,16 @@
         .input-hotmart { border: 1px solid #ddd; border-radius: 8px; padding: 12px; width: 100%; color: #000; }
         .btn-hotmart { background: #ff4d00; color: white; font-weight: bold; padding: 14px; border-radius: 8px; width: 100%; }
 
-        /* Estilo para a Imagem de Fundo com Gradiente de Sombra */
+        /* Fundo com Imagem e Gradiente de Sombra Preta Inferior Pesada */
         .hero-bg {
-            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.4) 0%, rgba(10, 10, 10, 0.9) 100%), 
-                        url('https://images.unsplash.com/photo-1590201109022-79339237989d?q=80&w=2070&auto=format&fit=crop'); /* Nota: Usei um link estável, troque pelo seu se preferir */
+            background: linear-gradient(to bottom, 
+                        rgba(10, 10, 10, 0.2) 0%, 
+                        rgba(10, 10, 10, 0.6) 50%, 
+                        rgba(10, 10, 10, 1) 100%), 
+                        url('https://images.unsplash.com/photo-1590201109022-79339237989d?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
+            min-height: 80vh;
         }
 
         @keyframes slideUp {
@@ -33,18 +37,20 @@
 </head>
 <body class="bg-[#0a0a0a] text-white">
 
-    <div class="hero-bg">
-        <nav class="flex justify-between items-center p-6 max-w-7xl mx-auto">
+    <div class="hero-bg flex flex-col">
+        <nav class="flex justify-between items-center p-6 max-w-7xl mx-auto w-full">
             <h1 class="text-2xl font-bold tracking-tighter italic">INK<span class="text-red-600">MASTER</span></h1>
             <button onclick="abrirLogin()" class="bg-white text-black px-4 py-2 rounded-md text-sm font-bold hover:bg-gray-200 transition">Fazer Login</button>
         </nav>
 
-        <section class="max-w-7xl mx-auto px-6 py-24 text-center">
-            <h2 class="text-6xl md:text-8xl font-bold text-gradient mb-6 drop-shadow-lg">Sua pele,<br>sua história.</h2>
-            <p class="text-gray-200 max-w-2xl mx-auto mb-10 text-lg drop-shadow-md">Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.</p>
-            <button onclick="abrirAgendamento('Geral')" class="bg-red-600 text-white px-10 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all inline-block shadow-lg">
-                Quero minha tatuagem
-            </button>
+        <section class="max-w-7xl mx-auto px-6 py-32 text-center flex-grow flex flex-col justify-center">
+            <h2 class="text-6xl md:text-8xl font-bold text-gradient mb-6 drop-shadow-2xl">Sua pele,<br>sua história.</h2>
+            <p class="text-gray-200 max-w-2xl mx-auto mb-10 text-lg drop-shadow-lg">Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.</p>
+            <div>
+                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 text-white px-10 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all inline-block shadow-2xl">
+                    Quero minha tatuagem
+                </button>
+            </div>
         </section>
     </div>
 
@@ -73,7 +79,6 @@
                 <span class="font-bold text-sm">Entrar com Google</span>
             </button>
             <div class="space-y-4">
-                <input type="text" placeholder="Digite seu nome completo" class="input-hotmart text-sm">
                 <input type="email" placeholder="Digite seu e-mail" class="input-hotmart text-sm">
                 <input type="password" placeholder="Digite sua senha" class="input-hotmart text-sm">
                 <button class="btn-hotmart">Criar conta</button>
@@ -94,15 +99,14 @@
     </div>
 
     <script>
+        // SEUS DADOS DO SUPABASE (JÁ FUNCIONAIS)
         const SB_URL = 'https://umufrakmlasvznxllzsy.supabase.co';
         const SB_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
         let servicoSelecionado = "";
-
         function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
         function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
-
         function abrirAgendamento(tipo) {
             servicoSelecionado = tipo;
             document.getElementById('servico-nome').innerText = tipo;
@@ -110,11 +114,16 @@
         }
         function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
 
+        // LOGIN GOOGLE INTEGRADO
         async function loginGoogle() {
-            const { error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google' });
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: window.location.origin + window.location.pathname }
+            });
             if (error) alert(error.message);
         }
 
+        // ENVIO PARA TABELA AGENDAMENTOS
         async function enviarDados() {
             const nome = document.getElementById('nome-lead').value;
             const zap = document.getElementById('zap-lead').value;
