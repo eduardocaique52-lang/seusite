@@ -13,19 +13,18 @@
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
         .panel-glass { background: rgba(18, 18, 18, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
         
-        .nav-island {
-            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 999px;
-            padding: 8px 24px; margin-top: 1.5rem; box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-        }
-
+        /* Animação do Toast que você gostou */
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .animate-toast { animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        
+        /* Hero Background */
         .hero-bg {
             background: linear-gradient(to bottom, rgba(10, 10, 10, 0.1) 0%, rgba(10, 10, 10, 0.7) 65%, var(--bg-dark) 100%), 
-                        url('Design sem nome.png');
+                        url('https://discord.com/channels/536575231968542721/536968373683224576/1459959976498958386');
             background-size: cover; background-position: center; min-height: 90vh; display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Calendário Dashboard */
+        /* Lógica do Calendário Dinâmico */
         .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 12px; transition: 0.2s; border: 1px solid transparent; }
         .cal-day.available { cursor: pointer; }
         .cal-day.available:hover { background: rgba(255, 77, 0, 0.1); border-color: var(--accent); }
@@ -36,28 +35,29 @@
         .time-btn.active { background: var(--accent); color: white; }
 
         .hidden-view { display: none !important; }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .animate-up { animation: slideUp 0.5s ease-out forwards; }
+        .nav-island { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 999px; padding: 8px 24px; margin-top: 1.5rem; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
     </style>
 </head>
 <body class="bg-[#0a0a0a] text-white antialiased overflow-x-hidden">
 
+    <div id="toast-container" class="fixed top-24 right-6 z-[500] space-y-3"></div>
+
     <div id="view-visitor">
         <div class="fixed top-0 w-full flex justify-center px-4 z-[100]">
-            <nav class="nav-island flex justify-between items-center w-full max-w-5xl">
-                <h1 class="text-xl font-bold tracking-tighter italic uppercase text-white">INK<span class="text-red-600">MASTER</span></h1>
+            <nav class="nav-island flex justify-between items-center w-full max-w-5xl text-white uppercase italic font-bold">
+                <h1>INK<span class="text-red-600">MASTER</span></h1>
                 <div class="flex items-center gap-4">
-                    <button onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3">Fazer Login</button>
-                    <button onclick="abrirLogin()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-lg">Agendar</button>
+                    <button onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3 py-2">Fazer Login</button>
+                    <button onclick="abrirLogin()" class="bg-red-600 hover:bg-red-700 px-5 py-2 rounded-full text-sm transition shadow-lg">Agendar</button>
                 </div>
             </nav>
         </div>
 
         <header class="hero-bg justify-center text-center px-6">
-            <div class="max-w-4xl mt-20 animate-up">
-                <h2 class="text-5xl md:text-8xl font-black mb-6 leading-tight text-white">Sua pele,<br>sua história.</h2>
+            <div class="max-w-4xl mt-20">
+                <h2 class="text-5xl md:text-8xl font-black mb-6 leading-tight">Sua pele,<br>sua história.</h2>
                 <p class="text-gray-300 max-w-2xl mx-auto mb-10 text-lg">Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.</p>
-                <button onclick="abrirLogin()" class="bg-red-600 hover:bg-red-700 text-white px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all">Quero minha tatuagem</button>
+                <button onclick="abrirLogin()" class="bg-red-600 hover:bg-red-700 px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all">Quero minha tatuagem</button>
             </div>
         </header>
 
@@ -66,29 +66,19 @@
                 <h3 class="text-2xl font-bold mb-4">Realismo</h3>
                 <p class="text-gray-400 text-sm">Artes ultradetalhadas que capturam cada nuance da vida real.</p>
             </div>
-            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="abrirLogin()">
-                <h3 class="text-2xl font-bold mb-4">Fine Line</h3>
-                <p class="text-gray-400 text-sm">Traços finos, elegantes e precisos para quem busca minimalismo.</p>
-            </div>
-            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="abrirLogin()">
-                <h3 class="text-2xl font-bold mb-4">Coberturas</h3>
-                <p class="text-gray-400 text-sm">Especialistas em dar vida nova a tatuagens antigas.</p>
-            </div>
-        </main>
+            </main>
 
         <footer class="bg-[#0a0a0a] border-t border-white/5 pt-16 pb-12 px-6">
-            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-                <div class="text-center md:text-left">
-                    <h1 class="text-2xl font-bold italic mb-4 uppercase text-white">INK<span class="text-red-600">MASTER</span></h1>
-                    <p class="text-gray-500 text-sm max-w-sm">InkMaster Studio - 2011-2026 © Todos os direitos reservados. Transformando ideias em arte eterna.</p>
-                </div>
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-2xl font-bold italic mb-4 uppercase">INK<span class="text-red-600">MASTER</span></h1>
+                <p class="text-gray-500 text-sm">InkMaster Studio - 2011-2026 © Todos os direitos reservados.</p>
             </div>
         </footer>
     </div>
 
     <div id="view-client" class="hidden-view flex min-h-screen">
         <aside class="w-20 md:w-64 border-r border-white/5 flex flex-col items-center py-8 px-4 fixed h-full bg-[#080808] z-50">
-            <h1 class="text-xl font-black italic mb-12 hidden md:block uppercase text-white">INK<span class="text-red-600">MASTER</span></h1>
+            <h1 class="text-xl font-black italic mb-12 hidden md:block uppercase">INK<span class="text-red-600">MASTER</span></h1>
             <div class="space-y-6 w-full">
                 <div class="p-3 bg-red-600/10 text-red-500 rounded-2xl flex items-center gap-4 border border-red-600/20">
                     <svg class="w-6 h-6 mx-auto md:mx-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -102,12 +92,11 @@
             <header class="mb-12">
                 <span class="text-red-600 text-[10px] font-black uppercase tracking-[0.3em]">Membro Exclusive VIP</span>
                 <h2 class="text-4xl md:text-5xl font-black mt-2" id="client-name">Olá...</h2>
-                <p class="text-gray-500 mt-2 text-sm italic">Prepare sua próxima obra de arte eterna.</p>
             </header>
 
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <div class="xl:col-span-2 panel-glass p-8 rounded-[2.5rem]">
-                    <h3 id="current-month-label" class="font-bold text-red-600 uppercase mb-8 italic">Mês atual</h3>
+                    <h3 id="calendar-title" class="font-bold text-red-600 uppercase mb-8 italic">Outubro 2025</h3>
                     <div class="grid grid-cols-7 gap-2 mb-6 text-center text-[10px] font-black text-gray-600 uppercase">
                         <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
                     </div>
@@ -116,7 +105,7 @@
 
                 <div class="space-y-6">
                     <div class="panel-glass p-8 rounded-[2.5rem]">
-                        <h3 class="text-xs uppercase text-gray-400 mb-6">Horários Livres</h3>
+                        <h3 class="text-xs uppercase text-gray-400 mb-6 font-bold">Horários</h3>
                         <div class="grid grid-cols-2 gap-3" id="vip-times">
                             <button class="time-btn" onclick="setTime(this, '09:00')">09:00</button>
                             <button class="time-btn active" onclick="setTime(this, '14:00')">14:00</button>
@@ -124,41 +113,33 @@
                             <button class="time-btn" onclick="setTime(this, '20:00')">20:00</button>
                         </div>
                     </div>
-                    <div class="panel-glass p-8 rounded-[2.5rem]">
-                        <h3 class="text-xs uppercase text-gray-400 mb-4">Estilo</h3>
-                        <select id="vip-style" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-red-600">
-                            <option value="Realismo">Realismo</option>
-                            <option value="Fine Line">Fine Line</option>
-                        </select>
-                        <button onclick="salvarVIP()" class="w-full bg-red-600 py-5 rounded-2xl font-black mt-6 hover:bg-red-700 transition uppercase italic text-sm">Confirmar Reserva</button>
-                    </div>
+                    <button onclick="salvarVIP()" class="w-full bg-red-600 py-5 rounded-2xl font-black hover:bg-red-700 transition uppercase italic text-sm">Confirmar Reserva</button>
                 </div>
             </div>
         </main>
-    </div>
-
-    <div id="modal-logout" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[300] hidden flex items-center justify-center p-4">
-        <div class="glass max-w-sm w-full p-10 rounded-[2.5rem] text-center border-white/20">
-            <h3 class="text-xl font-bold mb-8 italic text-white">Deseja sair da sua conta?</h3>
-            <div class="flex gap-4">
-                <button onclick="fecharLogout()" class="flex-1 py-4 bg-white/10 rounded-2xl font-bold text-white">Cancelar</button>
-                <button onclick="executarLogout()" class="flex-1 py-4 bg-red-600 rounded-2xl font-bold text-white">Sair</button>
-            </div>
-        </div>
     </div>
 
     <div id="modal-login" class="fixed inset-0 bg-black/95 z-[200] hidden flex items-center justify-center p-4">
         <div class="bg-white text-black w-full max-w-[400px] p-10 rounded-3xl relative text-center">
             <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 text-2xl">&times;</button>
             <h3 class="text-2xl font-black mb-8 italic">Acesse sua Área VIP</h3>
-            <button onclick="loginGoogle()" class="flex items-center justify-center gap-3 w-full border border-gray-200 p-4 rounded-xl hover:bg-gray-50 transition mb-6">
-                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5 h-5">
-                <span class="font-bold">Entrar com Google</span>
-            </button>
-            <div class="space-y-4 text-left">
-                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 p-4 rounded-xl border border-gray-100 outline-none focus:border-red-600 transition">
-                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 p-4 rounded-xl border border-gray-100 outline-none focus:border-red-600 transition">
-                <button onclick="loginEmail()" class="w-full bg-black text-white font-bold py-4 rounded-xl hover:bg-gray-800 transition">Entrar Agora</button>
+            <div class="space-y-4">
+                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 p-4 rounded-xl border outline-none focus:border-red-600 transition">
+                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 p-4 rounded-xl border outline-none focus:border-red-600 transition">
+                <button onclick="loginEmail()" class="w-full bg-black text-white font-bold py-4 rounded-xl hover:bg-gray-800 transition shadow-xl">Entrar Agora</button>
+                <button onclick="loginGoogle()" class="w-full border p-4 rounded-xl font-bold flex items-center justify-center gap-2">
+                    <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-4 h-4"> Google Access
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-logout" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[300] hidden flex items-center justify-center p-4">
+        <div class="glass max-w-sm w-full p-10 rounded-[2.5rem] text-center border-white/20">
+            <h3 class="text-xl font-bold mb-8 italic">Deseja sair da sua conta?</h3>
+            <div class="flex gap-4">
+                <button onclick="fecharLogout()" class="flex-1 py-4 bg-white/10 rounded-2xl font-bold">Cancelar</button>
+                <button onclick="executarLogout()" class="flex-1 py-4 bg-red-600 rounded-2xl font-bold">Sair</button>
             </div>
         </div>
     </div>
@@ -168,109 +149,72 @@
         const SB_ANON_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
         const supabaseClient = supabase.createClient(SB_URL, SB_ANON_KEY);
 
-        let sDay = null; 
-        let sTime = "14:00";
+        let sDay = null, sTime = "14:00";
+        const nomesMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
-        const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        // Função do Toast que você gostou (image_4093ea.png adaptada)
+        function showNotify(msg, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-xl border border-white/10 ${type === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white font-bold animate-toast shadow-2xl`;
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 500); }, 3000);
+        }
 
         async function verificarSessao() {
             const { data: { user } } = await supabaseClient.auth.getUser();
-            const visView = document.getElementById('view-visitor');
-            const cliView = document.getElementById('view-client');
-
+            const vis = document.getElementById('view-visitor'), cli = document.getElementById('view-client');
             if (user) {
                 const nome = user.user_metadata.full_name || user.email.split('@')[0];
                 document.getElementById('client-name').innerText = `Olá, ${nome}.`;
-                visView.classList.add('hidden-view');
-                cliView.classList.remove('hidden-view');
+                vis.classList.add('hidden-view'); cli.classList.remove('hidden-view');
                 renderCalendar();
             } else {
-                visView.classList.remove('hidden-view');
-                cliView.classList.add('hidden-view');
+                vis.classList.remove('hidden-view'); cli.classList.add('hidden-view');
             }
         }
 
         function renderCalendar() {
             const grid = document.getElementById('vip-calendar');
-            const monthLabel = document.getElementById('current-month-label');
             const now = new Date();
-            const currentDay = now.getDate();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-
-            monthLabel.innerText = `${meses[currentMonth]} ${currentYear}`;
+            document.getElementById('calendar-title').innerText = `${nomesMeses[now.getMonth()]} ${now.getFullYear()}`;
             grid.innerHTML = '';
+            const first = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
+            const total = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            const today = now.getDate();
 
-            // Lógica para pegar o primeiro dia da semana do mês atual
-            const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            for(let i=0; i<first; i++) grid.innerHTML += '<div></div>';
 
-            // Espaços vazios
-            for(let i=0; i < firstDayOfMonth; i++) {
-                grid.innerHTML += '<div></div>';
-            }
-
-            for(let d=1; d <= daysInMonth; d++) {
+            for(let d=1; d<=total; d++) {
                 const day = document.createElement('div');
                 day.innerText = d;
                 day.className = "cal-day";
-
-                if (d < currentDay) {
-                    day.classList.add('past');
-                } else {
+                if (d < today) { day.classList.add('past'); } 
+                else {
                     day.classList.add('available');
-                    if (sDay === d || (sDay === null && d === currentDay)) {
-                        day.classList.add('active');
-                        sDay = d;
-                    }
-                    day.onclick = () => {
-                        document.querySelectorAll('.cal-day').forEach(el => el.classList.remove('active'));
-                        day.classList.add('active');
-                        sDay = d;
+                    if(d === today) day.classList.add('active');
+                    day.onclick = () => { 
+                        document.querySelectorAll('.cal-day').forEach(e => e.classList.remove('active'));
+                        day.classList.add('active'); sDay = d; 
                     };
                 }
                 grid.appendChild(day);
             }
         }
 
-        function setTime(el, t) {
-            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
-            el.classList.add('active'); 
-            sTime = t;
-        }
-
-        async function salvarVIP() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            const estilo = document.getElementById('vip-style').value;
-            const res = `VIP: ${estilo} | Data: ${sDay}/${new Date().getMonth() + 1} às ${sTime}`;
-            
-            const { error } = await supabaseClient.from('agendamentos').insert([{ 
-                nome: user.user_metadata.full_name || user.email, 
-                whatsapp: "VIA PAINEL VIP", 
-                servico: res 
-            }]);
-
-            if (!error) alert("RESERVADO COM SUCESSO!");
-            else alert("Erro ao agendar: " + error.message);
-        }
-
-        async function loginEmail() {
-            const email = document.getElementById('email-login').value;
-            const password = document.getElementById('senha-login').value;
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if (!error) window.location.reload();
-            else alert("Erro: " + error.message);
-        }
-
-        async function loginGoogle() {
-            await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
-        }
-
+        function setTime(el, t) { document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); sTime = t; }
         function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
         function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
         function confirmarSair() { document.getElementById('modal-logout').classList.remove('hidden'); }
         function fecharLogout() { document.getElementById('modal-logout').classList.add('hidden'); }
         async function executarLogout() { await supabaseClient.auth.signOut(); window.location.reload(); }
+
+        async function loginEmail() {
+            const e = document.getElementById('email-login').value, p = document.getElementById('senha-login').value;
+            const { error } = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
+            if (error) showNotify("Erro: " + error.message, 'error'); else window.location.reload();
+        }
 
         supabaseClient.auth.onAuthStateChange(() => { verificarSessao(); });
         verificarSessao();
