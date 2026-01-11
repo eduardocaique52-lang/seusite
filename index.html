@@ -25,33 +25,36 @@
             background-size: cover; background-position: center; min-height: 90vh; display: flex; flex-direction: column; align-items: center;
         }
 
-        /* CORREÇÃO DO SELECT (CAIXA BRANCA E LETRA ESCURA) */
+        /* FIX DEFINITIVO PARA A CAIXA DE ESTILOS (SELECT) */
         select#vip-style {
-            background-color: #1a1a1a !important;
-            color: white !important;
-            padding-right: 2rem;
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 77, 0, 0.3) !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 1rem center !important;
+            background-size: 1em !important;
         }
 
         select#vip-style option {
-            background-color: #1a1a1a !important;
-            color: white !important;
+            background-color: #000000 !important;
+            color: #ffffff !important;
         }
 
-        /* Estilos do Calendário Dashboard */
         .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 12px; transition: 0.2s; border: 1px solid transparent; }
         .cal-day.available { cursor: pointer; }
         .cal-day.available:hover { background: rgba(255, 77, 0, 0.1); border-color: var(--accent); }
         .cal-day.active { background: var(--accent) !important; color: white !important; font-weight: 800; transform: scale(1.05); }
         .cal-day.past { opacity: 0.15; cursor: not-allowed; text-decoration: line-through; }
         
-        /* Estilos dos Botões de Horário */
         .time-btn { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; transition: 0.2s; font-size: 0.75rem; color: white; cursor: pointer; }
         .time-btn.active { background: var(--accent); border-color: var(--accent); }
         .time-btn.past { opacity: 0.2; cursor: not-allowed; filter: grayscale(1); }
 
         .hidden-view { display: none !important; }
 
-        /* ANIMAÇÃO TOAST */
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         .animate-toast { animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     </style>
@@ -66,29 +69,30 @@
                 <h1 class="text-xl font-bold tracking-tighter italic uppercase text-white">INK<span class="text-red-600">MASTER</span></h1>
                 <div class="flex items-center gap-4">
                     <button onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3 py-2 text-white">Fazer Login</button>
-                    <button onclick="abrirLogin()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-lg uppercase italic">Agendar</button>
+                    <button onclick="abrirLogin()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-lg uppercase italic text-center">Agendar</button>
                 </div>
             </nav>
         </div>
         <header class="hero-bg justify-center text-center px-6">
             <div class="max-w-4xl mt-20 animate-toast">
-                <h2 class="text-5xl md:text-8xl font-black mb-6 leading-tight text-white">Sua pele,<br>sua história.</h2>
-                <button onclick="abrirLogin()" class="bg-red-600 hover:bg-red-700 text-white px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all uppercase italic">Quero minha tatuagem</button>
+                <h2 class="text-5xl md:text-8xl font-black mb-4 leading-tight text-white">Sua pele,<br>sua história.</h2>
+                <p class="text-gray-400 text-sm md:text-base font-medium mb-10 max-w-lg mx-auto leading-relaxed">Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.</p>
+                <button onclick="abrirLogin()" class="bg-red-600 hover:bg-red-700 text-white px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all uppercase italic text-center">Quero minha tatuagem</button>
             </div>
         </header>
         <main class="max-w-7xl mx-auto px-6 -mt-20 pb-20 relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="abrirLogin()"><h3 class="text-2xl font-bold mb-4">Realismo</h3><p class="text-gray-400 text-sm">Artes ultradetalhadas.</p></div>
-            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="abrirLogin()"><h3 class="text-2xl font-bold mb-4">Fine Line</h3><p class="text-gray-400 text-sm">Traços finos e precisos.</p></div>
-            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="abrirLogin()"><h3 class="text-2xl font-bold mb-4">Coberturas</h3><p class="text-gray-400 text-sm">Vida nova a tatuagens antigas.</p></div>
+            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="abrirLogin()"><h3 class="text-2xl font-bold mb-4">Realismo</h3><p class="text-gray-400 text-sm">Artes ultradetalhadas que capturaam cada nuance da vida real</p></div>
+            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="abrirLogin()"><h3 class="text-2xl font-bold mb-4">Fine Line</h3><p class="text-gray-400 text-sm">Traços finos, elegantes e precisos param quem busca minimalismo</p></div>
+            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="abrirLogin()"><h3 class="text-2xl font-bold mb-4">Coberturas</h3><p class="text-gray-400 text-sm">Especialistas em dar vida nova a tatuagens antigas.</p></div>
         </main>
-        <footer class="bg-[#0a0a0a] border-t border-white/5 pt-16 pb-12 px-6"><div class="max-w-7xl mx-auto"><h1 class="text-2xl font-bold italic mb-4 uppercase text-white">INK<span class="text-red-600">MASTER</span></h1><p class="text-gray-500 text-sm">InkMaster Studio - 2011-2026 © Todos os direitos reservados.</p></div></footer>
+        <footer class="bg-[#0a0a0a] border-t border-white/5 pt-16 pb-12 px-6"><div class="max-w-7xl mx-auto"><h1 class="text-2xl font-bold italic mb-4 uppercase text-white">INK<span class="text-red-600">MASTER</span></h1><p class="text-gray-500 text-sm">InkMaster Studio - 2011-2026 © Todos os direitos reservados. Transformando ideias em arte eterna.</p></div></footer>
     </div>
 
     <div id="view-client" class="hidden-view flex min-h-screen bg-[#050505]">
         <aside class="w-20 md:w-64 border-r border-white/5 flex flex-col items-center py-8 px-4 fixed h-full bg-[#080808] z-50">
             <h1 class="text-xl font-black italic mb-12 hidden md:block uppercase text-white tracking-tighter">INK<span class="text-red-600">MASTER</span></h1>
-            <div class="p-3 bg-red-600/10 text-red-500 rounded-2xl flex items-center gap-4 border border-red-600/20"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span class="hidden md:block font-bold text-sm uppercase">Agendamento</span></div>
-            <button onclick="confirmarSair()" class="mt-auto p-4 text-gray-500 hover:text-red-500 transition font-bold text-[10px] uppercase tracking-widest text-center text-white">Sair da Conta</button>
+            <div class="p-3 bg-red-600/10 text-red-500 rounded-2xl flex items-center gap-4 border border-red-600/20"><svg class="w-6 h-6 mx-auto md:mx-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span class="hidden md:block font-bold text-sm uppercase">Agendamento</span></div>
+            <button onclick="confirmarSair()" class="mt-auto p-4 text-gray-500 hover:text-red-500 transition font-bold text-[10px] uppercase tracking-widest text-center">Sair da Conta</button>
         </aside>
 
         <main class="flex-1 ml-20 md:ml-64 p-6 md:p-12">
@@ -101,43 +105,33 @@
                 </div>
                 <div class="space-y-6">
                     <div class="panel-glass p-8 rounded-[2.5rem]">
-                        <h3 class="text-xs uppercase text-gray-400 mb-6 font-bold tracking-widest text-center md:text-left text-white">Horários Livres</h3>
+                        <h3 class="text-xs uppercase text-gray-400 mb-6 font-bold tracking-widest text-center md:text-left">Horários Livres</h3>
                         <div class="grid grid-cols-2 gap-3" id="vip-times"></div>
                     </div>
                     <div class="panel-glass p-8 rounded-[2.5rem] border-red-600/10">
-                        <h3 class="text-xs uppercase text-gray-400 mb-4 font-bold tracking-widest text-center text-white">Estilo da Arte</h3>
-                        <select id="vip-style" class="w-full border border-white/10 p-4 rounded-xl text-white outline-none focus:border-red-600 text-sm italic mb-6 cursor-pointer">
+                        <h3 class="text-xs uppercase text-gray-400 mb-4 font-bold tracking-widest text-center">Estilo da Arte</h3>
+                        <select id="vip-style" class="w-full p-4 rounded-xl text-white outline-none text-sm italic mb-6 cursor-pointer font-bold">
                             <option value="Realismo">Realismo</option>
                             <option value="Fine Line">Fine Line</option>
                             <option value="Cobertura">Cobertura</option>
                         </select>
-                        <button onclick="salvarAgendamento()" class="w-full bg-red-600 py-5 rounded-2xl font-black hover:bg-red-700 transition uppercase italic tracking-tighter text-white">Confirmar Reserva</button>
+                        <button onclick="salvarAgendamento()" class="w-full bg-red-600 py-5 rounded-2xl font-black hover:bg-red-700 transition uppercase italic tracking-tighter text-white text-center">Confirmar Reserva</button>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <div id="modal-logout" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[600] hidden flex items-center justify-center p-4 text-center">
-        <div class="glass max-w-sm w-full p-10 rounded-[2.5rem] border-white/20">
-            <h3 class="text-xl font-bold mb-8 italic text-white text-center">Deseja sair da sua conta?</h3>
-            <div class="flex gap-4">
-                <button onclick="fecharLogout()" class="flex-1 py-4 bg-white/10 rounded-2xl font-bold uppercase text-[10px] text-white">Cancelar</button>
-                <button onclick="executarLogout()" class="flex-1 py-4 bg-red-600 rounded-2xl font-bold uppercase text-[10px] text-white">Sair</button>
-            </div>
-        </div>
-    </div>
-
     <div id="modal-login" class="fixed inset-0 bg-black/95 z-[400] hidden flex items-center justify-center p-4">
         <div class="bg-white text-gray-900 w-full max-w-[400px] p-10 rounded-3xl relative text-center">
             <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-900 text-2xl transition">&times;</button>
-            <h3 class="text-2xl font-black mb-2 italic uppercase tracking-tighter text-gray-900">FAÇA O LOGIN</h3>
+            <h3 class="text-2xl font-black mb-2 italic uppercase tracking-tighter">FAÇA O LOGIN</h3>
             <button onclick="loginGoogle()" class="flex items-center justify-center gap-3 w-full border border-gray-200 p-4 rounded-xl hover:bg-gray-50 transition mb-6 font-bold text-gray-700"><img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5 h-5"> Entrar com Google</button>
             <div class="space-y-4 text-left">
                 <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 p-4 rounded-xl border border-gray-100 outline-none focus:border-red-600 transition text-gray-900">
                 <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 p-4 rounded-xl border border-gray-100 outline-none focus:border-red-600 transition text-gray-900">
                 <div class="flex gap-2">
-                    <button onclick="loginEmail()" class="w-full bg-black text-white font-bold py-4 rounded-xl hover:bg-gray-800 transition uppercase italic text-sm">Entrar</button>
+                    <button onclick="loginEmail()" class="w-full bg-black text-white font-bold py-4 rounded-xl hover:bg-gray-800 transition uppercase italic text-sm text-center">Entrar</button>
                     <button onclick="criarContaEmail()" class="w-full bg-red-600 text-white font-bold py-4 rounded-xl hover:bg-red-700 transition uppercase italic text-sm text-center">Cadastrar</button>
                 </div>
             </div>
@@ -179,18 +173,17 @@
             grid.innerHTML = '';
             const now = new Date();
             const currentHour = now.getHours();
-            const currentMin = now.getMinutes();
             const isToday = sDay === now.getDate();
 
             horariosBase.forEach(h => {
                 const btn = document.createElement('button');
                 btn.className = "time-btn";
                 btn.innerText = h;
-                const [h_val, m_val] = h.split(':').map(Number);
-                const jaPassou = isToday && (h_val < currentHour || (h_val === currentHour && m_val <= currentMin));
-                
+                const [h_val] = h.split(':').map(Number);
+                const jaPassou = isToday && (h_val <= currentHour);
+
                 if (jaPassou) { btn.classList.add('past'); btn.onclick = null; } 
-                else { if (sTime === h) btn.classList.add('active'); btn.onclick = () => setTime(btn, h); }
+                else { if (sTime === h) btn.classList.add('active'); btn.onclick = () => { sTime = h; renderTimeSlots(); } }
                 grid.appendChild(btn);
             });
         }
@@ -212,24 +205,18 @@
                 else {
                     day.classList.add('available');
                     if(sDay === d || (sDay === null && d === today)) { day.classList.add('active'); sDay = d; }
-                    day.onclick = () => {
-                        document.querySelectorAll('.cal-day').forEach(el => el.classList.remove('active'));
-                        day.classList.add('active'); sDay = d;
-                        sTime = null; renderTimeSlots();
-                    };
+                    day.onclick = () => { sDay = d; sTime = null; renderCalendar(); };
                 }
                 grid.appendChild(day);
             }
             renderTimeSlots();
         }
 
-        function setTime(el, t) { document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); sTime = t; }
-        
         async function salvarAgendamento() {
             if(!sTime) return showNotify("Escolha um horário válido", "error");
             const { data: { user } } = await supabaseClient.auth.getUser();
-            const res = `VIP: ${document.getElementById('vip-style').value} | ${sDay}/${new Date().getMonth()+1} às ${sTime}`;
-            const { error } = await supabaseClient.from('agendamentos').insert([{ nome: user.email, whatsapp: "VIP", servico: res }]);
+            const info = `VIP: ${document.getElementById('vip-style').value} | ${sDay}/${new Date().getMonth()+1} às ${sTime}`;
+            const { error } = await supabaseClient.from('agendamentos').insert([{ nome: user.email, whatsapp: "DASHBOARD VIP", servico: info }]);
             if (error) showNotify(error.message, 'error'); else showNotify("RESERVADO COM SUCESSO!");
         }
 
@@ -241,9 +228,9 @@
 
         async function criarContaEmail() {
             const e = document.getElementById('email-login').value, p = document.getElementById('senha-login').value;
-            if (!e || p.length < 6) return showNotify("E-mail ou senha curta", 'error');
+            if (!e || p.length < 6) return showNotify("E-mail ou senha inválida", 'error');
             const { error } = await supabaseClient.auth.signUp({ email: e, password: p });
-            if (error) showNotify(error.message, 'error'); else showNotify("Conta criada! Verifique o e-mail.");
+            if (error) showNotify(error.message, 'error'); else showNotify("Verifique seu e-mail!");
         }
 
         async function loginGoogle() { await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } }); }
