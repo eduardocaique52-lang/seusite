@@ -10,39 +10,10 @@
 
     <style>
         :root { --accent: #ff4d00; --bg-dark: #0a0a0a; }
-        
-        /* Glassmorphism & Gradients */
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
         .text-gradient { background: linear-gradient(to right, #fff, #a1a1a1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        /* Menu Ilha Flutuante (Estilo Hotmart) */
-        .nav-island {
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 999px;
-            padding: 8px 24px;
-            margin-top: 1.5rem;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-        }
-
-        /* Hero com Gradiente de Sombra Inferior e Imagem de Fundo */
-        .hero-bg {
-            background: linear-gradient(to bottom, 
-                        rgba(10, 10, 10, 0.1) 0%, 
-                        rgba(10, 10, 10, 0.7) 65%, 
-                        var(--bg-dark) 100%), 
-                        url('Design sem nome.png'); 
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Estados de Loading e Animações */
+        .nav-island { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 999px; padding: 8px 24px; margin-top: 1.5rem; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        .hero-bg { background: linear-gradient(to bottom, rgba(10, 10, 10, 0.1) 0%, rgba(10, 10, 10, 0.7) 65%, var(--bg-dark) 100%), url('Design sem nome.png'); background-size: cover; background-position: center; min-height: 90vh; display: flex; flex-direction: column; align-items: center; }
         .btn-loading { pointer-events: none; opacity: 0.6; }
         @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .animate-slide-up { animation: slideUp 0.5s ease-out forwards; }
@@ -52,131 +23,140 @@
 
     <div class="fixed top-0 w-full flex justify-center px-4 z-[100]">
         <nav class="nav-island flex justify-between items-center w-full max-w-5xl">
-            <h1 class="text-xl font-bold tracking-tighter italic" aria-label="InkMaster Logo">
-                INK<span class="text-red-600">MASTER</span>
-            </h1>
-            <div class="flex items-center gap-4" id="nav-auth-area">
+            <h1 class="text-xl font-bold tracking-tighter italic">INK<span class="text-red-600">MASTER</span></h1>
+            <div class="flex items-center gap-4">
                 <button id="btn-login-nav" onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3 py-2">Fazer Login</button>
-                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-lg">Agendar</button>
+                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition">Agendar</button>
             </div>
         </nav>
     </div>
 
-    <header class="hero-bg justify-center text-center px-6">
+    <header id="sessao-principal" class="hero-bg justify-center text-center px-6">
         <div class="max-w-4xl mt-20 animate-slide-up">
-            <h2 class="text-5xl md:text-8xl font-black text-gradient mb-6 leading-tight drop-shadow-2xl" id="hero-title">
-                Sua pele,<br>sua história.
-            </h2>
-            <p class="text-gray-300 max-w-2xl mx-auto mb-10 text-lg md:text-xl drop-shadow-md">
-                Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.
-            </p>
-            <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all shadow-2xl">
-                Quero minha tatuagem
-            </button>
+            <h2 class="text-5xl md:text-8xl font-black text-gradient mb-6 leading-tight" id="hero-title">Sua pele,<br>sua história.</h2>
+            <p class="text-gray-300 max-w-2xl mx-auto mb-10 text-lg md:text-xl">Estúdio premium focado em realismo e fine line.</p>
+            <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition shadow-2xl">Quero minha tatuagem</button>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 -mt-20 pb-20 relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition group" onclick="abrirAgendamento('Realismo')">
+    <section id="sessao-perfil" class="hidden min-h-screen pt-32 px-6 flex flex-col items-center">
+        <div class="glass w-full max-w-2xl p-10 rounded-[3rem] animate-slide-up">
+            <div class="flex items-center gap-6 mb-10 border-b border-white/10 pb-8">
+                <div id="perfil-avatar" class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center text-3xl font-black">?</div>
+                <div>
+                    <h2 id="perfil-nome" class="text-3xl font-bold">Nome do Cliente</h2>
+                    <p id="perfil-email" class="text-gray-400">email@exemplo.com</p>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-bold mb-6 text-red-500 uppercase tracking-widest text-sm">Meus Agendamentos</h3>
+            <div id="lista-agendamentos-cliente" class="space-y-4">
+                </div>
+
+            <div class="mt-12 flex gap-4">
+                <button onclick="voltarHome()" class="flex-1 bg-white/5 border border-white/10 py-4 rounded-2xl font-bold hover:bg-white/10 transition">Voltar ao Início</button>
+                <button onclick="logout()" class="flex-1 bg-red-600/10 border border-red-600/20 text-red-500 py-4 rounded-2xl font-bold hover:bg-red-600 hover:text-white transition">Sair da Conta</button>
+            </div>
+        </div>
+    </section>
+
+    <main id="servicos-grid" class="max-w-7xl mx-auto px-6 -mt-20 pb-20 relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Realismo')">
             <h3 class="text-2xl font-bold mb-4">Realismo</h3>
             <p class="text-gray-400">Artes ultradetalhadas que capturam cada nuance da vida real.</p>
         </div>
-        <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition group" onclick="abrirAgendamento('Fine Line')">
+        <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Fine Line')">
             <h3 class="text-2xl font-bold mb-4">Fine Line</h3>
-            <p class="text-gray-400">Traços finos, elegantes e precisos para quem busca minimalismo.</p>
+            <p class="text-gray-400">Traços finos e precisos para quem busca minimalismo.</p>
         </div>
-        <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition group" onclick="abrirAgendamento('Coberturas')">
+        <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Coberturas')">
             <h3 class="text-2xl font-bold mb-4">Coberturas</h3>
             <p class="text-gray-400">Especialistas em dar vida nova a tatuagens antigas.</p>
         </div>
     </main>
 
     <div id="modal-login" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[200] hidden flex items-center justify-center p-4">
-        <div class="bg-white text-gray-900 w-full max-w-[420px] p-10 rounded-3xl animate-slide-up relative text-center shadow-2xl">
-            <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 text-3xl hover:text-gray-900 transition">&times;</button>
-            <h3 class="text-3xl font-black mb-2">Seja bem-vindo.</h3>
-            <p class="text-gray-500 mb-8">Escolha como deseja acessar.</p>
-            
-            <button onclick="loginGoogle()" id="btn-google" class="flex items-center justify-center gap-3 w-full border-2 border-gray-100 p-4 rounded-2xl hover:bg-gray-50 transition mb-6">
+        <div class="bg-white text-gray-900 w-full max-w-[420px] p-10 rounded-3xl text-center relative shadow-2xl">
+            <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 text-3xl">&times;</button>
+            <h3 class="text-3xl font-black mb-8">Seja bem-vindo.</h3>
+            <button onclick="loginGoogle()" class="flex items-center justify-center gap-3 w-full border-2 border-gray-100 p-4 rounded-2xl hover:bg-gray-50 transition mb-6">
                 <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-6 h-6">
                 <span class="font-bold text-gray-700">Entrar com Google</span>
             </button>
-
-            <div class="relative mb-6">
-                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-100"></div></div>
-                <div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-gray-400 uppercase tracking-widest text-[10px] font-bold">ou e-mail e senha</span></div>
-            </div>
-
             <div class="space-y-4">
-                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-red-600 transition">
-                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-red-600 transition">
-                
+                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none">
+                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none">
                 <div class="flex gap-2">
-                    <button onclick="loginEmail()" id="btn-entrar-email" class="w-full bg-gray-800 text-white font-bold py-4 rounded-2xl hover:bg-gray-700 transition">Entrar</button>
-                    <button onclick="criarContaEmail()" id="btn-criar-email" class="w-full bg-red-600 text-white font-bold py-4 rounded-2xl hover:bg-red-700 transition">Cadastrar</button>
+                    <button onclick="loginEmail()" class="w-full bg-gray-800 text-white font-bold py-4 rounded-2xl">Entrar</button>
+                    <button onclick="criarContaEmail()" class="w-full bg-red-600 text-white font-bold py-4 rounded-2xl">Cadastrar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="modal-agendamento" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[200] hidden flex items-center justify-center p-4">
-        <div class="glass w-full max-w-md p-10 rounded-[3rem] animate-slide-up relative">
+        <div class="glass w-full max-w-md p-10 rounded-[3rem] relative">
             <button onclick="fecharAgendamento()" class="absolute top-6 right-6 text-gray-500 text-3xl">&times;</button>
             <h3 class="text-3xl font-bold mb-6">Agendar <span id="servico-nome" class="text-red-600"></span></h3>
             <div class="space-y-5">
-                <input type="text" id="nome-lead" placeholder="Nome Completo" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-red-600">
-                <input type="text" id="zap-lead" placeholder="WhatsApp (00) 00000-0000" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-red-600">
-                <button id="btn-enviar" onclick="enviarDados()" class="w-full bg-red-600 font-bold py-5 rounded-2xl text-white hover:bg-red-700 transition">Confirmar</button>
+                <input type="text" id="nome-lead" placeholder="Nome Completo" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none">
+                <input type="text" id="zap-lead" placeholder="WhatsApp (00) 00000-0000" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none">
+                <button id="btn-enviar" onclick="enviarDados()" class="w-full bg-red-600 font-bold py-5 rounded-2xl text-white">Confirmar Agendamento</button>
             </div>
         </div>
     </div>
 
-    <footer class="bg-[#0a0a0a] border-t border-white/5 pt-16 pb-12 px-6">
-        <div class="max-w-7xl mx-auto text-center md:text-left">
-            <div class="flex flex-col items-center md:items-start">
-                <h1 class="text-2xl font-bold tracking-tighter italic mb-4">
-                    INK<span class="text-red-600">MASTER</span>
-                </h1>
-                <p class="text-gray-500 text-sm leading-relaxed max-w-sm">
-                    InkMaster Studio - 2011-2026 © Todos os direitos reservados.
-                    <br>Transformando ideias em arte eterna com segurança e exclusividade.
-                </p>
-            </div>
-            
-            <div class="border-t border-white/5 mt-10 pt-6">
-                <p class="text-[10px] text-gray-700 uppercase tracking-widest">
-                    Estúdio Premium de Tatuagem Realista e Fine Line
-                </p>
-            </div>
-        </div>
-    </footer>
-
     <script>
-        // Configuração Supabase
         const SB_URL = 'https://umufrakmlasvznxllzsy.supabase.co';
         const SB_ANON_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
         const supabaseClient = supabase.createClient(SB_URL, SB_ANON_KEY);
-
-        // Máscara de Telefone
         const mask = IMask(document.getElementById('zap-lead'), { mask: '(00) 00000-0000' });
         let servicoSelecionado = "";
 
-        // --- CONTROLE DE SESSÃO ---
         async function verificarSessao() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             const btnLogin = document.getElementById('btn-login-nav');
-            const heroTitle = document.getElementById('hero-title');
-
             if (user) {
-                const identificador = user.user_metadata.full_name || user.email.split('@')[0];
-                btnLogin.innerText = `Olá, ${identificador}`;
-                btnLogin.onclick = logout;
-                heroTitle.innerHTML = `Olá, ${identificador}.<br>Vamos tatuar?`;
+                const nome = user.user_metadata.full_name || user.email.split('@')[0];
+                btnLogin.innerText = `Olá, ${nome}`;
+                btnLogin.onclick = mostrarPerfil; // Muda ação para levar ao perfil
             } else {
                 btnLogin.innerText = "Fazer Login";
                 btnLogin.onclick = abrirLogin;
-                heroTitle.innerHTML = `Sua pele,<br>sua história.`;
             }
+        }
+
+        async function mostrarPerfil() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) return;
+
+            document.getElementById('sessao-principal').classList.add('hidden');
+            document.getElementById('servicos-grid').classList.add('hidden');
+            document.getElementById('sessao-perfil').classList.remove('hidden');
+
+            const nome = user.user_metadata.full_name || user.email.split('@')[0];
+            document.getElementById('perfil-nome').innerText = nome;
+            document.getElementById('perfil-email').innerText = user.email;
+            document.getElementById('perfil-avatar').innerText = nome.charAt(0).toUpperCase();
+
+            // Busca histórico
+            const { data: agendamentos } = await supabaseClient.from('agendamentos').select('*').eq('email_cliente', user.email);
+            const container = document.getElementById('lista-agendamentos-cliente');
+            
+            if(agendamentos && agendamentos.length > 0) {
+                container.innerHTML = agendamentos.map(a => `
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/5 flex justify-between items-center">
+                        <div><p class="font-bold">${a.servico}</p><p class="text-xs text-gray-500 uppercase">${new Date(a.created_at).toLocaleDateString()}</p></div>
+                        <span class="text-[10px] bg-red-600/20 text-red-500 px-3 py-1 rounded-full font-bold">SOLICITADO</span>
+                    </div>
+                `).join('');
+            } else { container.innerHTML = '<p class="text-gray-600 italic">Você ainda não possui agendamentos.</p>'; }
+        }
+
+        function voltarHome() {
+            document.getElementById('sessao-perfil').classList.add('hidden');
+            document.getElementById('sessao-principal').classList.remove('hidden');
+            document.getElementById('servicos-grid').classList.remove('hidden');
         }
 
         async function logout() {
@@ -186,75 +166,41 @@
             }
         }
 
-        supabaseClient.auth.onAuthStateChange(() => { verificarSessao(); });
-        verificarSessao();
-
-        // UI Controls
+        // Funções de UI
         function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
         function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
-        
         async function abrirAgendamento(tipo) {
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
-                abrirLogin();
-            } else {
-                servicoSelecionado = tipo;
-                document.getElementById('servico-nome').innerText = tipo;
-                document.getElementById('modal-agendamento').classList.remove('hidden');
-            }
+            if (!session) { abrirLogin(); } 
+            else { servicoSelecionado = tipo; document.getElementById('servico-nome').innerText = tipo; document.getElementById('modal-agendamento').classList.remove('hidden'); }
         }
         function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
 
-        async function loginGoogle() {
-            const { error } = await supabaseClient.auth.signInWithOAuth({
-                provider: 'google',
-                options: { redirectTo: window.location.origin + window.location.pathname }
-            });
-            if (error) alert("Erro Google: " + error.message);
-        }
-
-        async function criarContaEmail() {
-            const email = document.getElementById('email-login').value;
-            const password = document.getElementById('senha-login').value;
-            const btn = document.getElementById('btn-criar-email');
-            if (!email || password.length < 6) return alert("E-mail inválido ou senha muito curta (mín. 6 caracteres).");
-            btn.innerText = "...";
-            const { error } = await supabaseClient.auth.signUp({ email, password });
-            if (error) alert("Erro: " + error.message);
-            else alert("Sucesso! Verifique seu e-mail para confirmar o cadastro.");
-            btn.innerText = "Cadastrar";
-        }
-
+        // Auth e Envio (Modificado para salvar e-mail)
+        async function loginGoogle() { await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + window.location.pathname } }); }
+        
         async function loginEmail() {
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
-            const btn = document.getElementById('btn-entrar-email');
-            btn.innerText = "...";
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if (error) alert("Erro: " + error.message);
-            else { fecharLogin(); }
-            btn.innerText = "Entrar";
+            if (error) alert(error.message); else fecharLogin();
         }
 
         async function enviarDados() {
-            const nome = document.getElementById('nome-lead').value.trim();
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            const nome = document.getElementById('nome-lead').value;
             const zap = mask.unmaskedValue;
-            const btn = document.getElementById('btn-enviar');
-            if (nome.length < 3 || zap.length < 10) return alert("Preencha os dados corretamente.");
-            btn.innerText = "Enviando...";
-            btn.classList.add('btn-loading');
-            const { error } = await supabaseClient.from('agendamentos').insert([{ nome, whatsapp: zap, servico: servicoSelecionado }]);
-            if (error) {
-                alert("Erro: " + error.message);
-                btn.classList.remove('btn-loading');
-                btn.innerText = "Confirmar";
-            } else {
-                alert("✓ Agendamento solicitado!");
-                fecharAgendamento();
-                btn.classList.remove('btn-loading');
-                btn.innerText = "Confirmar";
-            }
+            
+            // Salva vinculando ao e-mail do cliente logado
+            const { error } = await supabaseClient.from('agendamentos').insert([{ 
+                nome, whatsapp: zap, servico: servicoSelecionado, email_cliente: user.email 
+            }]);
+            
+            if (!error) { alert("✓ Sucesso!"); fecharAgendamento(); mostrarPerfil(); }
         }
+
+        supabaseClient.auth.onAuthStateChange(() => verificarSessao());
+        verificarSessao();
     </script>
 </body>
 </html>
