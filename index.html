@@ -6,141 +6,216 @@
     <title>InkMaster Studio | Arte na Pele</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/imask"></script>
+
     <style>
-        /* Estilos de Vidro e Gradientes */
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .text-gradient { background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        :root { --accent: #ff4d00; --bg-dark: #0a0a0a; }
         
-        /* Menu em Estilo Ilha (Inspirado na Hotmart) */
+        /* Glassmorphism & Gradients */
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        .text-gradient { background: linear-gradient(to right, #fff, #a1a1a1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Menu Ilha Flutuante (Estilo Hotmart) */
         .nav-island {
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 100px;
-            padding: 10px 24px;
-            margin-top: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 999px;
+            padding: 8px 24px;
+            margin-top: 1.5rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
-        /* Fundo Hero com a Imagem do Tatuador e Sombra Inferior */
+        /* Hero com Gradiente de Sombra Inferior Pesada */
         .hero-bg {
             background: linear-gradient(to bottom, 
                         rgba(10, 10, 10, 0.1) 0%, 
-                        rgba(10, 10, 10, 0.6) 60%, 
-                        rgba(10, 10, 10, 1) 100%), 
-                        url('https://images.unsplash.com/photo-1590201109022-79339237989d?q=80&w=2070&auto=format&fit=crop');
+                        rgba(10, 10, 10, 0.7) 65%, 
+                        var(--bg-dark) 100%), 
+                        url('Gemini_Generated_Image_1se21u1se21u1se2.jpg');
             background-size: cover;
             background-position: center;
-            min-height: 85vh;
+            min-height: 90vh;
         }
 
-        /* Modal Login Estilo Hotmart */
-        .hotmart-card { background: white; color: #333; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
-        .input-hotmart { border: 1px solid #ddd; border-radius: 8px; padding: 12px; width: 100%; color: #000; }
-        .btn-hotmart { background: #ff4d00; color: white; font-weight: bold; padding: 14px; border-radius: 8px; width: 100%; }
-
-        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .animate-slide-up { animation: slideUp 0.4s ease-out; }
+        /* Estados de Loading */
+        .btn-loading { pointer-events: none; opacity: 0.6; }
+        
+        /* Animações */
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .animate-slide-up { animation: slideUp 0.5s ease-out forwards; }
     </style>
 </head>
-<body class="bg-[#0a0a0a] text-white">
+<body class="bg-[#0a0a0a] text-white antialiased">
 
-    <div class="hero-bg flex flex-col items-center">
-        <nav class="nav-island flex justify-between items-center w-[90%] max-w-5xl fixed top-0 z-50">
-            <h1 class="text-xl font-bold tracking-tighter italic">INK<span class="text-red-600">MASTER</span></h1>
-            <div class="flex items-center gap-6">
-                <button onclick="abrirLogin()" class="text-sm font-semibold hover:text-red-500 transition">Fazer Login</button>
-                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-red-700 transition">Agendar</button>
+    <div class="fixed top-0 w-full flex justify-center px-4 z-[100]">
+        <nav class="nav-island flex justify-between items-center w-full max-w-5xl">
+            <h1 class="text-xl font-bold tracking-tighter italic" aria-label="InkMaster Logo">
+                INK<span class="text-red-600">MASTER</span>
+            </h1>
+            <div class="flex items-center gap-4">
+                <button onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3 py-2" aria-label="Fazer Login">Fazer Login</button>
+                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-lg" aria-label="Agendar Tatuagem">Agendar</button>
             </div>
         </nav>
-
-        <section class="max-w-7xl mx-auto px-6 py-48 text-center flex-grow flex flex-col justify-center">
-            <h2 class="text-6xl md:text-8xl font-bold text-gradient mb-6 drop-shadow-2xl">Sua pele,<br>sua história.</h2>
-            <p class="text-gray-200 max-w-2xl mx-auto mb-10 text-lg drop-shadow-lg">Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.</p>
-            <div>
-                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 text-white px-10 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all inline-block shadow-2xl">
-                    Quero minha tatuagem
-                </button>
-            </div>
-        </section>
     </div>
 
-    <section class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Realismo')">
-            <h3 class="text-xl font-bold mb-4">Realismo</h3>
-            <p class="text-gray-400">Trabalhos detalhados que capturam cada nuance da realidade.</p>
-        </div>
-        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Fine Line')">
-            <h3 class="text-xl font-bold mb-4">Fine Line</h3>
-            <p class="text-gray-400">Traços finos e delicados para quem busca elegância e precisão.</p>
-        </div>
-        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Coberturas')">
-            <h3 class="text-xl font-bold mb-4">Coberturas</h3>
-            <p class="text-gray-400">Damos vida nova a tatuagens antigas com técnicas avançadas.</p>
-        </div>
-    </section>
-
-    <div id="modal-login" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
-        <div class="hotmart-card w-full max-w-[400px] p-10 animate-slide-up relative text-center">
-            <button onclick="fecharLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-            <h3 class="text-2xl font-bold mb-1">Crie sua conta agora.</h3>
-            <p class="text-gray-500 text-sm mb-6 font-medium">É gratuito</p>
-            <button onclick="loginGoogle()" class="flex items-center justify-center gap-3 w-full border border-gray-300 p-3 rounded-lg hover:bg-gray-50 transition mb-6 text-gray-700">
-                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5 h-5">
-                <span class="font-bold text-sm">Entrar com Google</span>
+    <header class="hero-bg flex flex-col items-center justify-center text-center px-6">
+        <div class="max-w-4xl mt-20 animate-slide-up">
+            <h2 class="text-5xl md:text-8xl font-black text-gradient mb-6 leading-tight drop-shadow-2xl">
+                Sua pele,<br>sua história.
+            </h2>
+            <p class="text-gray-300 max-w-2xl mx-auto mb-10 text-lg md:text-xl drop-shadow-md">
+                Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna com segurança e precisão.
+            </p>
+            <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all shadow-2xl">
+                Quero minha tatuagem
             </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 -mt-20 pb-20 relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition group" onclick="abrirAgendamento('Realismo')">
+            <div class="w-12 h-12 bg-red-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-red-600 transition">🎨</div>
+            <h3 class="text-2xl font-bold mb-4">Realismo</h3>
+            <p class="text-gray-400 leading-relaxed">Retratos e artes ultradetalhadas que capturam cada nuance da vida real.</p>
+        </div>
+        <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition group" onclick="abrirAgendamento('Fine Line')">
+            <div class="w-12 h-12 bg-red-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-red-600 transition">✒️</div>
+            <h3 class="text-2xl font-bold mb-4">Fine Line</h3>
+            <p class="text-gray-400 leading-relaxed">Traços finos, elegantes e precisos para quem busca minimalismo e sofisticação.</p>
+        </div>
+        <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition group" onclick="abrirAgendamento('Coberturas')">
+            <div class="w-12 h-12 bg-red-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-red-600 transition">🔄</div>
+            <h3 class="text-2xl font-bold mb-4">Coberturas</h3>
+            <p class="text-gray-400 leading-relaxed">Especialistas em dar vida nova a tatuagens antigas com técnicas de camuflagem avançada.</p>
+        </div>
+    </main>
+
+    <div id="modal-login" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[200] hidden flex items-center justify-center p-4">
+        <div class="bg-white text-gray-900 w-full max-w-[420px] p-10 rounded-3xl animate-slide-up relative text-center shadow-2xl">
+            <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-900 text-3xl transition">&times;</button>
+            <h3 class="text-3xl font-black mb-2">Seja bem-vindo.</h3>
+            <p class="text-gray-500 mb-8">Acesse sua conta para ver seus agendamentos.</p>
+            
+            <button onclick="loginGoogle()" id="btn-google" class="flex items-center justify-center gap-3 w-full border-2 border-gray-100 p-4 rounded-2xl hover:bg-gray-50 transition mb-6 group">
+                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-6 h-6" alt="Google">
+                <span class="font-bold text-gray-700">Entrar com Google</span>
+            </button>
+
+            <div class="relative mb-6">
+                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-100"></div></div>
+                <div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-gray-400 uppercase tracking-widest text-[10px] font-bold">ou use seu e-mail</span></div>
+            </div>
+
             <div class="space-y-4">
-                <input type="email" placeholder="Digite seu e-mail" class="input-hotmart text-sm">
-                <input type="password" placeholder="Digite sua senha" class="input-hotmart text-sm">
-                <button class="btn-hotmart">Criar conta</button>
+                <input type="email" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-red-600 transition">
+                <button class="w-full bg-red-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-red-600/20 hover:bg-red-700 transition">Continuar</button>
             </div>
         </div>
     </div>
 
-    <div id="modal-agendamento" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
-        <div class="glass w-full max-w-md p-8 rounded-3xl animate-slide-up relative">
-            <button onclick="fecharAgendamento()" class="absolute top-4 right-4 text-gray-500 text-2xl">&times;</button>
-            <h3 class="text-2xl font-bold mb-2 text-white">Agendar <span id="servico-nome" class="text-red-600"></span></h3>
-            <div class="space-y-4 mt-6">
-                <input type="text" id="nome-lead" placeholder="Seu Nome" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-red-600">
-                <input type="text" id="zap-lead" placeholder="Seu WhatsApp" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-red-600">
-                <button onclick="enviarDados()" class="w-full bg-red-600 font-bold py-4 rounded-xl text-white">Confirmar</button>
+    <div id="modal-agendamento" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[200] hidden flex items-center justify-center p-4">
+        <div class="glass w-full max-w-md p-10 rounded-[3rem] animate-slide-up relative">
+            <button onclick="fecharAgendamento()" class="absolute top-6 right-6 text-gray-500 hover:text-white text-3xl transition">&times;</button>
+            <h3 class="text-3xl font-bold mb-2">Agendar <span id="servico-nome" class="text-red-600"></span></h3>
+            <p class="text-gray-400 mb-8">Preencha os dados e entraremos em contato.</p>
+            
+            <div class="space-y-5">
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase ml-2 mb-2 block">Nome Completo</label>
+                    <input type="text" id="nome-lead" placeholder="Ex: João Silva" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-red-600 transition">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase ml-2 mb-2 block">WhatsApp</label>
+                    <input type="text" id="zap-lead" placeholder="(00) 00000-0000" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-red-600 transition">
+                </div>
+                <button id="btn-enviar" onclick="enviarDados()" class="w-full bg-red-600 font-bold py-5 rounded-2xl text-white shadow-xl shadow-red-600/10 hover:bg-red-700 transition-all active:scale-95">
+                    Confirmar Agendamento
+                </button>
             </div>
         </div>
     </div>
 
     <script>
+        // 1. SEGURANÇA: Chaves Nomeadas Corretamente
         const SB_URL = 'https://umufrakmlasvznxllzsy.supabase.co';
-        const SB_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
-        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+        const SB_ANON_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
+        const supabaseClient = supabase.createClient(SB_URL, SB_ANON_KEY);
+
+        // 2. MÁSCARA WHATSAPP
+        const maskOptions = { mask: '(00) 00000-0000' };
+        const mask = IMask(document.getElementById('zap-lead'), maskOptions);
 
         let servicoSelecionado = "";
-        function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
-        function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
+
+        // UI Helpers
+        const toggleModal = (id, show) => document.getElementById(id).classList[show ? 'remove' : 'add']('hidden');
+        function abrirLogin() { toggleModal('modal-login', true); }
+        function fecharLogin() { toggleModal('modal-login', false); }
         function abrirAgendamento(tipo) {
             servicoSelecionado = tipo;
             document.getElementById('servico-nome').innerText = tipo;
-            document.getElementById('modal-agendamento').classList.remove('hidden');
+            toggleModal('modal-agendamento', true);
         }
-        function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
+        function fecharAgendamento() { toggleModal('modal-agendamento', false); }
 
+        // 3. LOGIN GOOGLE (Implementação de Feedback)
         async function loginGoogle() {
+            const btn = document.getElementById('btn-google');
+            btn.classList.add('btn-loading');
+            
             const { error } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
                 options: { redirectTo: window.location.origin + window.location.pathname }
             });
-            if (error) alert(error.message);
-        }
-
-        async function enviarDados() {
-            const nome = document.getElementById('nome-lead').value;
-            const zap = document.getElementById('zap-lead').value;
-            if (nome && zap) {
-                const { error } = await supabaseClient.from('agendamentos').insert([{ nome, whatsapp: zap, servico: servicoSelecionado }]);
-                if (error) alert("Erro: " + error.message);
-                else { alert("Agendamento Enviado!"); fecharAgendamento(); }
+            
+            if (error) {
+                alert("Erro ao conectar: " + error.message);
+                btn.classList.remove('btn-loading');
             }
         }
+
+        // 4. VALIDAÇÃO E FEEDBACK NO ENVIO
+        async function enviarDados() {
+            const nome = document.getElementById('nome-lead').value.trim();
+            const zap = mask.unmaskedValue;
+            const btn = document.getElementById('btn-enviar');
+
+            // Validação mínima
+            if (nome.length < 3) return alert("Por favor, digite seu nome completo.");
+            if (zap.length < 10) return alert("WhatsApp inválido.");
+
+            btn.innerText = "Enviando...";
+            btn.classList.add('btn-loading');
+
+            const { error } = await supabaseClient.from('agendamentos').insert([{ 
+                nome, 
+                whatsapp: zap, 
+                servico: servicoSelecionado 
+            }]);
+
+            if (error) {
+                alert("Erro ao enviar: " + error.message);
+                btn.classList.remove('btn-loading');
+                btn.innerText = "Confirmar Agendamento";
+            } else {
+                alert("✓ Recebemos seu pedido! Entraremos em contato em breve.");
+                fecharAgendamento();
+                document.getElementById('nome-lead').value = "";
+                mask.value = "";
+                btn.classList.remove('btn-loading');
+                btn.innerText = "Confirmar Agendamento";
+            }
+        }
+
+        // 5. OBSERVAR STATUS DE LOGIN (Melhoria 7)
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (session) {
+                console.log("Usuário logado:", session.user.email);
+                // Aqui você pode mudar o texto do botão "Fazer Login" para o nome do usuário futuramente
+            }
+        });
     </script>
 </body>
 </html>
