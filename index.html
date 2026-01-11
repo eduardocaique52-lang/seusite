@@ -7,62 +7,56 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .hotmart-card { background: white; color: #333; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
-        .input-style { border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; width: 100%; transition: border-color 0.2s; }
-        .input-style:focus { outline: none; border-color: #ff4d00; }
-        .btn-primary { background: #ff4d00; color: white; font-weight: bold; padding: 12px; border-radius: 8px; width: 100%; transition: opacity 0.2s; }
-        .btn-primary:hover { opacity: 0.9; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .animate-up { animation: slideUp 0.4s ease-out; }
+        .hotmart-style { background-color: #f4f4f4; }
+        .auth-card { background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); color: #333; }
+        .input-field { border: 1px solid #ddd; border-radius: 8px; padding: 12px; width: 100%; margin-bottom: 12px; color: #000; }
+        .btn-orange { background-color: #ff4d00; color: white; font-weight: bold; padding: 14px; border-radius: 8px; width: 100%; transition: 0.2s; }
+        .btn-orange:hover { background-color: #e64500; }
+        .divider { display: flex; align-items: center; text-align: center; color: #999; font-size: 12px; margin: 20px 0; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #eee; }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
     </style>
 </head>
-<body class="bg-[#0a0a0a] text-white min-h-screen">
+<body class="bg-[#0a0a0a] text-white font-sans min-h-screen">
 
     <nav class="flex justify-between items-center p-6 max-w-7xl mx-auto">
-        <h1 class="text-2xl font-bold tracking-tighter italic">INK<span class="text-red-600">MASTER</span></h1>
-        <button onclick="abrirAuth()" class="bg-white text-black px-4 py-2 rounded-full text-sm font-bold hover:bg-red-600 hover:text-white transition">Entrar</button>
+        <h1 class="text-2xl font-bold italic">INK<span class="text-red-600">MASTER</span></h1>
+        <button onclick="toggleModal()" class="bg-white text-black px-4 py-2 rounded-md text-sm font-bold">Fazer Login</button>
     </nav>
 
     <section class="max-w-7xl mx-auto px-6 py-24 text-center">
         <h2 class="text-6xl font-bold mb-6">Sua pele, sua história.</h2>
-        <button onclick="abrirAuth()" class="bg-red-600 text-white px-10 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all inline-block">Começar Agora</button>
+        <button onclick="toggleModal()" class="bg-red-600 px-10 py-5 rounded-full font-bold text-xl">Quero minha tatuagem</button>
     </section>
 
-    <div id="modal-auth" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="hotmart-card w-full max-w-md p-10 rounded-2xl animate-up relative">
-            <button onclick="fecharAuth()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+    <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4">
+        <div class="auth-card w-full max-w-[400px] p-8 animate-up relative">
+            <button onclick="toggleModal()" class="absolute top-4 right-4 text-gray-400">&times;</button>
             
-            <div class="text-center mb-8">
-                <h3 id="auth-title" class="text-2xl font-bold">Crie sua conta agora.</h3>
-                <p id="auth-subtitle" class="text-gray-500 mt-1">É gratuito e rápido.</p>
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Crie sua conta agora.</h3>
+                <p class="text-gray-500 font-medium">É gratuito</p>
             </div>
 
-            <button onclick="loginGoogle()" class="flex items-center justify-center gap-3 w-full border border-gray-300 p-3 rounded-lg hover:bg-gray-50 transition mb-6">
-                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5 h-5">
-                <span class="font-medium text-gray-700">Entrar com Google</span>
+            <button onclick="loginGoogle()" class="flex items-center justify-center gap-4 w-full border border-gray-300 rounded-lg p-3 hover:bg-gray-50 transition mb-4">
+                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5">
+                <span class="text-gray-700 font-semibold">Entrar com Google</span>
             </button>
 
-            <div class="relative mb-6">
-                <div class="absolute inset-0 flex items-center"><span class="w-full border-t border-gray-200"></span></div>
-                <div class="relative flex justify-center text-xs uppercase"><span class="bg-white px-2 text-gray-400 font-bold tracking-widest">Ou</span></div>
-            </div>
+            <div class="divider">Ou</div>
 
-            <div class="space-y-4">
-                <input type="text" id="auth-nome" placeholder="Digite seu nome completo" class="input-style">
-                <input type="email" id="auth-email" placeholder="Digite seu e-mail" class="input-style">
-                <input type="password" id="auth-senha" placeholder="Digite sua senha" class="input-style">
+            <div>
+                <input type="text" id="reg-nome" placeholder="Digite seu nome completo" class="input-field">
+                <input type="email" id="reg-email" placeholder="Digite seu e-mail" class="input-field">
+                <input type="password" id="reg-senha" placeholder="Digite sua senha" class="input-field">
                 
-                <p class="text-[10px] text-gray-400 text-center px-4 leading-relaxed">
-                    Ao me cadastrar, declaro que sou maior de idade, li e concordo com os <a href="#" class="underline">Termos e as Políticas</a> da plataforma.
+                <p class="text-[10px] text-gray-400 text-center mb-6 px-2">
+                    Ao me cadastrar, declaro que sou maior de idade, li e concordo com os 
+                    <a href="#" class="underline">Termos e as Políticas</a> da plataforma.
                 </p>
 
-                <button id="auth-submit-btn" onclick="executarAuth()" class="btn-primary">Criar conta</button>
-            </div>
-
-            <div class="mt-6 text-center text-sm">
-                <span id="auth-switch-text" class="text-gray-500">Já tem uma conta?</span>
-                <button onclick="alternarModo()" id="auth-switch-btn" class="text-[#ff4d00] font-bold ml-1 hover:underline">Fazer login</button>
+                <button onclick="cadastrarUsuario()" class="btn-orange">Criar conta</button>
             </div>
         </div>
     </div>
@@ -72,54 +66,34 @@
         const SB_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-        let modoLogin = false; // Começa como "Criar Conta"
-
-        function abrirAuth() { document.getElementById('modal-auth').classList.remove('hidden'); }
-        function fecharAuth() { document.getElementById('modal-auth').classList.add('hidden'); }
-
-        function alternarModo() {
-            modoLogin = !modoLogin;
-            const title = document.getElementById('auth-title');
-            const sub = document.getElementById('auth-subtitle');
-            const btn = document.getElementById('auth-submit-btn');
-            const switchBtn = document.getElementById('auth-switch-btn');
-            const switchText = document.getElementById('auth-switch-text');
-            const nomeInput = document.getElementById('auth-nome');
-
-            if(modoLogin) {
-                title.innerText = "Bem-vindo de volta.";
-                sub.innerText = "Faça login na sua conta.";
-                btn.innerText = "Entrar";
-                switchText.innerText = "Ainda não tem conta?";
-                switchBtn.innerText = "Crie uma agora";
-                nomeInput.classList.add('hidden');
-            } else {
-                title.innerText = "Crie sua conta agora.";
-                sub.innerText = "É gratuito e rápido.";
-                btn.innerText = "Criar conta";
-                switchText.innerText = "Já tem uma conta?";
-                switchBtn.innerText = "Fazer login";
-                nomeInput.classList.remove('hidden');
-            }
+        function toggleModal() {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.toggle('hidden');
         }
 
         async function loginGoogle() {
-            const { error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google' });
-            if (error) alert("Erro: " + error.message);
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: window.location.origin }
+            });
+            if (error) alert(error.message);
         }
 
-        async function executarAuth() {
-            const email = document.getElementById('auth-email').value;
-            const senha = document.getElementById('auth-senha').value;
-            const nome = document.getElementById('auth-nome').value;
+        async function cadastrarUsuario() {
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-senha').value;
+            const nome = document.getElementById('reg-nome').value;
 
-            if (modoLogin) {
-                const { error } = await supabaseClient.auth.signInWithPassword({ email, password: senha });
-                if(error) alert(error.message); else alert("Login realizado!");
-            } else {
-                const { error } = await supabaseClient.auth.signUp({ email, password: senha, options: { data: { full_name: nome } } });
-                if(error) alert(error.message); else alert("Conta criada! Verifique seu e-mail.");
-            }
+            if (!email || !password) return alert("Preencha os campos!");
+
+            const { data, error } = await supabaseClient.auth.signUp({
+                email,
+                password,
+                options: { data: { full_name: nome } }
+            });
+
+            if (error) alert(error.message);
+            else alert("Conta criada! Verifique seu e-mail para confirmar.");
         }
     </script>
 </body>
