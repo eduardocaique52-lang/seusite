@@ -131,45 +131,22 @@
         </div>
     </div>
 
-    <footer class="bg-[#0a0a0a] border-t border-white/5 pt-16 pb-8 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-start gap-10 mb-12">
-                <div class="max-w-sm">
-                    <h1 class="text-2xl font-bold tracking-tighter italic mb-4">
-                        INK<span class="text-red-600">MASTER</span>
-                    </h1>
-                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
-                        InkMaster Studio - 2011-2026 © Todos os direitos reservados.
-                        <br>Transformando ideias em arte eterna com segurança e exclusividade.
-                    </p>
-                    <div class="flex gap-4 items-center opacity-50 grayscale hover:grayscale-0 transition">
-                        <img src="https://hotmart.com/static/images/logo-hotmart-company.svg" alt="Hotmart Company" class="h-6">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-2 gap-12">
-                    <div>
-                        <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-widest">Termos e Políticas</h4>
-                        <ul class="text-gray-500 text-sm space-y-2">
-                            <li><a href="#" class="hover:text-red-500 transition">Termos de Uso</a></li>
-                            <li><a href="#" class="hover:text-red-500 transition text-red-600/50">Privacidade</a></li>
-                            <li><a href="#" class="hover:text-red-500 transition">Cookies</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-widest">Suporte</h4>
-                        <ul class="text-gray-500 text-sm space-y-2">
-                            <li><a href="#" class="hover:text-red-500 transition">Central de Ajuda</a></li>
-                            <li><a href="admin.html" class="hover:text-red-500 transition font-bold text-gray-400">Canal de Denúncias (Linha Ética)</a></li>
-                        </ul>
-                    </div>
-                </div>
+    <footer class="bg-[#0a0a0a] border-t border-white/5 pt-16 pb-12 px-6">
+        <div class="max-w-7xl mx-auto text-center md:text-left">
+            <div class="flex flex-col items-center md:items-start">
+                <h1 class="text-2xl font-bold tracking-tighter italic mb-4">
+                    INK<span class="text-red-600">MASTER</span>
+                </h1>
+                <p class="text-gray-500 text-sm leading-relaxed max-w-sm">
+                    InkMaster Studio - 2011-2026 © Todos os direitos reservados.
+                    <br>Transformando ideias em arte eterna com segurança e exclusividade.
+                </p>
             </div>
-
-            <div class="border-t border-white/5 pt-8 text-[11px] text-gray-600 leading-tight">
-                <p>Launch Pad Tecnologia, Serviços e Pagamentos Ltda.</p>
-                <p>CNPJ nº. 13.427.325/0001-05</p>
-                <p>Endereço: Avenida Assis Chateaubriand, nº 499, Bairro Floresta, Belo Horizonte - MG, CEP nº 30.150-101</p>
+            
+            <div class="border-t border-white/5 mt-10 pt-6">
+                <p class="text-[10px] text-gray-700 uppercase tracking-widest">
+                    Estúdio Premium de Tatuagem Realista e Fine Line
+                </p>
             </div>
         </div>
     </footer>
@@ -184,7 +161,7 @@
         const mask = IMask(document.getElementById('zap-lead'), { mask: '(00) 00000-0000' });
         let servicoSelecionado = "";
 
-        // --- CONTROLE DE SESSÃO (RECONHECIMENTO DE PERFIL) ---
+        // --- CONTROLE DE SESSÃO ---
         async function verificarSessao() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             const btnLogin = document.getElementById('btn-login-nav');
