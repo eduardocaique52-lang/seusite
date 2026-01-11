@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InkMaster Studio | Arte na Pele</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        /* Design Original das Primeiras Imagens */
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .text-gradient { background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Design da Aba de Login (Estilo Hotmart) */
+        .hotmart-card { background: white; color: #333; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
+        .input-hotmart { border: 1px solid #ddd; border-radius: 8px; padding: 12px; width: 100%; color: #000; }
+        .btn-hotmart { background: #ff4d00; color: white; font-weight: bold; padding: 14px; border-radius: 8px; width: 100%; }
 
+        /* Estilo para a Imagem de Fundo com Gradiente de Sombra */
+        .hero-bg {
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.4) 0%, rgba(10, 10, 10, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1590201109022-79339237989d?q=80&w=2070&auto=format&fit=crop'); /* Nota: Usei um link estável, troque pelo seu se preferir */
+            background-size: cover;
+            background-position: center;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-slide-up { animation: slideUp 0.4s ease-out; }
+    </style>
+</head>
+<body class="bg-[#0a0a0a] text-white">
+
+    <div class="hero-bg">
+        <nav class="flex justify-between items-center p-6 max-w-7xl mx-auto">
+            <h1 class="text-2xl font-bold tracking-tighter italic">INK<span class="text-red-600">MASTER</span></h1>
+            <button onclick="abrirLogin()" class="bg-white text-black px-4 py-2 rounded-md text-sm font-bold hover:bg-gray-200 transition">Fazer Login</button>
+        </nav>
+
+        <section class="max-w-7xl mx-auto px-6 py-24 text-center">
+            <h2 class="text-6xl md:text-8xl font-bold text-gradient mb-6 drop-shadow-lg">Sua pele,<br>sua história.</h2>
+            <p class="text-gray-200 max-w-2xl mx-auto mb-10 text-lg drop-shadow-md">Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.</p>
+            <button onclick="abrirAgendamento('Geral')" class="bg-red-600 text-white px-10 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all inline-block shadow-lg">
+                Quero minha tatuagem
+            </button>
+        </section>
+    </div>
+
+    <section class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Realismo')">
+            <h3 class="text-xl font-bold mb-4">Realismo</h3>
+            <p class="text-gray-400">Trabalhos detalhados que capturam cada nuance da realidade.</p>
+        </div>
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Fine Line')">
+            <h3 class="text-xl font-bold mb-4">Fine Line</h3>
+            <p class="text-gray-400">Traços finos e delicados para quem busca elegância e precisão.</p>
+        </div>
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Coberturas')">
+            <h3 class="text-xl font-bold mb-4">Coberturas</h3>
+            <p class="text-gray-400">Damos vida nova a tatuagens antigas com técnicas avançadas.</p>
+        </div>
+    </section>
+
+    <div id="modal-login" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="hotmart-card w-full max-w-[400px] p-10 animate-slide-up relative text-center">
+            <button onclick="fecharLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            <h3 class="text-2xl font-bold mb-1">Crie sua conta agora.</h3>
+            <p class="text-gray-500 text-sm mb-6 font-medium">É gratuito</p>
+            <button onclick="loginGoogle()" class="flex items-center justify-center gap-3 w-full border border-gray-300 p-3 rounded-lg hover:bg-gray-50 transition mb-6 text-gray-700">
+                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5 h-5">
+                <span class="font-bold text-sm">Entrar com Google</span>
+            </button>
+            <div class="space-y-4">
+                <input type="text" placeholder="Digite seu nome completo" class="input-hotmart text-sm">
+                <input type="email" placeholder="Digite seu e-mail" class="input-hotmart text-sm">
+                <input type="password" placeholder="Digite sua senha" class="input-hotmart text-sm">
+                <button class="btn-hotmart">Criar conta</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-agendamento" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass w-full max-w-md p-8 rounded-3xl animate-slide-up relative">
+            <button onclick="fecharAgendamento()" class="absolute top-4 right-4 text-gray-500 text-2xl">&times;</button>
+            <h3 class="text-2xl font-bold mb-2 text-white">Agendar <span id="servico-nome" class="text-red-600"></span></h3>
+            <div class="space-y-4 mt-6">
+                <input type="text" id="nome-lead" placeholder="Seu Nome" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-red-600">
+                <input type="text" id="zap-lead" placeholder="Seu WhatsApp" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-red-600">
+                <button onclick="enviarDados()" class="w-full bg-red-600 font-bold py-4 rounded-xl text-white">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SB_URL = 'https://umufrakmlasvznxllzsy.supabase.co';
+        const SB_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        let servicoSelecionado = "";
+
+        function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
+        function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
+
+        function abrirAgendamento(tipo) {
+            servicoSelecionado = tipo;
+            document.getElementById('servico-nome').innerText = tipo;
+            document.getElementById('modal-agendamento').classList.remove('hidden');
+        }
+        function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
+
+        async function loginGoogle() {
+            const { error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google' });
+            if (error) alert(error.message);
+        }
+
+        async function enviarDados() {
+            const nome = document.getElementById('nome-lead').value;
+            const zap = document.getElementById('zap-lead').value;
+            if (nome && zap) {
+                const { error } = await supabaseClient.from('agendamentos').insert([{ nome, whatsapp: zap, servico: servicoSelecionado }]);
+                if (error) alert("Erro: " + error.message);
+                else { alert("Agendamento Enviado!"); fecharAgendamento(); }
+            }
+        }
+    </script>
+</body>
+</html>
