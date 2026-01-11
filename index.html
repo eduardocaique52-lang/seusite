@@ -196,7 +196,7 @@
             }); 
         }
         
-        // CORREÇÃO: Função de cadastro atualizada
+        // LÓGICA BLINDADA: Cadastro sem congelamento
         async function criarContaEmail() {
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
@@ -209,46 +209,54 @@
             btn.innerText = "Criando...";
             btn.disabled = true;
 
-            const { error } = await supabaseClient.auth.signUp({ email, password });
+            try {
+                const { error } = await supabaseClient.auth.signUp({ email, password });
+                if (error) throw error;
 
-            if (error) { 
-                alert("Erro: " + error.message); 
-                btn.innerText = "Cadastrar"; 
-                btn.disabled = false;
-            } else {
+                // Se criou com sucesso, tenta logar
                 const { error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
                 if (!loginError) { 
                     fecharLogin(); 
                     mostrarPerfil(); 
-                } else {
-                    btn.innerText = "Cadastrar";
-                    btn.disabled = false;
                 }
+            } catch (error) {
+                // Se o usuário já existir ou der erro de rede, avisa e destrava o botão
+                alert(error.message === "User already registered" ? "Usuário já cadastrado. Tente entrar." : "Erro: " + error.message);
+            } finally {
+                // RESET TOTAL: Garante que o botão destrava sempre
+                btn.innerText = "Cadastrar";
+                btn.disabled = false;
             }
         }
 
-        // CORREÇÃO: Função de login atualizada
+        // LÓGICA BLINDADA: Login sem congelamento
         async function loginEmail() {
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
             const btn = document.getElementById('btn-entrar-email');
             const msgErro = document.getElementById('erro-senha');
 
+            if (!email || !password) return;
+
             msgErro.classList.add('hidden');
             btn.innerText = "Entrando...";
-            btn.disabled = true; // Impede múltiplos envios
-            
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            
-            if (error) {
-                msgErro.classList.remove('hidden'); 
-                btn.innerText = "Entrar";
-                btn.disabled = false;
-            } else { 
+            btn.disabled = true;
+
+            try {
+                const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) {
+                    msgErro.classList.remove('hidden');
+                    throw error;
+                }
+                // Sucesso: Fecha o modal e troca de página
                 fecharLogin(); 
+                mostrarPerfil();
+            } catch (error) {
+                console.error("Erro no login:", error.message);
+            } finally {
+                // RESET TOTAL: O botão volta ao normal mesmo se a senha estiver errada
                 btn.innerText = "Entrar";
                 btn.disabled = false;
-                mostrarPerfil(); // REDIRECIONA PARA PERFIL
             }
         }
 
@@ -261,16 +269,23 @@
             if (!nome || zap.length < 10) return alert("Preencha os dados corretamente.");
 
             btn.innerText = "Enviando...";
-            const { error } = await supabaseClient.from('agendamentos').insert([{ 
-                nome, whatsapp: zap, servico: servicoSelecionado, email_cliente: user.email 
-            }]);
-            
-            if (!error) { 
+            btn.disabled = true;
+
+            try {
+                const { error } = await supabaseClient.from('agendamentos').insert([{ 
+                    nome, whatsapp: zap, servico: servicoSelecionado, email_cliente: user.email 
+                }]);
+                if (error) throw error;
+
                 alert("✓ Agendamento solicitado!"); 
                 fecharAgendamento(); 
                 mostrarPerfil(); 
-            } else { alert("Erro ao salvar agendamento."); }
-            btn.innerText = "Confirmar Agendamento";
+            } catch (error) {
+                alert("Erro ao salvar agendamento.");
+            } finally {
+                btn.innerText = "Confirmar Agendamento";
+                btn.disabled = false;
+            }
         }
 
         supabaseClient.auth.onAuthStateChange(() => verificarSessao());
