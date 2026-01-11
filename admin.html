@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin | InkMaster</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-[#0a0a0a] text-white p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-12">
+            <div>
+                <h1 class="text-3xl font-black italic">ADMIN <span class="text-red-600">INKMASTER</span></h1>
+                <p class="text-gray-400">Gerenciamento de leads e agendamentos</p>
+            </div>
+            <button onclick="window.location.href='index.html'" class="text-sm border border-white/20 px-4 py-2 rounded-lg hover:bg-white/10">Voltar para o Site</button>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white/5 border border-white/10 p-6 rounded-3xl">
+                <p class="text-gray-400 text-sm">Total de Leads</p>
+                <h3 id="total-leads" class="text-4xl font-bold">0</h3>
+            </div>
+        </div>
+
+        <div class="bg-white/5 border border-white/10 rounded-[2rem] overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-white/5 text-gray-400 uppercase text-xs font-bold">
+                    <tr>
+                        <th class="p-6">Cliente</th>
+                        <th class="p-6">WhatsApp</th>
+                        <th class="p-6">Serviço</th>
+                        <th class="p-6">Data de Cadastro</th>
+                        <th class="p-6 text-right">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-corpo">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const SB_URL = 'https://umufrakmlasvznxllzsy.supabase.co';
+        const SB_ANON_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
+        const supabaseClient = supabase.createClient(SB_URL, SB_ANON_KEY);
+
+        async function carregarDados() {
+            const { data, error } = await supabaseClient
+                .from('agendamentos')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            const corpo = document.getElementById('tabela-corpo');
+            const total = document.getElementById('total-leads');
+            corpo.innerHTML = "";
+            total.innerText = data.length;
+
+            data.forEach(lead => {
+                const dataFormatada = new Date(lead.created_at).toLocaleDateString('pt-BR');
+                corpo.innerHTML += `
+                    <tr class="border-t border-white/5 hover:bg-white/5 transition">
+                        <td class="p-6 font-bold">${lead.nome}</td>
+                        <td class="p-6">
+                            <a href="https://wa.me/55${lead.whatsapp}" target="_blank" class="text-green-500 hover:underline flex items-center gap-2">
+                                ${lead.whatsapp} 🔗
+                            </a>
+                        </td>
+                        <td class="p-6">
+                            <span class="bg-red-600/20 text-red-500 px-3 py-1 rounded-full text-xs font-bold">${lead.servico}</span>
+                        </td>
+                        <td class="p-6 text-gray-400">${dataFormatada}</td>
+                        <td class="p-6 text-right">
+                            <button onclick="deletarLead(${lead.id})" class="text-gray-500 hover:text-red-500 transition">Deletar</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function deletarLead(id) {
+            if(confirm("Tem certeza que deseja remover este agendamento?")) {
+                const { error } = await supabaseClient.from('agendamentos').delete().eq('id', id);
+                if (!error) carregarDados();
+            }
+        }
+
+        // Carrega ao abrir a página
+        carregarDados();
+    </script>
+</body>
+</html>
