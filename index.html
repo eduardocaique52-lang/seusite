@@ -149,13 +149,11 @@
             const heroTitle = document.getElementById('hero-title');
 
             if (user) {
-                // Usuário logado: mostra o e-mail (ou nome se for Google) no menu
                 const identificador = user.user_metadata.full_name || user.email.split('@')[0];
                 btnLogin.innerText = `Olá, ${identificador}`;
-                btnLogin.onclick = logout; // Muda a função para deslogar
-                heroTitle.innerHTML = `Olá, ${identificador}.<br>Vamos tatuar?`; // Saudação personalizada
+                btnLogin.onclick = logout;
+                heroTitle.innerHTML = `Olá, ${identificador}.<br>Vamos tatuar?`;
             } else {
-                // Usuário deslogado: volta ao padrão
                 btnLogin.innerText = "Fazer Login";
                 btnLogin.onclick = abrirLogin;
                 heroTitle.innerHTML = `Sua pele,<br>sua história.`;
@@ -169,7 +167,6 @@
             }
         }
 
-        // Executa ao carregar a página e quando o estado de auth mudar
         supabaseClient.auth.onAuthStateChange(() => { verificarSessao(); });
         verificarSessao();
 
@@ -177,16 +174,14 @@
         function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
         function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
         
-        // --- FUNÇÃO DE AGENDAMENTO COM TRAVA DE LOGIN ---
+        // --- FUNÇÃO DE AGENDAMENTO COM TRAVA DE LOGIN (SEM ALERTA) ---
         async function abrirAgendamento(tipo) {
             const { data: { session } } = await supabaseClient.auth.getSession();
 
             if (!session) {
-                // Bloqueia e pede login
-                alert("Para agendar sua tatuagem, você precisa acessar sua conta primeiro!");
+                // Abre o login imediatamente se não houver sessão
                 abrirLogin();
             } else {
-                // Libera o modal se estiver logado
                 servicoSelecionado = tipo;
                 document.getElementById('servico-nome').innerText = tipo;
                 document.getElementById('modal-agendamento').classList.remove('hidden');
