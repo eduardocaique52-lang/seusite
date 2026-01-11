@@ -131,6 +131,49 @@
         </div>
     </div>
 
+    <footer class="bg-[#0a0a0a] border-t border-white/5 pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-10 mb-12">
+                <div class="max-w-sm">
+                    <h1 class="text-2xl font-bold tracking-tighter italic mb-4">
+                        INK<span class="text-red-600">MASTER</span>
+                    </h1>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                        InkMaster Studio - 2011-2026 © Todos os direitos reservados.
+                        <br>Transformando ideias em arte eterna com segurança e exclusividade.
+                    </p>
+                    <div class="flex gap-4 items-center opacity-50 grayscale hover:grayscale-0 transition">
+                        <img src="https://hotmart.com/static/images/logo-hotmart-company.svg" alt="Hotmart Company" class="h-6">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-2 gap-12">
+                    <div>
+                        <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-widest">Termos e Políticas</h4>
+                        <ul class="text-gray-500 text-sm space-y-2">
+                            <li><a href="#" class="hover:text-red-500 transition">Termos de Uso</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition text-red-600/50">Privacidade</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Cookies</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-widest">Suporte</h4>
+                        <ul class="text-gray-500 text-sm space-y-2">
+                            <li><a href="#" class="hover:text-red-500 transition">Central de Ajuda</a></li>
+                            <li><a href="admin.html" class="hover:text-red-500 transition font-bold text-gray-400">Canal de Denúncias (Linha Ética)</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/5 pt-8 text-[11px] text-gray-600 leading-tight">
+                <p>Launch Pad Tecnologia, Serviços e Pagamentos Ltda.</p>
+                <p>CNPJ nº. 13.427.325/0001-05</p>
+                <p>Endereço: Avenida Assis Chateaubriand, nº 499, Bairro Floresta, Belo Horizonte - MG, CEP nº 30.150-101</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
         // Configuração Supabase
         const SB_URL = 'https://umufrakmlasvznxllzsy.supabase.co';
@@ -142,7 +185,6 @@
         let servicoSelecionado = "";
 
         // --- CONTROLE DE SESSÃO (RECONHECIMENTO DE PERFIL) ---
-        
         async function verificarSessao() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             const btnLogin = document.getElementById('btn-login-nav');
@@ -174,12 +216,9 @@
         function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
         function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
         
-        // --- FUNÇÃO DE AGENDAMENTO COM TRAVA DE LOGIN (SEM ALERTA) ---
         async function abrirAgendamento(tipo) {
             const { data: { session } } = await supabaseClient.auth.getSession();
-
             if (!session) {
-                // Abre o login imediatamente se não houver sessão
                 abrirLogin();
             } else {
                 servicoSelecionado = tipo;
@@ -188,8 +227,6 @@
             }
         }
         function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
-
-        // --- SISTEMA DE AUTENTICAÇÃO ---
 
         async function loginGoogle() {
             const { error } = await supabaseClient.auth.signInWithOAuth({
@@ -222,20 +259,14 @@
             btn.innerText = "Entrar";
         }
 
-        // --- SISTEMA DE AGENDAMENTO ---
-
         async function enviarDados() {
             const nome = document.getElementById('nome-lead').value.trim();
             const zap = mask.unmaskedValue;
             const btn = document.getElementById('btn-enviar');
-
             if (nome.length < 3 || zap.length < 10) return alert("Preencha os dados corretamente.");
-
             btn.innerText = "Enviando...";
             btn.classList.add('btn-loading');
-
             const { error } = await supabaseClient.from('agendamentos').insert([{ nome, whatsapp: zap, servico: servicoSelecionado }]);
-
             if (error) {
                 alert("Erro: " + error.message);
                 btn.classList.remove('btn-loading');
