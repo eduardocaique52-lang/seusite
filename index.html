@@ -44,14 +44,13 @@
             <div class="flex items-center gap-6 mb-10 border-b border-white/10 pb-8">
                 <div id="perfil-avatar" class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center text-3xl font-black">?</div>
                 <div>
-                    <h2 id="perfil-nome" class="text-3xl font-bold">Nome do Cliente</h2>
+                    <h2 id="perfil-nome" class="text-3xl font-bold">Carregando...</h2>
                     <p id="perfil-email" class="text-gray-400">email@exemplo.com</p>
                 </div>
             </div>
             
             <h3 class="text-xl font-bold mb-6 text-red-500 uppercase tracking-widest text-sm">Meus Agendamentos</h3>
-            <div id="lista-agendamentos-cliente" class="space-y-4">
-                </div>
+            <div id="lista-agendamentos-cliente" class="space-y-4"></div>
 
             <div class="mt-12 flex gap-4">
                 <button onclick="voltarHome()" class="flex-1 bg-white/5 border border-white/10 py-4 rounded-2xl font-bold hover:bg-white/10 transition">Voltar ao Início</button>
@@ -84,11 +83,11 @@
                 <span class="font-bold text-gray-700">Entrar com Google</span>
             </button>
             <div class="space-y-4">
-                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none">
-                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none">
+                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900">
+                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900">
                 <div class="flex gap-2">
-                    <button onclick="loginEmail()" class="w-full bg-gray-800 text-white font-bold py-4 rounded-2xl">Entrar</button>
-                    <button onclick="criarContaEmail()" class="w-full bg-red-600 text-white font-bold py-4 rounded-2xl">Cadastrar</button>
+                    <button id="btn-entrar-email" onclick="loginEmail()" class="w-full bg-gray-800 text-white font-bold py-4 rounded-2xl transition hover:bg-gray-700">Entrar</button>
+                    <button id="btn-criar-email" onclick="criarContaEmail()" class="w-full bg-red-600 text-white font-bold py-4 rounded-2xl transition hover:bg-red-700">Cadastrar</button>
                 </div>
             </div>
         </div>
@@ -113,13 +112,14 @@
         const mask = IMask(document.getElementById('zap-lead'), { mask: '(00) 00000-0000' });
         let servicoSelecionado = "";
 
+        // --- AUTH SESSION CONTROL ---
         async function verificarSessao() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             const btnLogin = document.getElementById('btn-login-nav');
             if (user) {
                 const nome = user.user_metadata.full_name || user.email.split('@')[0];
                 btnLogin.innerText = `Olá, ${nome}`;
-                btnLogin.onclick = mostrarPerfil; // Muda ação para levar ao perfil
+                btnLogin.onclick = mostrarPerfil;
             } else {
                 btnLogin.innerText = "Fazer Login";
                 btnLogin.onclick = abrirLogin;
@@ -128,7 +128,7 @@
 
         async function mostrarPerfil() {
             const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) return;
+            if (!user) return abrirLogin();
 
             document.getElementById('sessao-principal').classList.add('hidden');
             document.getElementById('servicos-grid').classList.add('hidden');
@@ -139,7 +139,6 @@
             document.getElementById('perfil-email').innerText = user.email;
             document.getElementById('perfil-avatar').innerText = nome.charAt(0).toUpperCase();
 
-            // Busca histórico
             const { data: agendamentos } = await supabaseClient.from('agendamentos').select('*').eq('email_cliente', user.email);
             const container = document.getElementById('lista-agendamentos-cliente');
             
@@ -147,7 +146,7 @@
                 container.innerHTML = agendamentos.map(a => `
                     <div class="bg-white/5 p-4 rounded-2xl border border-white/5 flex justify-between items-center">
                         <div><p class="font-bold">${a.servico}</p><p class="text-xs text-gray-500 uppercase">${new Date(a.created_at).toLocaleDateString()}</p></div>
-                        <span class="text-[10px] bg-red-600/20 text-red-500 px-3 py-1 rounded-full font-bold">SOLICITADO</span>
+                        <span class="text-[10px] bg-red-600/20 text-red-500 px-3 py-1 rounded-full font-bold uppercase tracking-widest">Solicitado</span>
                     </div>
                 `).join('');
             } else { container.innerHTML = '<p class="text-gray-600 italic">Você ainda não possui agendamentos.</p>'; }
@@ -166,37 +165,87 @@
             }
         }
 
-        // Funções de UI
+        // --- UI CONTROLS ---
         function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
         function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
         async function abrirAgendamento(tipo) {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) { abrirLogin(); } 
-            else { servicoSelecionado = tipo; document.getElementById('servico-nome').innerText = tipo; document.getElementById('modal-agendamento').classList.remove('hidden'); }
+            else { 
+                servicoSelecionado = tipo; 
+                document.getElementById('servico-nome').innerText = tipo; 
+                document.getElementById('modal-agendamento').classList.remove('hidden'); 
+            }
         }
         function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
 
-        // Auth e Envio (Modificado para salvar e-mail)
-        async function loginGoogle() { await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + window.location.pathname } }); }
+        // --- AUTH LOGIC ---
+        async function loginGoogle() { 
+            await supabaseClient.auth.signInWithOAuth({ 
+                provider: 'google', 
+                options: { redirectTo: window.location.origin + window.location.pathname } 
+            }); 
+        }
         
+        async function criarContaEmail() {
+            const email = document.getElementById('email-login').value;
+            const password = document.getElementById('senha-login').value;
+            const btn = document.getElementById('btn-criar-email');
+
+            if (!email || password.length < 6) return alert("E-mail inválido ou senha muito curta (mín. 6 caracteres).");
+
+            btn.innerText = "Criando...";
+            const { error } = await supabaseClient.auth.signUp({ email, password });
+
+            if (error) {
+                alert("Erro: " + error.message);
+                btn.innerText = "Cadastrar";
+            } else {
+                // Loga automaticamente após cadastrar
+                const { error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (!loginError) {
+                    fecharLogin();
+                    mostrarPerfil();
+                }
+            }
+        }
+
         async function loginEmail() {
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
+            const btn = document.getElementById('btn-entrar-email');
+            btn.innerText = "Entrando...";
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if (error) alert(error.message); else fecharLogin();
+            if (error) {
+                alert(error.message);
+                btn.innerText = "Entrar";
+            } else { 
+                fecharLogin(); 
+                mostrarPerfil();
+            }
         }
 
         async function enviarDados() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             const nome = document.getElementById('nome-lead').value;
             const zap = mask.unmaskedValue;
-            
-            // Salva vinculando ao e-mail do cliente logado
+            const btn = document.getElementById('btn-enviar');
+
+            if (!nome || zap.length < 10) return alert("Preencha os dados corretamente.");
+
+            btn.innerText = "Enviando...";
             const { error } = await supabaseClient.from('agendamentos').insert([{ 
                 nome, whatsapp: zap, servico: servicoSelecionado, email_cliente: user.email 
             }]);
             
-            if (!error) { alert("✓ Sucesso!"); fecharAgendamento(); mostrarPerfil(); }
+            if (!error) { 
+                alert("✓ Agendamento solicitado!"); 
+                fecharAgendamento(); 
+                mostrarPerfil();
+            } else {
+                alert("Erro ao salvar: " + error.message);
+            }
+            btn.innerText = "Confirmar Agendamento";
         }
 
         supabaseClient.auth.onAuthStateChange(() => verificarSessao());
