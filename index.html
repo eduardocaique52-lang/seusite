@@ -3,97 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InkMaster Studio | Login</title>
+    <title>InkMaster Studio | Arte na Pele</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <style>
-        .hotmart-style { background-color: #f4f4f4; }
-        .auth-card { background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); color: #333; }
-        .input-field { border: 1px solid #ddd; border-radius: 8px; padding: 12px; width: 100%; margin-bottom: 12px; color: #000; }
-        .btn-orange { background-color: #ff4d00; color: white; font-weight: bold; padding: 14px; border-radius: 8px; width: 100%; transition: 0.2s; }
-        .btn-orange:hover { background-color: #e64500; }
-        .divider { display: flex; align-items: center; text-align: center; color: #999; font-size: 12px; margin: 20px 0; }
-        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #eee; }
-        .divider:not(:empty)::before { margin-right: .5em; }
-        .divider:not(:empty)::after { margin-left: .5em; }
+        /* ESTILO ANTIGO: Efeito de Vidro e Dark Mode */
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .text-gradient { background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
-<body class="bg-[#0a0a0a] text-white font-sans min-h-screen">
-
+<body class="bg-[#0a0a0a] text-white">
     <nav class="flex justify-between items-center p-6 max-w-7xl mx-auto">
-        <h1 class="text-2xl font-bold italic">INK<span class="text-red-600">MASTER</span></h1>
-        <button onclick="toggleModal()" class="bg-white text-black px-4 py-2 rounded-md text-sm font-bold">Fazer Login</button>
+        <h1 class="text-2xl font-bold tracking-tighter italic">INK<span class="text-red-600">MASTER</span></h1>
+        
+        <div id="g_id_onload"
+             data-client_id="COLE_AQUI_SEU_ID_DO_GOOGLE"
+             data-callback="handleCredentialResponse">
+        </div>
+        <div class="g_id_signin" data-type="standard"></div>
     </nav>
 
     <section class="max-w-7xl mx-auto px-6 py-24 text-center">
-        <h2 class="text-6xl font-bold mb-6">Sua pele, sua história.</h2>
-        <button onclick="toggleModal()" class="bg-red-600 px-10 py-5 rounded-full font-bold text-xl">Quero minha tatuagem</button>
+        <h2 class="text-6xl md:text-8xl font-bold text-gradient mb-6">Sua pele,<br>sua história.</h2>
+        <p class="text-gray-400 max-w-2xl mx-auto mb-10 text-lg">Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.</p>
+        <a id="agendar" href="https://wa.me/SEUNUMERO" class="bg-red-600 text-white px-10 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all inline-block">
+            Quero minha tatuagem
+        </a>
     </section>
 
-    <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4">
-        <div class="auth-card w-full max-w-[400px] p-8 animate-up relative">
-            <button onclick="toggleModal()" class="absolute top-4 right-4 text-gray-400">&times;</button>
-            
-            <div class="text-center mb-6">
-                <h3 class="text-2xl font-bold text-gray-800">Crie sua conta agora.</h3>
-                <p class="text-gray-500 font-medium">É gratuito</p>
-            </div>
-
-            <button onclick="loginGoogle()" class="flex items-center justify-center gap-4 w-full border border-gray-300 rounded-lg p-3 hover:bg-gray-50 transition mb-4">
-                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5">
-                <span class="text-gray-700 font-semibold">Entrar com Google</span>
-            </button>
-
-            <div class="divider">Ou</div>
-
-            <div>
-                <input type="text" id="reg-nome" placeholder="Digite seu nome completo" class="input-field">
-                <input type="email" id="reg-email" placeholder="Digite seu e-mail" class="input-field">
-                <input type="password" id="reg-senha" placeholder="Digite sua senha" class="input-field">
-                
-                <p class="text-[10px] text-gray-400 text-center mb-6 px-2">
-                    Ao me cadastrar, declaro que sou maior de idade, li e concordo com os 
-                    <a href="#" class="underline">Termos e as Políticas</a> da plataforma.
-                </p>
-
-                <button onclick="cadastrarUsuario()" class="btn-orange">Criar conta</button>
-            </div>
+    <section class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="salvarInteresse('Realismo')">
+            <h3 class="text-xl font-bold mb-4">Realismo</h3>
+            <p class="text-gray-400">Trabalhos detalhados que capturam cada nuance da realidade.</p>
         </div>
-    </div>
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="salvarInteresse('Fine Line')">
+            <h3 class="text-xl font-bold mb-4">Fine Line</h3>
+            <p class="text-gray-400">Traços finos e delicados para quem busca elegância e precisão.</p>
+        </div>
+        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="salvarInteresse('Coberturas')">
+            <h3 class="text-xl font-bold mb-4">Coberturas</h3>
+            <p class="text-gray-400">Damos vida nova a tatuagens antigas com técnicas avançadas.</p>
+        </div>
+    </section>
 
     <script>
         const SB_URL = 'https://umufrakmlasvznxllzsy.supabase.co';
         const SB_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-        function toggleModal() {
-            const modal = document.getElementById('auth-modal');
-            modal.classList.toggle('hidden');
+        async function salvarInteresse(tipo) {
+            const nome = prompt("Para agendar " + tipo + ", qual seu nome?");
+            const zap = prompt("Qual seu WhatsApp?");
+
+            if (nome && zap) {
+                const { error } = await supabaseClient
+                    .from('agendamentos')
+                    .insert([{ nome: nome, whatsapp: zap, servico: tipo }]);
+
+                if (error) alert("Erro: " + error.message);
+                else alert("Pedido de agendamento enviado! Entraremos em contato.");
+            }
         }
 
-        async function loginGoogle() {
-            const { error } = await supabaseClient.auth.signInWithOAuth({
-                provider: 'google',
-                options: { redirectTo: window.location.origin }
-            });
-            if (error) alert(error.message);
-        }
-
-        async function cadastrarUsuario() {
-            const email = document.getElementById('reg-email').value;
-            const password = document.getElementById('reg-senha').value;
-            const nome = document.getElementById('reg-nome').value;
-
-            if (!email || !password) return alert("Preencha os campos!");
-
-            const { data, error } = await supabaseClient.auth.signUp({
-                email,
-                password,
-                options: { data: { full_name: nome } }
-            });
-
-            if (error) alert(error.message);
-            else alert("Conta criada! Verifique seu e-mail para confirmar.");
+        function handleCredentialResponse(response) {
+            console.log("Usuário logado via Google!");
         }
     </script>
 </body>
