@@ -32,7 +32,7 @@
                         rgba(10, 10, 10, 0.1) 0%, 
                         rgba(10, 10, 10, 0.7) 65%, 
                         var(--bg-dark) 100%), 
-                        url('Design sem nome.png'); /* Substitua pelo seu arquivo */
+                        url('Design sem nome.png'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -92,13 +92,30 @@
     </main>
 
     <div id="modal-login" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[200] hidden flex items-center justify-center p-4">
-        <div class="bg-white text-gray-900 w-full max-w-[420px] p-10 rounded-3xl animate-slide-up relative text-center">
-            <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 text-3xl">&times;</button>
-            <h3 class="text-3xl font-black mb-8">Seja bem-vindo.</h3>
+        <div class="bg-white text-gray-900 w-full max-w-[420px] p-10 rounded-3xl animate-slide-up relative text-center shadow-2xl">
+            <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 text-3xl hover:text-gray-900 transition">&times;</button>
+            <h3 class="text-3xl font-black mb-2">Seja bem-vindo.</h3>
+            <p class="text-gray-500 mb-8">Escolha como deseja acessar.</p>
+            
             <button onclick="loginGoogle()" id="btn-google" class="flex items-center justify-center gap-3 w-full border-2 border-gray-100 p-4 rounded-2xl hover:bg-gray-50 transition mb-6">
                 <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-6 h-6">
                 <span class="font-bold text-gray-700">Entrar com Google</span>
             </button>
+
+            <div class="relative mb-6">
+                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-100"></div></div>
+                <div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-gray-400 uppercase tracking-widest text-[10px] font-bold">ou e-mail e senha</span></div>
+            </div>
+
+            <div class="space-y-4">
+                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-red-600 transition">
+                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-red-600 transition">
+                
+                <div class="flex gap-2">
+                    <button onclick="loginEmail()" id="btn-entrar-email" class="w-full bg-gray-800 text-white font-bold py-4 rounded-2xl hover:bg-gray-700 transition">Entrar</button>
+                    <button onclick="criarContaEmail()" id="btn-criar-email" class="w-full bg-red-600 text-white font-bold py-4 rounded-2xl hover:bg-red-700 transition">Cadastrar</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -135,16 +152,52 @@
         }
         function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
 
-        // Login Google
+        // --- SISTEMA DE AUTENTICAÇÃO ---
+
+        // 1. Login com Google
         async function loginGoogle() {
             const { error } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
                 options: { redirectTo: window.location.origin + window.location.pathname }
             });
-            if (error) alert(error.message);
+            if (error) alert("Erro Google: " + error.message);
         }
 
-        // Envio de Dados com Validação
+        // 2. Cadastro com E-mail e Senha
+        async function criarContaEmail() {
+            const email = document.getElementById('email-login').value;
+            const password = document.getElementById('senha-login').value;
+            const btn = document.getElementById('btn-criar-email');
+
+            if (!email || password.length < 6) return alert("E-mail inválido ou senha muito curta (mín. 6 caracteres).");
+
+            btn.innerText = "...";
+            const { error } = await supabaseClient.auth.signUp({ email, password });
+
+            if (error) alert("Erro: " + error.message);
+            else alert("Sucesso! Verifique seu e-mail para confirmar o cadastro.");
+            btn.innerText = "Cadastrar";
+        }
+
+        // 3. Login com E-mail e Senha
+        async function loginEmail() {
+            const email = document.getElementById('email-login').value;
+            const password = document.getElementById('senha-login').value;
+            const btn = document.getElementById('btn-entrar-email');
+
+            btn.innerText = "...";
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+            if (error) alert("Erro: " + error.message);
+            else {
+                alert("Bem-vindo de volta!");
+                fecharLogin();
+            }
+            btn.innerText = "Entrar";
+        }
+
+        // --- SISTEMA DE AGENDAMENTO ---
+
         async function enviarDados() {
             const nome = document.getElementById('nome-lead').value.trim();
             const zap = mask.unmaskedValue;
