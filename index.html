@@ -26,22 +26,24 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
-        /* Hero com Gradiente de Sombra Inferior Pesada */
+        /* Hero com Gradiente de Sombra Inferior e Imagem de Fundo */
         .hero-bg {
             background: linear-gradient(to bottom, 
                         rgba(10, 10, 10, 0.1) 0%, 
                         rgba(10, 10, 10, 0.7) 65%, 
                         var(--bg-dark) 100%), 
-                        url('Gemini_Generated_Image_1se21u1se21u1se2.jpg');
+                        url('https://postimg.cc/crJnQnXW'); /* Substitua pelo seu arquivo */
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Estados de Loading */
+        /* Estados de Loading e Animações */
         .btn-loading { pointer-events: none; opacity: 0.6; }
-        
-        /* Animações */
         @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .animate-slide-up { animation: slideUp 0.5s ease-out forwards; }
     </style>
@@ -54,19 +56,19 @@
                 INK<span class="text-red-600">MASTER</span>
             </h1>
             <div class="flex items-center gap-4">
-                <button onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3 py-2" aria-label="Fazer Login">Fazer Login</button>
-                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-lg" aria-label="Agendar Tatuagem">Agendar</button>
+                <button onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3 py-2">Fazer Login</button>
+                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-lg">Agendar</button>
             </div>
         </nav>
     </div>
 
-    <header class="hero-bg flex flex-col items-center justify-center text-center px-6">
+    <header class="hero-bg justify-center text-center px-6">
         <div class="max-w-4xl mt-20 animate-slide-up">
             <h2 class="text-5xl md:text-8xl font-black text-gradient mb-6 leading-tight drop-shadow-2xl">
                 Sua pele,<br>sua história.
             </h2>
             <p class="text-gray-300 max-w-2xl mx-auto mb-10 text-lg md:text-xl drop-shadow-md">
-                Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna com segurança e precisão.
+                Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.
             </p>
             <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all shadow-2xl">
                 Quero minha tatuagem
@@ -76,146 +78,96 @@
 
     <main class="max-w-7xl mx-auto px-6 -mt-20 pb-20 relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition group" onclick="abrirAgendamento('Realismo')">
-            <div class="w-12 h-12 bg-red-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-red-600 transition">🎨</div>
             <h3 class="text-2xl font-bold mb-4">Realismo</h3>
-            <p class="text-gray-400 leading-relaxed">Retratos e artes ultradetalhadas que capturam cada nuance da vida real.</p>
+            <p class="text-gray-400">Artes ultradetalhadas que capturam cada nuance da vida real.</p>
         </div>
         <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition group" onclick="abrirAgendamento('Fine Line')">
-            <div class="w-12 h-12 bg-red-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-red-600 transition">✒️</div>
             <h3 class="text-2xl font-bold mb-4">Fine Line</h3>
-            <p class="text-gray-400 leading-relaxed">Traços finos, elegantes e precisos para quem busca minimalismo e sofisticação.</p>
+            <p class="text-gray-400">Traços finos, elegantes e precisos para quem busca minimalismo.</p>
         </div>
         <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition group" onclick="abrirAgendamento('Coberturas')">
-            <div class="w-12 h-12 bg-red-600/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-red-600 transition">🔄</div>
             <h3 class="text-2xl font-bold mb-4">Coberturas</h3>
-            <p class="text-gray-400 leading-relaxed">Especialistas em dar vida nova a tatuagens antigas com técnicas de camuflagem avançada.</p>
+            <p class="text-gray-400">Especialistas em dar vida nova a tatuagens antigas.</p>
         </div>
     </main>
 
     <div id="modal-login" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[200] hidden flex items-center justify-center p-4">
-        <div class="bg-white text-gray-900 w-full max-w-[420px] p-10 rounded-3xl animate-slide-up relative text-center shadow-2xl">
-            <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-900 text-3xl transition">&times;</button>
-            <h3 class="text-3xl font-black mb-2">Seja bem-vindo.</h3>
-            <p class="text-gray-500 mb-8">Acesse sua conta para ver seus agendamentos.</p>
-            
-            <button onclick="loginGoogle()" id="btn-google" class="flex items-center justify-center gap-3 w-full border-2 border-gray-100 p-4 rounded-2xl hover:bg-gray-50 transition mb-6 group">
-                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-6 h-6" alt="Google">
+        <div class="bg-white text-gray-900 w-full max-w-[420px] p-10 rounded-3xl animate-slide-up relative text-center">
+            <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 text-3xl">&times;</button>
+            <h3 class="text-3xl font-black mb-8">Seja bem-vindo.</h3>
+            <button onclick="loginGoogle()" id="btn-google" class="flex items-center justify-center gap-3 w-full border-2 border-gray-100 p-4 rounded-2xl hover:bg-gray-50 transition mb-6">
+                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-6 h-6">
                 <span class="font-bold text-gray-700">Entrar com Google</span>
             </button>
-
-            <div class="relative mb-6">
-                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-100"></div></div>
-                <div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-gray-400 uppercase tracking-widest text-[10px] font-bold">ou use seu e-mail</span></div>
-            </div>
-
-            <div class="space-y-4">
-                <input type="email" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-red-600 transition">
-                <button class="w-full bg-red-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-red-600/20 hover:bg-red-700 transition">Continuar</button>
-            </div>
         </div>
     </div>
 
     <div id="modal-agendamento" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[200] hidden flex items-center justify-center p-4">
         <div class="glass w-full max-w-md p-10 rounded-[3rem] animate-slide-up relative">
-            <button onclick="fecharAgendamento()" class="absolute top-6 right-6 text-gray-500 hover:text-white text-3xl transition">&times;</button>
-            <h3 class="text-3xl font-bold mb-2">Agendar <span id="servico-nome" class="text-red-600"></span></h3>
-            <p class="text-gray-400 mb-8">Preencha os dados e entraremos em contato.</p>
-            
+            <button onclick="fecharAgendamento()" class="absolute top-6 right-6 text-gray-500 text-3xl">&times;</button>
+            <h3 class="text-3xl font-bold mb-6">Agendar <span id="servico-nome" class="text-red-600"></span></h3>
             <div class="space-y-5">
-                <div>
-                    <label class="text-xs font-bold text-gray-500 uppercase ml-2 mb-2 block">Nome Completo</label>
-                    <input type="text" id="nome-lead" placeholder="Ex: João Silva" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-red-600 transition">
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-gray-500 uppercase ml-2 mb-2 block">WhatsApp</label>
-                    <input type="text" id="zap-lead" placeholder="(00) 00000-0000" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-red-600 transition">
-                </div>
-                <button id="btn-enviar" onclick="enviarDados()" class="w-full bg-red-600 font-bold py-5 rounded-2xl text-white shadow-xl shadow-red-600/10 hover:bg-red-700 transition-all active:scale-95">
-                    Confirmar Agendamento
-                </button>
+                <input type="text" id="nome-lead" placeholder="Nome Completo" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-red-600">
+                <input type="text" id="zap-lead" placeholder="WhatsApp (00) 00000-0000" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-red-600">
+                <button id="btn-enviar" onclick="enviarDados()" class="w-full bg-red-600 font-bold py-5 rounded-2xl text-white hover:bg-red-700 transition">Confirmar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // 1. SEGURANÇA: Chaves Nomeadas Corretamente
+        // Configuração Supabase
         const SB_URL = 'https://umufrakmlasvznxllzsy.supabase.co';
         const SB_ANON_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
         const supabaseClient = supabase.createClient(SB_URL, SB_ANON_KEY);
 
-        // 2. MÁSCARA WHATSAPP
-        const maskOptions = { mask: '(00) 00000-0000' };
-        const mask = IMask(document.getElementById('zap-lead'), maskOptions);
+        // Máscara de Telefone
+        const mask = IMask(document.getElementById('zap-lead'), { mask: '(00) 00000-0000' });
 
         let servicoSelecionado = "";
 
-        // UI Helpers
-        const toggleModal = (id, show) => document.getElementById(id).classList[show ? 'remove' : 'add']('hidden');
-        function abrirLogin() { toggleModal('modal-login', true); }
-        function fecharLogin() { toggleModal('modal-login', false); }
+        // UI Controls
+        function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
+        function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
         function abrirAgendamento(tipo) {
             servicoSelecionado = tipo;
             document.getElementById('servico-nome').innerText = tipo;
-            toggleModal('modal-agendamento', true);
+            document.getElementById('modal-agendamento').classList.remove('hidden');
         }
-        function fecharAgendamento() { toggleModal('modal-agendamento', false); }
+        function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
 
-        // 3. LOGIN GOOGLE (Implementação de Feedback)
+        // Login Google
         async function loginGoogle() {
-            const btn = document.getElementById('btn-google');
-            btn.classList.add('btn-loading');
-            
             const { error } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
                 options: { redirectTo: window.location.origin + window.location.pathname }
             });
-            
-            if (error) {
-                alert("Erro ao conectar: " + error.message);
-                btn.classList.remove('btn-loading');
-            }
+            if (error) alert(error.message);
         }
 
-        // 4. VALIDAÇÃO E FEEDBACK NO ENVIO
+        // Envio de Dados com Validação
         async function enviarDados() {
             const nome = document.getElementById('nome-lead').value.trim();
             const zap = mask.unmaskedValue;
             const btn = document.getElementById('btn-enviar');
 
-            // Validação mínima
-            if (nome.length < 3) return alert("Por favor, digite seu nome completo.");
-            if (zap.length < 10) return alert("WhatsApp inválido.");
+            if (nome.length < 3 || zap.length < 10) return alert("Preencha os dados corretamente.");
 
             btn.innerText = "Enviando...";
             btn.classList.add('btn-loading');
 
-            const { error } = await supabaseClient.from('agendamentos').insert([{ 
-                nome, 
-                whatsapp: zap, 
-                servico: servicoSelecionado 
-            }]);
+            const { error } = await supabaseClient.from('agendamentos').insert([{ nome, whatsapp: zap, servico: servicoSelecionado }]);
 
             if (error) {
-                alert("Erro ao enviar: " + error.message);
+                alert("Erro: " + error.message);
                 btn.classList.remove('btn-loading');
-                btn.innerText = "Confirmar Agendamento";
+                btn.innerText = "Confirmar";
             } else {
-                alert("✓ Recebemos seu pedido! Entraremos em contato em breve.");
+                alert("✓ Agendamento solicitado!");
                 fecharAgendamento();
-                document.getElementById('nome-lead').value = "";
-                mask.value = "";
                 btn.classList.remove('btn-loading');
-                btn.innerText = "Confirmar Agendamento";
+                btn.innerText = "Confirmar";
             }
         }
-
-        // 5. OBSERVAR STATUS DE LOGIN (Melhoria 7)
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            if (session) {
-                console.log("Usuário logado:", session.user.email);
-                // Aqui você pode mudar o texto do botão "Fazer Login" para o nome do usuário futuramente
-            }
-        });
     </script>
 </body>
 </html>
