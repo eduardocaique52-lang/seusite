@@ -1,138 +1,877 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InkMaster Studio | Arte na Pele</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>INKMASTER - Sua pele, sua história</title>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Estilos de Vidro e Gradientes de Texto */
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .text-gradient { background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
         
-        /* Design da Aba de Login (Estilo Hotmart) */
-        .hotmart-card { background: white; color: #333; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
-        .input-hotmart { border: 1px solid #ddd; border-radius: 8px; padding: 12px; width: 100%; color: #000; }
-        .btn-hotmart { background: #ff4d00; color: white; font-weight: bold; padding: 14px; border-radius: 8px; width: 100%; }
-
-        /* Fundo com Imagem e Gradiente de Sombra Preta Inferior Pesada */
-        .hero-bg {
-            background: linear-gradient(to bottom, 
-                        rgba(10, 10, 10, 0.2) 0%, 
-                        rgba(10, 10, 10, 0.6) 50%, 
-                        rgba(10, 10, 10, 1) 100%), 
-                        url('https://discord.com/channels/536575231968542721/536968373683224576/1459714925256773894');
-            background-size: cover;
-            background-position: center;
-            min-height: 80vh;
+        body {
+            background-color: #0a0a0a;
+            color: #f0f0f0;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .animate-slide-up { animation: slideUp 0.4s ease-out; }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 4.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #fff;
+            text-shadow: 3px 3px 0 #ff0066, 6px 6px 0 #6600ff;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 1.4rem;
+            color: #aaa;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            color: #888;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .left-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .right-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff0066, #6600ff);
+        }
+        
+        .tattoo-types {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .tattoo-type {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ff0066;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .tattoo-type:hover {
+            transform: translateY(-5px);
+        }
+        
+        .type-title {
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        
+        .type-subtitle {
+            font-size: 1rem;
+            color: #ff0066;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .type-description {
+            color: #aaa;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .login-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .login-btn {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 200px;
+            font-weight: 600;
+        }
+        
+        .login-btn:hover {
+            background-color: #262626;
+            border-color: #ff0066;
+        }
+        
+        .google-btn {
+            background-color: #1a1a1a;
+            border-color: #333;
+        }
+        
+        .google-icon {
+            color: #4285F4;
+            font-size: 1.2rem;
+        }
+        
+        .signup-section {
+            margin-top: 30px;
+        }
+        
+        .signup-title {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #ff0066;
+        }
+        
+        .signup-btn {
+            background: linear-gradient(90deg, #ff0066, #6600ff);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .signup-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 0, 102, 0.3);
+        }
+        
+        .free-tag {
+            display: inline-block;
+            background-color: #00cc88;
+            color: #000;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+        
+        .appointment-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .appointment-card {
+            background-color: #1a1a1a;
+            padding: 25px;
+            border-radius: 8px;
+            border-top: 4px solid #6600ff;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        
+        .card-subtitle {
+            font-size: 1rem;
+            color: #6600ff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .card-description {
+            color: #aaa;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .contact-info {
+            margin-top: 40px;
+            padding: 25px;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        
+        .contact-title {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .contact-number {
+            font-size: 2rem;
+            color: #ff0066;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #222;
+            margin-top: 40px;
+        }
+        
+        .tattoo-icon {
+            display: inline-block;
+            margin: 0 5px;
+            color: #ff0066;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background-color: #1a1a1a;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid #333;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .modal-subtitle {
+            color: #ff0066;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-details h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-details p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .logout-btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background-color: #ff4444;
+        }
+        
+        .appointment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .appointment-form h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .message {
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .success-message {
+            background-color: rgba(0, 204, 136, 0.1);
+            color: #00cc88;
+            border: 1px solid #00cc88;
+        }
+        
+        .error-message {
+            background-color: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+        
+        .info-message {
+            background-color: rgba(68, 136, 255, 0.1);
+            color: #4488ff;
+            border: 1px solid #4488ff;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3.5rem;
+            }
+            
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .login-btn {
+                min-width: 100%;
+            }
+        }
     </style>
 </head>
-<body class="bg-[#0a0a0a] text-white">
-
-    <div class="hero-bg flex flex-col">
-        <nav class="flex justify-between items-center p-6 max-w-7xl mx-auto w-full">
-            <h1 class="text-2xl font-bold tracking-tighter italic">INK<span class="text-red-600">MASTER</span></h1>
-            <button onclick="abrirLogin()" class="bg-white text-black px-4 py-2 rounded-md text-sm font-bold hover:bg-gray-200 transition">Fazer Login</button>
-        </nav>
-
-        <section class="max-w-7xl mx-auto px-6 py-32 text-center flex-grow flex flex-col justify-center">
-            <h2 class="text-6xl md:text-8xl font-bold text-gradient mb-6 drop-shadow-2xl">Sua pele,<br>sua história.</h2>
-            <p class="text-gray-200 max-w-2xl mx-auto mb-10 text-lg drop-shadow-lg">Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.</p>
-            <div>
-                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 text-white px-10 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all inline-block shadow-2xl">
-                    Quero minha tatuagem
-                </button>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="logo">INKMASTER</h1>
+            <p class="tagline">Sua pele, sua história</p>
+            <p class="description">
+                Esta pêxi, mư derium focuado em lesfigatim co transformos idea arte eterna.
+            </p>
+        </header>
+        
+        <div class="main-content">
+            <div class="left-section">
+                <h2 class="section-title">Quero mais tatuagem</h2>
+                
+                <div class="tattoo-types">
+                    <div class="tattoo-type" onclick="openAppointmentModal('Realismo Geral')">
+                        <h3 class="type-title">Realismo Geral</h3>
+                        <p class="type-subtitle">Test ho gray 4000</p>
+                        <p class="type-description">
+                            Dust me loone de ceo arenibe tierna ficatiam
+                        </p>
+                    </div>
+                    
+                    <div class="tattoo-type" onclick="openAppointmentModal('Fine Line Fine')">
+                        <h3 class="type-title">Fine Line Fine</h3>
+                        <p class="type-subtitle">Test ho gray 4000</p>
+                        <p class="type-description">
+                            Dater a usine so brindampoire<br>
+                            hover er scale 105 bina limpies
+                        </p>
+                    </div>
+                    
+                    <div class="tattoo-type" onclick="openAppointmentModal('Houaco')">
+                        <h3 class="type-title">Houaco</h3>
+                        <p class="type-description">
+                            Coticítoo<br>
+                            Agenta Pelo<br>
+                            Facer Login
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="signup-section">
+                    <h3 class="signup-title">
+                        Agendar <span class="pulse">span_</span>
+                        <span class="free-tag">É gratuito</span>
+                    </h3>
+                    
+                    <div id="login-container">
+                        <div id="not-logged-in">
+                            <div class="form-group">
+                                <label class="form-label">Digite sua nome completo</label>
+                                <input type="text" id="full-name" class="form-input" placeholder="Seu nome completo">
+                            </div>
+                            
+                            <button id="google-login-btn" class="login-btn google-btn">
+                                <i class="fab fa-google google-icon"></i>
+                                <span>Ente con Google</span>
+                            </button>
+                            
+                            <div class="form-group">
+                                <label class="form-label">testo</label>
+                                <input type="text" id="referral-code" class="form-input" placeholder="Texto adicional">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Orloxx serup</label>
+                                <input type="text" class="form-input" value="918" readonly>
+                            </div>
+                            
+                            <button id="create-account-btn" class="signup-btn">
+                                Criar conta <i class="fas fa-arrow-right"></i>
+                            </button>
+                            
+                            <div id="login-message" class="message"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </section>
+            
+            <div class="right-section">
+                <h2 class="section-title">Fcha Agendænto tatuagem</h2>
+                
+                <div class="appointment-sections">
+                    <div class="appointment-card">
+                        <h3 class="card-title">Fcha Agendænto tatuagem</h3>
+                        <p class="card-subtitle">Test tho gray 4000</p>
+                        <p class="card-description">
+                            Dus senne e cintuse svemide umi anotan catilis.
+                        </p>
+                    </div>
+                    
+                    <div class="appointment-card">
+                        <h3 class="card-title">Cobevire Agendamento</h3>
+                        <p class="card-subtitle">Test thoto gray 4200</p>
+                        <p class="card-description">
+                            Dele rata saclooma te dude<br>
+                            forper ricci are casas.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="contact-info">
+                    <h3 class="contact-title">Precisa de ajuda?</h3>
+                    <p class="contact-number">Orloxx serup: 918</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>
+                INKMASTER <i class="fas fa-cross tattoo-icon"></i> 2023 
+                <i class="fas fa-heart tattoo-icon pulse"></i> 
+                Sua pele, sua história <i class="fas fa-ankh tattoo-icon"></i>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">
+                Esta pêxi, mư derium focuado em lesfigatim co transformos idea arte eterna.
+            </p>
+        </footer>
     </div>
 
-    <section class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Realismo')">
-            <h3 class="text-xl font-bold mb-4">Realismo</h3>
-            <p class="text-gray-400">Trabalhos detalhados que capturam cada nuance da realidade.</p>
-        </div>
-        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Fine Line')">
-            <h3 class="text-xl font-bold mb-4">Fine Line</h3>
-            <p class="text-gray-400">Traços finos e delicados para quem busca elegância e precisão.</p>
-        </div>
-        <div class="glass p-8 rounded-3xl cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Coberturas')">
-            <h3 class="text-xl font-bold mb-4">Coberturas</h3>
-            <p class="text-gray-400">Damos vida nova a tatuagens antigas com técnicas avançadas.</p>
-        </div>
-    </section>
-
-    <div id="modal-login" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="hotmart-card w-full max-w-[400px] p-10 animate-slide-up relative text-center">
-            <button onclick="fecharLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-            <h3 class="text-2xl font-bold mb-1">Crie sua conta agora.</h3>
-            <p class="text-gray-500 text-sm mb-6 font-medium">É gratuito</p>
-            <button onclick="loginGoogle()" class="flex items-center justify-center gap-3 w-full border border-gray-300 p-3 rounded-lg hover:bg-gray-50 transition mb-6 text-gray-700">
-                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5 h-5">
-                <span class="font-bold text-sm">Entrar com Google</span>
-            </button>
-            <div class="space-y-4">
-                <input type="email" placeholder="Digite seu e-mail" class="input-hotmart text-sm">
-                <input type="password" placeholder="Digite sua senha" class="input-hotmart text-sm">
-                <button class="btn-hotmart">Criar conta</button>
+    <!-- Modal para usuário logado -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeUserModal()">&times;</button>
+            
+            <div id="user-modal-content">
+                <!-- Conteúdo será preenchido dinamicamente -->
             </div>
         </div>
     </div>
 
-    <div id="modal-agendamento" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="glass w-full max-w-md p-8 rounded-3xl animate-slide-up relative">
-            <button onclick="fecharAgendamento()" class="absolute top-4 right-4 text-gray-500 text-2xl">&times;</button>
-            <h3 class="text-2xl font-bold mb-2 text-white">Agendar <span id="servico-nome" class="text-red-600"></span></h3>
-            <div class="space-y-4 mt-6">
-                <input type="text" id="nome-lead" placeholder="Seu Nome" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-red-600">
-                <input type="text" id="zap-lead" placeholder="Seu WhatsApp" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-red-600">
-                <button onclick="enviarDados()" class="w-full bg-red-600 font-bold py-4 rounded-xl text-white">Confirmar</button>
+    <!-- Modal de agendamento -->
+    <div id="appointment-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeAppointmentModal()">&times;</button>
+            
+            <h2 class="modal-title">Agendar Tatuagem</h2>
+            <p class="modal-subtitle" id="modal-service-name"></p>
+            
+            <div id="appointment-form-container">
+                <!-- Formulário de agendamento será preenchido aqui -->
             </div>
+            
+            <div id="appointment-message" class="message"></div>
         </div>
     </div>
 
     <script>
-        // SEUS DADOS DO SUPABASE (JÁ FUNCIONAIS)
+        // Configuração do Supabase (SEU CÓDIGO ORIGINAL)
         const SB_URL = 'https://umufrakmlasvznxllzsy.supabase.co';
         const SB_KEY = 'sb_publishable_LfREjHCpJvkEq98Lc7XKWQ_kzwOFeU6';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
-
-        let servicoSelecionado = "";
-        function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
-        function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
-        function abrirAgendamento(tipo) {
-            servicoSelecionado = tipo;
-            document.getElementById('servico-nome').innerText = tipo;
-            document.getElementById('modal-agendamento').classList.remove('hidden');
+        
+        // Estado da aplicação
+        let currentUser = null;
+        let selectedService = '';
+        
+        // Inicializar verificação de autenticação
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            setupEventListeners();
+            setupTypingEffect();
+        });
+        
+        // Verificar se usuário já está autenticado
+        async function checkAuth() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            
+            if (user) {
+                currentUser = user;
+                updateUIForLoggedInUser(user);
+            }
         }
-        function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
-
-        // LOGIN GOOGLE INTEGRADO
+        
+        // Configurar ouvintes de evento
+        function setupEventListeners() {
+            // Botão de login com Google
+            document.getElementById('google-login-btn').addEventListener('click', loginGoogle);
+            
+            // Botão de criar conta
+            document.getElementById('create-account-btn').addEventListener('click', async function() {
+                const fullName = document.getElementById('full-name').value;
+                const referralCode = document.getElementById('referral-code').value;
+                
+                if (!fullName.trim()) {
+                    showMessage('Por favor, digite seu nome completo.', 'error');
+                    return;
+                }
+                
+                // Simular criação de conta (no caso real, você teria um backend)
+                showMessage('Criando conta...', 'info');
+                
+                // Redirecionar para login com Google após 1 segundo
+                setTimeout(() => {
+                    loginGoogle();
+                }, 1000);
+            });
+        }
+        
+        // Login com Google (SEU CÓDIGO ORIGINAL)
         async function loginGoogle() {
             const { error } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
-                options: { redirectTo: window.location.origin + window.location.pathname }
+                options: {
+                    redirectTo: window.location.origin
+                }
             });
-            if (error) alert(error.message);
-        }
-
-        // ENVIO PARA TABELA AGENDAMENTOS
-        async function enviarDados() {
-            const nome = document.getElementById('nome-lead').value;
-            const zap = document.getElementById('zap-lead').value;
-            if (nome && zap) {
-                const { error } = await supabaseClient.from('agendamentos').insert([{ nome, whatsapp: zap, servico: servicoSelecionado }]);
-                if (error) alert("Erro: " + error.message);
-                else { alert("Agendamento Enviado!"); fecharAgendamento(); }
+            
+            if (error) {
+                showMessage('Erro ao fazer login: ' + error.message, 'error');
+            } else {
+                showMessage('Redirecionando para Google...', 'info');
             }
         }
+        
+        // Atualizar UI quando usuário está logado
+        async function updateUIForLoggedInUser(user) {
+            const loginContainer = document.getElementById('login-container');
+            const userName = user.user_metadata?.full_name || user.email || 'Usuário';
+            const userAvatar = user.user_metadata?.avatar_url || 'https://i.pravatar.cc/100';
+            
+            loginContainer.innerHTML = `
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <img src="${userAvatar}" alt="${userName}">
+                    </div>
+                    <div class="user-details">
+                        <h3>${userName}</h3>
+                        <p>${user.email}</p>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+                <div class="appointment-form">
+                    <h3>Agendar Nova Tatuagem</h3>
+                    <div class="tattoo-types" style="margin-top: 15px;">
+                        <div class="tattoo-type" onclick="openAppointmentModal('Realismo Geral')">
+                            <h3 class="type-title">Realismo Geral</h3>
+                            <p class="type-subtitle">Test ho gray 4000</p>
+                        </div>
+                        
+                        <div class="tattoo-type" onclick="openAppointmentModal('Fine Line Fine')">
+                            <h3 class="type-title">Fine Line Fine</h3>
+                            <p class="type-subtitle">Test ho gray 4000</p>
+                        </div>
+                        
+                        <div class="tattoo-type" onclick="openAppointmentModal('Houaco')">
+                            <h3 class="type-title">Houaco</h3>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            showMessage('Login realizado com sucesso!', 'success');
+        }
+        
+        // Logout
+        async function logout() {
+            const { error } = await supabaseClient.auth.signOut();
+            
+            if (error) {
+                showMessage('Erro ao sair: ' + error.message, 'error');
+            } else {
+                currentUser = null;
+                location.reload(); // Recarregar a página para resetar o estado
+            }
+        }
+        
+        // Abrir modal de agendamento
+        function openAppointmentModal(service) {
+            selectedService = service;
+            
+            if (!currentUser) {
+                showMessage('Por favor, faça login para agendar uma tatuagem.', 'error');
+                return;
+            }
+            
+            document.getElementById('modal-service-name').textContent = service;
+            
+            document.getElementById('appointment-form-container').innerHTML = `
+                <div class="appointment-form">
+                    <div class="form-group">
+                        <label class="form-label">Seu Nome</label>
+                        <input type="text" id="appointment-name" class="form-input" value="${currentUser.user_metadata?.full_name || ''}" placeholder="Seu nome">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Seu WhatsApp</label>
+                        <input type="text" id="appointment-whatsapp" class="form-input" placeholder="(11) 99999-9999">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Data Preferencial</label>
+                        <input type="date" id="appointment-date" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Observações</label>
+                        <textarea id="appointment-notes" class="form-input" rows="3" placeholder="Alguma observação sobre a tatuagem..."></textarea>
+                    </div>
+                    
+                    <button class="signup-btn" onclick="submitAppointment()">
+                        Confirmar Agendamento <i class="fas fa-calendar-check"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('appointment-modal').style.display = 'flex';
+        }
+        
+        // Fechar modal de agendamento
+        function closeAppointmentModal() {
+            document.getElementById('appointment-modal').style.display = 'none';
+            document.getElementById('appointment-message').style.display = 'none';
+        }
+        
+        // Submeter agendamento (SEU CÓDIGO ORIGINAL ADAPTADO)
+        async function submitAppointment() {
+            const nome = document.getElementById('appointment-name').value;
+            const whatsapp = document.getElementById('appointment-whatsapp').value;
+            
+            if (!nome || !whatsapp) {
+                showAppointmentMessage('Por favor, preencha seu nome e WhatsApp.', 'error');
+                return;
+            }
+            
+            // Salvar no Supabase (SEU CÓDIGO ORIGINAL)
+            const { error } = await supabaseClient.from('agendamentos').insert([{
+                nome: nome,
+                whatsapp: whatsapp,
+                servico: selectedService,
+                user_id: currentUser.id,
+                email: currentUser.email,
+                data_agendamento: document.getElementById('appointment-date').value || null,
+                observacoes: document.getElementById('appointment-notes').value || ''
+            }]);
+            
+            if (error) {
+                showAppointmentMessage('Erro ao agendar: ' + error.message, 'error');
+            } else {
+                showAppointmentMessage('Agendamento realizado com sucesso! Entraremos em contato em breve.', 'success');
+                
+                // Fechar modal após 2 segundos
+                setTimeout(() => {
+                    closeAppointmentModal();
+                }, 2000);
+            }
+        }
+        
+        // Mostrar mensagens
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('login-message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}-message`;
+            messageDiv.style.display = 'block';
+            
+            // Esconder após 5 segundos
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        function showAppointmentMessage(text, type) {
+            const messageDiv = document.getElementById('appointment-message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}-message`;
+            messageDiv.style.display = 'block';
+        }
+        
+        // Efeito de digitação no título
+        function setupTypingEffect() {
+            const tagline = document.querySelector('.tagline');
+            const originalText = tagline.textContent;
+            tagline.textContent = '';
+            
+            let i = 0;
+            function typeWriter() {
+                if (i < originalText.length) {
+                    tagline.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+            
+            // Iniciar efeito de digitação após um breve delay
+            setTimeout(typeWriter, 500);
+        }
+        
+        // Verificar autenticação ao carregar a página
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN' && session) {
+                currentUser = session.user;
+                updateUIForLoggedInUser(session.user);
+            } else if (event === 'SIGNED_OUT') {
+                currentUser = null;
+            }
+        });
     </script>
 </body>
 </html>
