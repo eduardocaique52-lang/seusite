@@ -45,7 +45,7 @@
                 <div id="perfil-avatar" class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center text-3xl font-black italic shadow-xl">?</div>
                 <div>
                     <h2 id="perfil-nome" class="text-3xl font-bold italic">Carregando...</h2>
-                    <p id="perfil-email" class="text-gray-500 font-mono text-sm tracking-tighter"></p>
+                    <p id="perfil-email" class="text-gray-400 font-mono text-sm tracking-tighter"></p>
                 </div>
             </div>
             
@@ -196,25 +196,38 @@
             }); 
         }
         
+        // CORREÇÃO: Função de cadastro atualizada
         async function criarContaEmail() {
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
             const btn = document.getElementById('btn-criar-email');
+            const msgErro = document.getElementById('erro-senha');
+
             if (!email || password.length < 6) return alert("E-mail inválido ou senha muito curta.");
 
-            btn.innerText = "...";
+            msgErro.classList.add('hidden');
+            btn.innerText = "Criando...";
+            btn.disabled = true;
+
             const { error } = await supabaseClient.auth.signUp({ email, password });
 
             if (error) { 
                 alert("Erro: " + error.message); 
                 btn.innerText = "Cadastrar"; 
+                btn.disabled = false;
             } else {
-                // Força o login imediato após cadastro
                 const { error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (!loginError) { fecharLogin(); mostrarPerfil(); }
+                if (!loginError) { 
+                    fecharLogin(); 
+                    mostrarPerfil(); 
+                } else {
+                    btn.innerText = "Cadastrar";
+                    btn.disabled = false;
+                }
             }
         }
 
+        // CORREÇÃO: Função de login atualizada
         async function loginEmail() {
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
@@ -223,16 +236,19 @@
 
             msgErro.classList.add('hidden');
             btn.innerText = "Entrando...";
+            btn.disabled = true; // Impede múltiplos envios
             
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
             
             if (error) {
-                msgErro.classList.remove('hidden');
+                msgErro.classList.remove('hidden'); 
                 btn.innerText = "Entrar";
+                btn.disabled = false;
             } else { 
                 fecharLogin(); 
                 btn.innerText = "Entrar";
-                mostrarPerfil();
+                btn.disabled = false;
+                mostrarPerfil(); // REDIRECIONA PARA PERFIL
             }
         }
 
