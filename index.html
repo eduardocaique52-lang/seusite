@@ -26,7 +26,7 @@
             <h1 class="text-xl font-bold tracking-tighter italic">INK<span class="text-red-600">MASTER</span></h1>
             <div class="flex items-center gap-4">
                 <button id="btn-login-nav" onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3 py-2">Fazer Login</button>
-                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-lg">Agendar</button>
+                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition">Agendar</button>
             </div>
         </nav>
     </div>
@@ -40,75 +40,67 @@
     </header>
 
     <section id="sessao-perfil" class="hidden min-h-screen pt-32 px-6 flex flex-col items-center">
-        <div class="glass w-full max-w-2xl p-10 rounded-[3rem] animate-slide-up border-red-600/20">
+        <div class="glass w-full max-w-2xl p-10 rounded-[3rem] animate-slide-up">
             <div class="flex items-center gap-6 mb-10 border-b border-white/10 pb-8">
-                <div id="perfil-avatar" class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center text-3xl font-black italic shadow-xl">?</div>
+                <div id="perfil-avatar" class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center text-3xl font-black">?</div>
                 <div>
-                    <h2 id="perfil-nome" class="text-3xl font-bold italic">Carregando...</h2>
-                    <p id="perfil-email" class="text-gray-400 font-mono text-sm tracking-tighter"></p>
+                    <h2 id="perfil-nome" class="text-3xl font-bold">Carregando...</h2>
+                    <p id="perfil-email" class="text-gray-400">email@exemplo.com</p>
                 </div>
             </div>
             
-            <h3 class="text-xl font-bold mb-6 text-red-500 uppercase tracking-widest text-sm italic">Meus Agendamentos</h3>
+            <h3 class="text-xl font-bold mb-6 text-red-500 uppercase tracking-widest text-sm">Meus Agendamentos</h3>
             <div id="lista-agendamentos-cliente" class="space-y-4"></div>
 
             <div class="mt-12 flex gap-4">
-                <button onclick="voltarHome()" class="flex-1 bg-white/5 border border-white/10 py-4 rounded-2xl font-bold hover:bg-white/10 transition uppercase text-xs tracking-widest">Voltar ao Início</button>
-                <button onclick="logout()" class="flex-1 bg-red-600/10 border border-red-600/20 text-red-500 py-4 rounded-2xl font-bold hover:bg-red-600 hover:text-white transition uppercase text-xs tracking-widest">Sair da Conta</button>
+                <button onclick="voltarHome()" class="flex-1 bg-white/5 border border-white/10 py-4 rounded-2xl font-bold hover:bg-white/10 transition">Voltar ao Início</button>
+                <button onclick="logout()" class="flex-1 bg-red-600/10 border border-red-600/20 text-red-500 py-4 rounded-2xl font-bold hover:bg-red-600 hover:text-white transition">Sair da Conta</button>
             </div>
         </div>
     </section>
 
     <main id="servicos-grid" class="max-w-7xl mx-auto px-6 -mt-20 pb-20 relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Realismo')">
-            <h3 class="text-2xl font-bold mb-4 italic">Realismo</h3>
+            <h3 class="text-2xl font-bold mb-4">Realismo</h3>
             <p class="text-gray-400">Artes ultradetalhadas que capturam cada nuance da vida real.</p>
         </div>
         <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Fine Line')">
-            <h3 class="text-2xl font-bold mb-4 italic">Fine Line</h3>
+            <h3 class="text-2xl font-bold mb-4">Fine Line</h3>
             <p class="text-gray-400">Traços finos e precisos para quem busca minimalismo.</p>
         </div>
         <div class="glass p-8 rounded-[2.5rem] cursor-pointer hover:border-red-600 transition" onclick="abrirAgendamento('Coberturas')">
-            <h3 class="text-2xl font-bold mb-4 italic">Coberturas</h3>
+            <h3 class="text-2xl font-bold mb-4">Coberturas</h3>
             <p class="text-gray-400">Especialistas em dar vida nova a tatuagens antigas.</p>
         </div>
     </main>
 
     <div id="modal-login" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[200] hidden flex items-center justify-center p-4">
         <div class="bg-white text-gray-900 w-full max-w-[420px] p-10 rounded-3xl text-center relative shadow-2xl">
-            <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 text-3xl hover:text-gray-900 transition">&times;</button>
-            <h3 class="text-3xl font-black mb-8 italic uppercase tracking-tighter">Seja bem-vindo.</h3>
-            
+            <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 text-3xl">&times;</button>
+            <h3 class="text-3xl font-black mb-8">Seja bem-vindo.</h3>
             <button onclick="loginGoogle()" class="flex items-center justify-center gap-3 w-full border-2 border-gray-100 p-4 rounded-2xl hover:bg-gray-50 transition mb-6">
                 <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-6 h-6">
                 <span class="font-bold text-gray-700">Entrar com Google</span>
             </button>
-
             <div class="space-y-4">
-                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900 focus:border-red-600 transition">
-                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900 focus:border-red-600 transition">
-                
-                <div id="erro-senha" class="hidden flex items-center gap-2 bg-red-50 border border-red-200 p-3 rounded-xl animate-slide-up text-left">
-                    <div class="w-5 h-5 bg-red-600 rounded-full flex items-center justify-center text-white text-[10px] font-bold">✕</div>
-                    <p class="text-red-600 text-xs font-medium italic">E-mail ou senha incorretos</p>
-                </div>
-
+                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900">
+                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900">
                 <div class="flex gap-2">
-                    <button id="btn-entrar-email" onclick="loginEmail()" class="w-full bg-gray-800 text-white font-bold py-4 rounded-2xl transition hover:bg-gray-700 uppercase text-xs tracking-widest">Entrar</button>
-                    <button id="btn-criar-email" onclick="criarContaEmail()" class="w-full bg-red-600 text-white font-bold py-4 rounded-2xl transition hover:bg-red-700 uppercase text-xs tracking-widest">Cadastrar</button>
+                    <button id="btn-entrar-email" onclick="loginEmail()" class="w-full bg-gray-800 text-white font-bold py-4 rounded-2xl transition hover:bg-gray-700">Entrar</button>
+                    <button id="btn-criar-email" onclick="criarContaEmail()" class="w-full bg-red-600 text-white font-bold py-4 rounded-2xl transition hover:bg-red-700">Cadastrar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="modal-agendamento" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[200] hidden flex items-center justify-center p-4">
-        <div class="glass w-full max-w-md p-10 rounded-[3rem] relative border border-white/10">
+        <div class="glass w-full max-w-md p-10 rounded-[3rem] relative">
             <button onclick="fecharAgendamento()" class="absolute top-6 right-6 text-gray-500 text-3xl">&times;</button>
-            <h3 class="text-3xl font-bold mb-6 uppercase tracking-tighter italic">Agendar <span id="servico-nome" class="text-red-600"></span></h3>
+            <h3 class="text-3xl font-bold mb-6">Agendar <span id="servico-nome" class="text-red-600"></span></h3>
             <div class="space-y-5">
-                <input type="text" id="nome-lead" placeholder="Nome Completo" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-red-600">
-                <input type="text" id="zap-lead" placeholder="WhatsApp (00) 00000-0000" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-red-600">
-                <button id="btn-enviar" onclick="enviarDados()" class="w-full bg-red-600 font-bold py-5 rounded-2xl text-white hover:bg-red-700 transition uppercase tracking-widest text-sm">Confirmar Agendamento</button>
+                <input type="text" id="nome-lead" placeholder="Nome Completo" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none">
+                <input type="text" id="zap-lead" placeholder="WhatsApp (00) 00000-0000" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none">
+                <button id="btn-enviar" onclick="enviarDados()" class="w-full bg-red-600 font-bold py-5 rounded-2xl text-white">Confirmar Agendamento</button>
             </div>
         </div>
     </div>
@@ -120,6 +112,7 @@
         const mask = IMask(document.getElementById('zap-lead'), { mask: '(00) 00000-0000' });
         let servicoSelecionado = "";
 
+        // --- AUTH SESSION CONTROL ---
         async function verificarSessao() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             const btnLogin = document.getElementById('btn-login-nav');
@@ -151,12 +144,12 @@
             
             if(agendamentos && agendamentos.length > 0) {
                 container.innerHTML = agendamentos.map(a => `
-                    <div class="bg-white/5 p-4 rounded-2xl border border-white/5 flex justify-between items-center animate-slide-up">
-                        <div><p class="font-bold italic">${a.servico}</p><p class="text-[10px] text-gray-500 uppercase tracking-widest">${new Date(a.created_at).toLocaleDateString()}</p></div>
-                        <span class="text-[9px] bg-red-600/20 text-red-500 px-3 py-1 rounded-full font-black uppercase tracking-tighter">Solicitado</span>
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/5 flex justify-between items-center">
+                        <div><p class="font-bold">${a.servico}</p><p class="text-xs text-gray-500 uppercase">${new Date(a.created_at).toLocaleDateString()}</p></div>
+                        <span class="text-[10px] bg-red-600/20 text-red-500 px-3 py-1 rounded-full font-bold uppercase tracking-widest">Solicitado</span>
                     </div>
                 `).join('');
-            } else { container.innerHTML = '<p class="text-gray-600 italic text-sm">Você ainda não possui solicitações.</p>'; }
+            } else { container.innerHTML = '<p class="text-gray-600 italic">Você ainda não possui agendamentos.</p>'; }
         }
 
         function voltarHome() {
@@ -172,12 +165,9 @@
             }
         }
 
-        function abrirLogin() { 
-            document.getElementById('modal-login').classList.remove('hidden'); 
-            document.getElementById('erro-senha').classList.add('hidden'); 
-        }
+        // --- UI CONTROLS ---
+        function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
         function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
-        
         async function abrirAgendamento(tipo) {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) { abrirLogin(); } 
@@ -189,6 +179,7 @@
         }
         function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
 
+        // --- AUTH LOGIC ---
         async function loginGoogle() { 
             await supabaseClient.auth.signInWithOAuth({ 
                 provider: 'google', 
@@ -196,67 +187,41 @@
             }); 
         }
         
-        // LÓGICA BLINDADA: Cadastro sem congelamento
         async function criarContaEmail() {
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
             const btn = document.getElementById('btn-criar-email');
-            const msgErro = document.getElementById('erro-senha');
 
-            if (!email || password.length < 6) return alert("E-mail inválido ou senha muito curta.");
+            if (!email || password.length < 6) return alert("E-mail inválido ou senha muito curta (mín. 6 caracteres).");
 
-            msgErro.classList.add('hidden');
             btn.innerText = "Criando...";
-            btn.disabled = true;
+            const { error } = await supabaseClient.auth.signUp({ email, password });
 
-            try {
-                const { error } = await supabaseClient.auth.signUp({ email, password });
-                if (error) throw error;
-
-                // Se criou com sucesso, tenta logar
-                const { error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (!loginError) { 
-                    fecharLogin(); 
-                    mostrarPerfil(); 
-                }
-            } catch (error) {
-                // Se o usuário já existir ou der erro de rede, avisa e destrava o botão
-                alert(error.message === "User already registered" ? "Usuário já cadastrado. Tente entrar." : "Erro: " + error.message);
-            } finally {
-                // RESET TOTAL: Garante que o botão destrava sempre
+            if (error) {
+                alert("Erro: " + error.message);
                 btn.innerText = "Cadastrar";
-                btn.disabled = false;
+            } else {
+                // Loga automaticamente após cadastrar
+                const { error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (!loginError) {
+                    fecharLogin();
+                    mostrarPerfil();
+                }
             }
         }
 
-        // LÓGICA BLINDADA: Login sem congelamento
         async function loginEmail() {
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
             const btn = document.getElementById('btn-entrar-email');
-            const msgErro = document.getElementById('erro-senha');
-
-            if (!email || !password) return;
-
-            msgErro.classList.add('hidden');
             btn.innerText = "Entrando...";
-            btn.disabled = true;
-
-            try {
-                const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (error) {
-                    msgErro.classList.remove('hidden');
-                    throw error;
-                }
-                // Sucesso: Fecha o modal e troca de página
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                alert(error.message);
+                btn.innerText = "Entrar";
+            } else { 
                 fecharLogin(); 
                 mostrarPerfil();
-            } catch (error) {
-                console.error("Erro no login:", error.message);
-            } finally {
-                // RESET TOTAL: O botão volta ao normal mesmo se a senha estiver errada
-                btn.innerText = "Entrar";
-                btn.disabled = false;
             }
         }
 
@@ -269,23 +234,18 @@
             if (!nome || zap.length < 10) return alert("Preencha os dados corretamente.");
 
             btn.innerText = "Enviando...";
-            btn.disabled = true;
-
-            try {
-                const { error } = await supabaseClient.from('agendamentos').insert([{ 
-                    nome, whatsapp: zap, servico: servicoSelecionado, email_cliente: user.email 
-                }]);
-                if (error) throw error;
-
+            const { error } = await supabaseClient.from('agendamentos').insert([{ 
+                nome, whatsapp: zap, servico: servicoSelecionado, email_cliente: user.email 
+            }]);
+            
+            if (!error) { 
                 alert("✓ Agendamento solicitado!"); 
                 fecharAgendamento(); 
-                mostrarPerfil(); 
-            } catch (error) {
-                alert("Erro ao salvar agendamento.");
-            } finally {
-                btn.innerText = "Confirmar Agendamento";
-                btn.disabled = false;
+                mostrarPerfil();
+            } else {
+                alert("Erro ao salvar: " + error.message);
             }
+            btn.innerText = "Confirmar Agendamento";
         }
 
         supabaseClient.auth.onAuthStateChange(() => verificarSessao());
