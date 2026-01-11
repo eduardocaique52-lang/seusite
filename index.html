@@ -26,7 +26,7 @@
             <h1 class="text-xl font-bold tracking-tighter italic">INK<span class="text-red-600">MASTER</span></h1>
             <div class="flex items-center gap-4">
                 <button id="btn-login-nav" onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3 py-2">Fazer Login</button>
-                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-lg">Agendar</button>
+                <button onclick="abrirAgendamento('Geral')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition">Agendar</button>
             </div>
         </nav>
     </div>
@@ -45,13 +45,12 @@
                 <div id="perfil-avatar" class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center text-3xl font-black">?</div>
                 <div>
                     <h2 id="perfil-nome" class="text-3xl font-bold">Carregando...</h2>
-                    <p id="perfil-email" class="text-gray-400 font-mono text-sm"></p>
+                    <p id="perfil-email" class="text-gray-400">email@exemplo.com</p>
                 </div>
             </div>
             
             <h3 class="text-xl font-bold mb-6 text-red-500 uppercase tracking-widest text-sm">Meus Agendamentos</h3>
-            <div id="lista-agendamentos-cliente" class="space-y-4">
-                </div>
+            <div id="lista-agendamentos-cliente" class="space-y-4"></div>
 
             <div class="mt-12 flex gap-4">
                 <button onclick="voltarHome()" class="flex-1 bg-white/5 border border-white/10 py-4 rounded-2xl font-bold hover:bg-white/10 transition">Voltar ao Início</button>
@@ -77,23 +76,15 @@
 
     <div id="modal-login" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[200] hidden flex items-center justify-center p-4">
         <div class="bg-white text-gray-900 w-full max-w-[420px] p-10 rounded-3xl text-center relative shadow-2xl">
-            <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 text-3xl hover:text-gray-900 transition">&times;</button>
+            <button onclick="fecharLogin()" class="absolute top-6 right-6 text-gray-400 text-3xl">&times;</button>
             <h3 class="text-3xl font-black mb-8">Seja bem-vindo.</h3>
-            
             <button onclick="loginGoogle()" class="flex items-center justify-center gap-3 w-full border-2 border-gray-100 p-4 rounded-2xl hover:bg-gray-50 transition mb-6">
                 <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-6 h-6">
                 <span class="font-bold text-gray-700">Entrar com Google</span>
             </button>
-
             <div class="space-y-4">
-                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900 focus:border-red-600">
-                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900 focus:border-red-600">
-                
-                <div id="erro-senha" class="hidden flex items-center gap-2 bg-red-50 border border-red-200 p-3 rounded-xl animate-slide-up text-left">
-                    <div class="w-5 h-5 bg-red-600 rounded-full flex items-center justify-center text-white text-[10px] font-bold">✕</div>
-                    <p class="text-red-600 text-xs font-medium">E-mail ou senha incorretos</p>
-                </div>
-
+                <input type="email" id="email-login" placeholder="E-mail" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900">
+                <input type="password" id="senha-login" placeholder="Senha" class="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl p-4 outline-none text-gray-900">
                 <div class="flex gap-2">
                     <button id="btn-entrar-email" onclick="loginEmail()" class="w-full bg-gray-800 text-white font-bold py-4 rounded-2xl transition hover:bg-gray-700">Entrar</button>
                     <button id="btn-criar-email" onclick="criarContaEmail()" class="w-full bg-red-600 text-white font-bold py-4 rounded-2xl transition hover:bg-red-700">Cadastrar</button>
@@ -103,13 +94,13 @@
     </div>
 
     <div id="modal-agendamento" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[200] hidden flex items-center justify-center p-4">
-        <div class="glass w-full max-w-md p-10 rounded-[3rem] relative border border-white/10">
+        <div class="glass w-full max-w-md p-10 rounded-[3rem] relative">
             <button onclick="fecharAgendamento()" class="absolute top-6 right-6 text-gray-500 text-3xl">&times;</button>
             <h3 class="text-3xl font-bold mb-6">Agendar <span id="servico-nome" class="text-red-600"></span></h3>
             <div class="space-y-5">
                 <input type="text" id="nome-lead" placeholder="Nome Completo" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none">
                 <input type="text" id="zap-lead" placeholder="WhatsApp (00) 00000-0000" class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none">
-                <button id="btn-enviar" onclick="enviarDados()" class="w-full bg-red-600 font-bold py-5 rounded-2xl text-white hover:bg-red-700 transition">Confirmar Agendamento</button>
+                <button id="btn-enviar" onclick="enviarDados()" class="w-full bg-red-600 font-bold py-5 rounded-2xl text-white">Confirmar Agendamento</button>
             </div>
         </div>
     </div>
@@ -121,7 +112,7 @@
         const mask = IMask(document.getElementById('zap-lead'), { mask: '(00) 00000-0000' });
         let servicoSelecionado = "";
 
-        // --- CONTROLE DE SESSÃO ---
+        // --- AUTH SESSION CONTROL ---
         async function verificarSessao() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             const btnLogin = document.getElementById('btn-login-nav');
@@ -139,7 +130,6 @@
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return abrirLogin();
 
-            // Esconde Home e Mostra Perfil
             document.getElementById('sessao-principal').classList.add('hidden');
             document.getElementById('servicos-grid').classList.add('hidden');
             document.getElementById('sessao-perfil').classList.remove('hidden');
@@ -149,15 +139,14 @@
             document.getElementById('perfil-email').innerText = user.email;
             document.getElementById('perfil-avatar').innerText = nome.charAt(0).toUpperCase();
 
-            // Busca Histórico
             const { data: agendamentos } = await supabaseClient.from('agendamentos').select('*').eq('email_cliente', user.email);
             const container = document.getElementById('lista-agendamentos-cliente');
             
             if(agendamentos && agendamentos.length > 0) {
                 container.innerHTML = agendamentos.map(a => `
-                    <div class="bg-white/5 p-4 rounded-2xl border border-white/5 flex justify-between items-center animate-slide-up">
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/5 flex justify-between items-center">
                         <div><p class="font-bold">${a.servico}</p><p class="text-xs text-gray-500 uppercase">${new Date(a.created_at).toLocaleDateString()}</p></div>
-                        <span class="text-[10px] bg-red-600/20 text-red-500 px-3 py-1 rounded-full font-bold">SOLICITADO</span>
+                        <span class="text-[10px] bg-red-600/20 text-red-500 px-3 py-1 rounded-full font-bold uppercase tracking-widest">Solicitado</span>
                     </div>
                 `).join('');
             } else { container.innerHTML = '<p class="text-gray-600 italic">Você ainda não possui agendamentos.</p>'; }
@@ -176,13 +165,9 @@
             }
         }
 
-        // --- FUNÇÕES DE UI ---
-        function abrirLogin() { 
-            document.getElementById('modal-login').classList.remove('hidden'); 
-            document.getElementById('erro-senha').classList.add('hidden'); 
-        }
+        // --- UI CONTROLS ---
+        function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
         function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
-        
         async function abrirAgendamento(tipo) {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) { abrirLogin(); } 
@@ -194,22 +179,34 @@
         }
         function fecharAgendamento() { document.getElementById('modal-agendamento').classList.add('hidden'); }
 
-        // --- LÓGICA DE AUTH ---
-        async function loginGoogle() { await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + window.location.pathname } }); }
+        // --- AUTH LOGIC ---
+        async function loginGoogle() { 
+            await supabaseClient.auth.signInWithOAuth({ 
+                provider: 'google', 
+                options: { redirectTo: window.location.origin + window.location.pathname } 
+            }); 
+        }
         
         async function criarContaEmail() {
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
             const btn = document.getElementById('btn-criar-email');
-            if (!email || password.length < 6) return alert("E-mail inválido ou senha muito curta.");
+
+            if (!email || password.length < 6) return alert("E-mail inválido ou senha muito curta (mín. 6 caracteres).");
 
             btn.innerText = "Criando...";
             const { error } = await supabaseClient.auth.signUp({ email, password });
 
-            if (error) { alert(error.message); btn.innerText = "Cadastrar"; }
-            else {
+            if (error) {
+                alert("Erro: " + error.message);
+                btn.innerText = "Cadastrar";
+            } else {
+                // Loga automaticamente após cadastrar
                 const { error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (!loginError) { fecharLogin(); mostrarPerfil(); }
+                if (!loginError) {
+                    fecharLogin();
+                    mostrarPerfil();
+                }
             }
         }
 
@@ -217,22 +214,13 @@
             const email = document.getElementById('email-login').value;
             const password = document.getElementById('senha-login').value;
             const btn = document.getElementById('btn-entrar-email');
-            const msgErro = document.getElementById('erro-senha');
-
-            msgErro.classList.add('hidden');
             btn.innerText = "Entrando...";
-            btn.classList.add('btn-loading');
-
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            
             if (error) {
-                msgErro.classList.remove('hidden');
+                alert(error.message);
                 btn.innerText = "Entrar";
-                btn.classList.remove('btn-loading');
             } else { 
                 fecharLogin(); 
-                btn.innerText = "Entrar";
-                btn.classList.remove('btn-loading');
                 mostrarPerfil();
             }
         }
@@ -253,8 +241,10 @@
             if (!error) { 
                 alert("✓ Agendamento solicitado!"); 
                 fecharAgendamento(); 
-                mostrarPerfil(); 
-            } else { alert("Erro: " + error.message); }
+                mostrarPerfil();
+            } else {
+                alert("Erro ao salvar: " + error.message);
+            }
             btn.innerText = "Confirmar Agendamento";
         }
 
