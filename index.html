@@ -135,6 +135,7 @@
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return abrirLogin();
 
+            // Explicitly handle section visibility
             document.getElementById('sessao-principal').classList.add('hidden');
             document.getElementById('servicos-grid').classList.add('hidden');
             document.getElementById('sessao-perfil').classList.remove('hidden');
@@ -172,8 +173,9 @@
 
         function abrirLogin() { 
             document.getElementById('modal-login').classList.remove('hidden'); 
-            document.getElementById('erro-senha').classList.add('hidden'); // Limpa erro ao abrir
+            document.getElementById('erro-senha').classList.add('hidden'); 
         }
+
         function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
         
         async function abrirAgendamento(tipo) {
@@ -224,18 +226,22 @@
             const btn = document.getElementById('btn-entrar-email');
             const msgErro = document.getElementById('erro-senha');
 
-            msgErro.classList.add('hidden'); // Limpa erro anterior
+            msgErro.classList.add('hidden'); 
             btn.innerText = "Entrando...";
+            btn.classList.add('btn-loading');
             
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
             
             if (error) {
-                // Exibe erro estilizado em vez do alerta padrão
+                // Style error message instead of browser alert
                 msgErro.classList.remove('hidden');
                 btn.innerText = "Entrar";
+                btn.classList.remove('btn-loading');
             } else { 
                 fecharLogin(); 
-                mostrarPerfil();
+                btn.innerText = "Entrar";
+                btn.classList.remove('btn-loading');
+                mostrarPerfil(); // REDIRECT TO CLIENT AREA
             }
         }
 
