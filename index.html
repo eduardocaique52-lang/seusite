@@ -53,8 +53,8 @@
 
     <div id="toast-container" class="fixed top-24 right-6 z-[1000] space-y-3"></div>
 
-    <div id="modal-logout" class="fixed inset-0 bg-black/90 z-[900] hidden flex items-center justify-center p-4">
-        <div class="panel-glass p-8 rounded-[2.5rem] max-w-sm w-full text-center scale-90 animate-toast">
+    <div id="modal-logout" class="fixed inset-0 bg-black/90 z-[900] hidden flex items-center justify-center p-4 text-center">
+        <div class="panel-glass p-8 rounded-[2.5rem] max-w-sm w-full scale-90 animate-toast">
             <h3 class="text-xl font-bold mb-6 uppercase tracking-wider">Deseja sair da conta?</h3>
             <div class="flex gap-4">
                 <button onclick="executarLogout()" class="flex-1 bg-red-600 py-3 rounded-xl font-black uppercase text-xs hover:bg-red-700 transition shadow-lg">Sair</button>
@@ -69,30 +69,30 @@
                 <h1 class="text-xl font-bold italic uppercase text-white">INK<span class="text-red-600">MASTER</span></h1>
                 <div class="flex items-center gap-4">
                     <button onclick="abrirLogin()" class="text-sm font-medium hover:text-red-500 transition px-3 py-2 text-white font-bold">Fazer Login</button>
-                    <button onclick="abrirLogin()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition">Agendar</button>
+                    <button onclick="showNotify('Acesse sua conta para agendar!', 'error')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-bold transition">Agendar</button>
                 </div>
             </nav>
         </div>
         <header class="hero-bg justify-center text-center px-6">
             <div class="max-w-4xl mt-20 animate-toast">
-                <h2 class="text-5xl md:text-8xl font-black mb-4 leading-tight text-white text-center uppercase italic">Sua pele,<br>sua história.</h2>
+                <h2 class="text-5xl md:text-8xl font-black mb-4 leading-tight text-white text-center">Sua pele,<br>sua história.</h2>
                 <p class="text-gray-400 text-xs md:text-sm font-light mb-10 max-w-md mx-auto tracking-wide opacity-80 text-center">Estúdio premium focado em realismo e fine line. Transformamos ideias em arte eterna.</p>
                 <div class="flex justify-center">
-                    <button onclick="abrirLogin()" class="bg-red-600 hover:bg-red-700 text-white px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all uppercase italic text-center">Quero minha tatuagem</button>
+                    <button onclick="showNotify('Garante sua vaga! Faça login e agende.', 'success')" class="bg-red-600 hover:bg-red-700 text-white px-12 py-5 rounded-full font-bold text-xl hover:scale-105 transition-all uppercase italic text-center">Quero minha tatuagem</button>
                 </div>
             </div>
         </header>
         <main class="max-w-7xl mx-auto px-6 -mt-20 pb-20 relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 text-center text-white">
-            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="abrirLogin()">
-                <h3 class="text-2xl font-bold mb-4 uppercase italic">Realismo</h3>
+            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="showNotify('Faça login para ver nossa agenda de Realismo', 'success')">
+                <h3 class="text-2xl font-bold mb-4">Realismo</h3>
                 <p class="text-gray-400 text-sm italic">Artes ultradetalhadas que capturam cada nuance da vida real.</p>
             </div>
-            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="abrirLogin()">
-                <h3 class="text-2xl font-bold mb-4 uppercase italic">Fine Line</h3>
+            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="showNotify('Faça login para ver nossa agenda de Fine Line', 'success')">
+                <h3 class="text-2xl font-bold mb-4">Fine Line</h3>
                 <p class="text-gray-400 text-sm italic">Traços finos, elegantes e precisos para quem busca minimalismo.</p>
             </div>
-            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="abrirLogin()">
-                <h3 class="text-2xl font-bold mb-4 uppercase italic">Coberturas</h3>
+            <div class="glass p-8 rounded-[2.5rem] hover:border-red-600 transition group cursor-pointer" onclick="showNotify('Faça login para ver nossa agenda de Coberturas', 'success')">
+                <h3 class="text-2xl font-bold mb-4">Coberturas</h3>
                 <p class="text-gray-400 text-sm italic">Especialistas em dar vida nova a tatuagens antigas.</p>
             </div>
         </main>
@@ -115,10 +115,10 @@
         <main class="flex-1 ml-20 md:ml-64 p-6 md:p-12 text-white">
             <div id="tab-agendar">
                 <header class="mb-12 text-left"><span class="text-red-600 text-[10px] font-black uppercase tracking-[0.3em]">• Dash VIP</span><h2 class="text-4xl md:text-5xl font-black mt-2 text-white" id="client-welcome">Olá...</h2></header>
-                <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 pb-10">
                     <div class="xl:col-span-2 panel-glass p-8 rounded-[2.5rem]">
                         <div class="flex items-center justify-between mb-8 px-2 text-white text-center">
-                            <button onclick="changeMonth(-1)" id="btn-prev" class="hover:text-red-600 transition text-2xl font-bold">&lt;</button>
+                            <button onclick="changeMonth(-1)" class="hover:text-red-600 transition text-2xl font-bold">&lt;</button>
                             <h3 id="cal-label" class="font-bold text-red-600 uppercase italic text-lg tracking-widest">Janeiro 2026</h3>
                             <button onclick="changeMonth(1)" class="hover:text-red-600 transition text-2xl font-bold">&gt;</button>
                         </div>
@@ -126,28 +126,28 @@
                         <div id="vip-calendar" class="grid grid-cols-7 gap-2 text-white"></div>
                     </div>
                     <div class="space-y-6">
-                        <div class="panel-glass p-8 rounded-[2.5rem]">
-                            <h3 class="text-xs uppercase text-gray-400 mb-6 font-bold tracking-widest">Horários</h3>
-                            <div id="vip-times" class="grid grid-cols-2 gap-3 text-white"></div>
-                        </div>
                         <div class="panel-glass p-8 rounded-[2.5rem] border-red-600/10 text-center">
                             <h3 class="text-xs uppercase text-gray-400 mb-4 font-bold tracking-widest uppercase italic">Reserva</h3>
-                            <select id="vip-style" required class="w-full p-4 rounded-xl outline-none mb-3 font-bold text-white"><option value="" disabled selected>Estilo</option><option value="Realismo">Realismo</option><option value="Fine Line">Fine Line</option></select>
-                            <select id="vip-professional" required class="w-full p-4 rounded-xl outline-none mb-3 font-bold text-white"><option value="" disabled selected>Profissional</option><option value="Julia">Julia</option><option value="Caique">Caique</option></select>
+                            <select id="vip-style" required class="w-full p-4 rounded-xl outline-none mb-3 font-bold text-white"><option value="" disabled selected>Estilo</option><option value="Realismo">Realismo</option><option value="Fine Line">Fine Line</option><option value="Cobertura">Cobertura</option></select>
+                            <select id="vip-professional" onchange="renderTimeSlots()" required class="w-full p-4 rounded-xl outline-none mb-3 font-bold text-white"><option value="Julia">Julia</option><option value="Fabiana">Fabiana</option><option value="Caique">Caique</option></select>
                             <input type="text" id="vip-whatsapp" placeholder="WhatsApp (DDD)" class="w-full p-4 rounded-xl outline-none mb-6 font-bold text-white">
+                            
+                            <h3 class="text-xs uppercase text-gray-400 mb-4 font-bold tracking-widest">Horários</h3>
+                            <div id="vip-times" class="grid grid-cols-2 gap-3 mb-6"></div>
+                            
                             <button onclick="salvarAgendamento()" class="w-full bg-red-600 py-5 rounded-2xl font-black hover:bg-red-700 transition uppercase italic text-center text-white shadow-xl">Confirmar Reserva</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="tab-meus" class="hidden">
+            <div id="tab-meus" class="hidden pb-10">
                 <header class="mb-12 text-left"><span class="text-red-600 text-[10px] font-black uppercase tracking-[0.3em]">• Histórico VIP</span><h2 class="text-4xl md:text-5xl font-black mt-2 text-white">Minhas Reservas</h2></header>
                 <div id="lista-agendamentos" class="space-y-4 max-w-3xl text-left"></div>
             </div>
         </main>
     </div>
 
-    <footer class="py-16 border-t border-white/5 bg-[#080808] flex flex-col items-center text-center px-6 relative z-[100]">
+    <footer class="py-16 border-t border-white/5 bg-[#080808] flex flex-col items-center text-center px-6 relative z-[100] w-full mt-auto">
         <h1 class="text-3xl font-black italic uppercase text-white mb-6">INK<span class="text-red-600">MASTER</span></h1>
         <div class="space-y-3 text-gray-500 text-sm font-medium italic">
             <p>Rua das Artes Eternas, 123 - Centro, São Paulo/SP</p>
@@ -202,41 +202,55 @@
     async function carregarMeusAgendamentos() {
         const { data: { user } } = await supabaseClient.auth.getUser();
         const container = document.getElementById('lista-agendamentos');
-        container.innerHTML = '<p class="text-gray-500 italic text-center font-bold">Buscando na sua conta...</p>';
         const { data, error } = await supabaseClient.from('agendamentos').select('*').eq('nome', user.email);
-        if(error || !data || data.length === 0) return container.innerHTML = '<p class="text-gray-500 italic text-center font-bold">Nenhuma reserva ativa.</p>';
+        if(error || !data || data.length === 0) return container.innerHTML = '<p class="text-center font-bold">Sem reservas.</p>';
         container.innerHTML = data.map(item => `
             <div id="reserva-${item.id}" class="panel-glass p-6 rounded-3xl border-white/5 flex justify-between items-center mb-4 transition-all duration-300">
-                <div><h4 class="font-black text-white uppercase text-sm italic">${item.servico}</h4><p class="text-gray-500 text-[10px] mt-1 italic font-bold">WhatsApp: ${item.whatsapp}</p></div>
-                <button onclick="cancelarNoBanco('${item.id}')" class="bg-red-600 text-white px-6 py-2 rounded-xl text-[10px] font-black uppercase hover:bg-red-800 transition shadow-lg text-center">CANCELAR</button>
+                <div><h4 class="font-black text-white uppercase text-sm">${item.servico}</h4><p class="text-gray-500 text-[10px] mt-1 italic font-bold">WhatsApp: ${item.whatsapp}</p></div>
+                <button onclick="cancelarNoBanco('${item.id}')" class="bg-red-600 text-white px-6 py-2 rounded-xl text-[10px] font-black uppercase shadow-lg text-center">CANCELAR</button>
             </div>`).join('');
     }
 
     async function cancelarNoBanco(idUUID) {
         const { error } = await supabaseClient.from('agendamentos').delete().match({ id: idUUID });
         if (error) showNotify(error.message, 'error');
-        else { document.getElementById(`reserva-${idUUID}`).remove(); showNotify("RESERVA EXCLUÍDA!"); }
+        else { document.getElementById(`reserva-${idUUID}`).remove(); showNotify("RESERVA EXCLUÍDA!"); renderTimeSlots(); }
     }
 
     async function salvarAgendamento() {
         const zap = document.getElementById('vip-whatsapp').value, estilo = document.getElementById('vip-style').value, prof = document.getElementById('vip-professional').value;
-        if(!sDay || !sTime || zap.length < 8 || !estilo || !prof) return showNotify("Complete os campos!", "error");
+        if(!sDay || !sTime || zap.length < 8 || !estilo || !prof) return showNotify("Escolha tudo!", "error");
         const { data: { user } } = await supabaseClient.auth.getUser();
         const info = `TATTOO: ${estilo} (${prof}) | ${sDay}/${currentViewDate.getMonth()+1} às ${sTime}`;
         const { error } = await supabaseClient.from('agendamentos').insert([{ email_cliente: user.email, nome: user.email, whatsapp: zap, servico: info }]);
-        if (error) showNotify(error.message, 'error'); else { showNotify("AGENDADO COM SUCESSO!", "success"); setTimeout(() => showTab('tab-meus'), 1000); }
+        if (error) showNotify(error.message, 'error');
+        else { showNotify("AGENDADO COM SUCESSO!", "success"); renderTimeSlots(); setTimeout(() => showTab('tab-meus'), 1000); }
     }
 
-    function changeMonth(delta) { currentViewDate.setMonth(currentViewDate.getMonth() + delta); sDay = null; sTime = null; renderCalendar(); }
+    // LÓGICA DE DISPONIBILIDADE GLOBAL POR PROFISSIONAL
+    async function renderTimeSlots() {
+        const grid = document.getElementById('vip-times');
+        const prof = document.getElementById('vip-professional').value;
+        if(!sDay) return grid.innerHTML = '<p class="text-xs opacity-50 italic">Selecione um dia</p>';
+        
+        grid.innerHTML = '<p class="text-xs italic">Sincronizando agenda...</p>';
+        const dataFormatada = `${sDay}/${currentViewDate.getMonth()+1}`;
+        
+        // BUSCA TODOS OS OCUPADOS NO BANCO PARA ESSE PROFISSIONAL E DIA
+        const { data: ocupados } = await supabaseClient.from('agendamentos').select('servico')
+            .filter('servico', 'ilike', `%(${prof})%`)
+            .filter('servico', 'ilike', `%| ${dataFormatada} às %`);
 
-    function renderTimeSlots() {
-        const grid = document.getElementById('vip-times'); grid.innerHTML = '';
-        const isToday = sDay === realToday.getDate() && currentViewDate.getMonth() === realToday.getMonth() && currentViewDate.getFullYear() === realToday.getFullYear();
+        grid.innerHTML = '';
         horariosBase.forEach(h => {
-            const btn = document.createElement('button'); btn.className = "time-btn font-bold"; btn.innerText = h;
-            if (isToday && Number(h.split(':')[0]) <= realToday.getHours()) btn.classList.add('past');
-            else { if (sTime === h) btn.classList.add('active'); btn.onclick = () => { sTime = h; renderTimeSlots(); } }
-            grid.appendChild(btn);
+            const jaMarcado = ocupados && ocupados.some(o => o.servico.includes(`às ${h}`));
+            if (!jaMarcado) {
+                const isToday = sDay === realToday.getDate() && currentViewDate.getMonth() === realToday.getMonth() && currentViewDate.getFullYear() === realToday.getFullYear();
+                const btn = document.createElement('button'); btn.className = `time-btn font-bold ${sTime === h ? 'active' : ''}`; btn.innerText = h;
+                if (isToday && Number(h.split(':')[0]) <= realToday.getHours()) btn.classList.add('past');
+                else btn.onclick = () => { sTime = h; renderTimeSlots(); }
+                grid.appendChild(btn);
+            }
         });
     }
 
@@ -250,10 +264,9 @@
             const day = document.createElement('div'); day.innerText = d; 
             const cellDate = new Date(currentViewDate.getFullYear(), currentViewDate.getMonth(), d);
             if(cellDate < limit) day.className = "cal-day past font-bold";
-            else { day.className = `cal-day available text-white font-bold ${sDay === d ? 'active shadow-lg' : ''}`; day.onclick = () => { sDay = d; sTime = null; renderCalendar(); }; }
+            else { day.className = `cal-day available text-white font-bold ${sDay === d ? 'active shadow-lg' : ''}`; day.onclick = () => { sDay = d; sTime = null; renderCalendar(); renderTimeSlots(); }; }
             grid.appendChild(day);
         }
-        renderTimeSlots();
     }
 
     async function verificarSessao() {
@@ -263,9 +276,6 @@
             document.getElementById('view-visitor').classList.add('hidden-view');
             document.getElementById('view-client').classList.remove('hidden-view');
             renderCalendar();
-        } else {
-            document.getElementById('view-visitor').classList.remove('hidden-view');
-            document.getElementById('view-client').classList.add('hidden-view');
         }
     }
 
@@ -273,19 +283,20 @@
     async function loginEmail() {
         const e = document.getElementById('email-login').value, p = document.getElementById('senha-login').value;
         const { error } = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
-        if (error) showNotify("Dados inválidos!", 'error'); else window.location.reload();
+        if (error) showNotify(error.message, 'error'); else window.location.reload();
     }
     async function criarContaEmail() {
         const e = document.getElementById('email-login').value, p = document.getElementById('senha-login').value;
         const { error } = await supabaseClient.auth.signUp({ email: e, password: p });
-        if (error) showNotify("Erro ao cadastrar!", 'error'); else showNotify("Verifique seu e-mail!", "success");
+        if (error) showNotify(error.message, 'error'); else showNotify("Verifique seu e-mail!", "success");
     }
 
+    function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
+    function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
     function abrirModalLogout() { document.getElementById('modal-logout').classList.remove('hidden'); }
     function fecharModalLogout() { document.getElementById('modal-logout').classList.add('hidden'); }
     async function executarLogout() { await supabaseClient.auth.signOut(); window.location.reload(); }
-    function fecharLogin() { document.getElementById('modal-login').classList.add('hidden'); }
-    function abrirLogin() { document.getElementById('modal-login').classList.remove('hidden'); }
+    function changeMonth(delta) { currentViewDate.setMonth(currentViewDate.getMonth() + delta); sDay = null; sTime = null; renderCalendar(); }
 
     verificarSessao();
 </script>
